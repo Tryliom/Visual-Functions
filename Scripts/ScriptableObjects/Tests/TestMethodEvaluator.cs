@@ -10,7 +10,7 @@ namespace TryliomFunctions
 
         public override void RunCode()
         {
-            Result.Value = Input.Value.CompareTag("Player") ? "This is a player" : "This is something else";
+            Result.Value = Input.Value.CompareTag("Player") ? "A" : "B";
         }
     }
 }

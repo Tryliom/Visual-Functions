@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Color")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Color")]
     public class ColorVariable : Variable<Color>
     {
     }

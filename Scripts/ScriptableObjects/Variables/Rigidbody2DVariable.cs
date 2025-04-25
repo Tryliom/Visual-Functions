@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Rigidbody2D")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Rigidbody2D")]
     public class Rigidbody2DVariable : Variable<Rigidbody2D>
     {
     }

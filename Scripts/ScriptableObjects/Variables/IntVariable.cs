@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Int")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Int")]
     public class IntVariable : Variable<int>
     {
     }

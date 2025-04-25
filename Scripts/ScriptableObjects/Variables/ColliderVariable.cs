@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Collider")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Collider")]
     public class ColliderVariable : Variable<Collider>
     {
     }

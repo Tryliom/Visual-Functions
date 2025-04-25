@@ -11,6 +11,8 @@ namespace TryliomFunctions
         public override void RunCode()
         {
             while (Iterations.Value < Loops.Value) Iterations.Value++;
+            
+            Iterations.Value = 0;
         }
     }
 }

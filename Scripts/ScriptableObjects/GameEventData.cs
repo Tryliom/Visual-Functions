@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "GameEventData", menuName = "TryliomFunctions/GameEventData", order = 0)]
     public class GameEventData : ScriptableObject
     {
         private readonly List<Action> _functions = new ();

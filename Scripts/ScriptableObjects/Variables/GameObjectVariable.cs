@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/GameObject")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/GameObject")]
     public class GameObjectVariable : Variable<GameObject>
     {
     }

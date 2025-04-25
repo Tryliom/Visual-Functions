@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Vector3")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Vector3")]
     public class Vector3Variable : Variable<Vector3>
     {
     }

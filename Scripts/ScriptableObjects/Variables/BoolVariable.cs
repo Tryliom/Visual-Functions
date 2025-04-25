@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Bool")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Bool")]
     public class BoolVariable : Variable<bool>
     {
     }

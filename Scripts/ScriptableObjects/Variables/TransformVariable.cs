@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Transform")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Transform")]
     public class TransformVariable : Variable<Transform>
     {
     }

@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/String")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/String")]
     public class StringVariable : Variable<string>
     {
     }

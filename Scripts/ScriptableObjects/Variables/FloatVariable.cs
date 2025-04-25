@@ -2,7 +2,7 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(menuName = "Variables/Float")]
+    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Float")]
     public class FloatVariable : Variable<float>
     {
     }
