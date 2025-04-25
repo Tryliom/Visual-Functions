@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace TryliomFunctions
 {
@@ -152,6 +153,19 @@ namespace TryliomFunctions
             }
 
             return types.FirstOrDefault();
+        }
+        
+        /**
+         * Convert a value to a type. Treat special cases like Vector2 and Vector3.
+         */
+        public static object ConvertTo(object value, Type targetType)
+        {
+            return value switch
+            {
+                Vector3 vector3 when targetType == typeof(Vector2) => new Vector2(vector3.x, vector3.y),
+                Vector2 vector2 when targetType == typeof(Vector3) => new Vector3(vector2.x, vector2.y, 0),
+                _ => Convert.ChangeType(value, targetType)
+            };
         }
     }
 }

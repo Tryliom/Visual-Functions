@@ -127,7 +127,7 @@ namespace TryliomFunctions
             var allTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type.IsPublic && !type.IsNested && !type.Name.StartsWith("_") && !type.IsAbstract &&
-                               type.IsVisible &&
+                               type.IsVisible && !type.Name.Contains("`1") &&
                                (type.IsEnum || constantTypes.Contains(type) || type.Namespace == "UnityEngine"))
                 .OrderBy(t => t.IsGenericType)
                 .ThenBy(t => t.Namespace == "UnityEngine")
@@ -176,6 +176,7 @@ namespace TryliomFunctions
             foreach (var method in methods)
             {
                 if (bannedMethods.Contains(method.Name)) continue;
+                if (method.Name.Contains("`1")) continue;
                 if (method.IsSpecialName) continue;
                 if (method.IsPrivate) continue;
                 if (!displayVoid && method.ReturnType == typeof(void)) continue;
@@ -205,6 +206,7 @@ namespace TryliomFunctions
 
             foreach (var propertyInfo in properties)
             {
+                if (propertyInfo.Name.Contains("`1")) continue;
                 if (propertyInfo.IsSpecialName) continue;
                 if (!propertyInfo.CanRead) continue;
                 if (!constantTypes.Contains(propertyInfo.PropertyType)) continue;
@@ -227,6 +229,7 @@ namespace TryliomFunctions
 
             foreach (var info in fields)
             {
+                if (info.Name.Contains("`1")) continue;
                 if (info.IsSpecialName) continue;
                 if (info.IsPrivate) continue;
                 if (!constantTypes.Contains(info.FieldType)) continue;

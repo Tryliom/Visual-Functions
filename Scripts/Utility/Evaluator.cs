@@ -549,12 +549,17 @@ namespace TryliomFunctions
 
                     if (operation == OperationType.Assignment)
                     {
-                        var convertedValue = Convert.ChangeType(right, left.GetType());
+                        var convertedValue = ExpressionUtility.ConvertTo(right, left.GetType());
 
-                        if (originalLeft is IValue leftValue)
-                            leftValue.Value = convertedValue;
-                        else if (originalLeft is AccessorCaller { AccessorType: AccessorType.Property } methodCaller)
-                            methodCaller.AssignValue(convertedValue);
+                        switch (originalLeft)
+                        {
+                            case IValue leftValue:
+                                leftValue.Value = convertedValue;
+                                break;
+                            case AccessorCaller { AccessorType: AccessorType.Property } methodCaller:
+                                methodCaller.AssignValue(convertedValue);
+                                break;
+                        }
 
                         stack.Push(originalLeft);
                         continue;

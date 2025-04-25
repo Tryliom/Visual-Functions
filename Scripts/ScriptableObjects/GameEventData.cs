@@ -21,7 +21,7 @@ namespace TryliomFunctions
     
         public void Invoke()
         {
-            _functions.ForEach(a => a.Invoke());
+            _functions.ForEach(a => a?.Invoke());
         }
     }
 }
