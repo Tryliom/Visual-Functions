@@ -1,0 +1,157 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TryliomFunctions
+{
+    public static class ExpressionUtility
+    {
+        private static readonly char[] Operators;
+
+        static ExpressionUtility()
+        {
+            var operators = " ";
+
+            foreach (var key in Evaluator.Operations.Keys) operators += key[0];
+
+            operators += ",.";
+
+            Operators = operators.ToCharArray();
+        }
+
+        public static string ExtractVariable(string formula, int index)
+        {
+            var variableSpan = formula.AsSpan(index);
+            var variableEnd = variableSpan.IndexOfAny(Operators);
+            if (variableEnd == -1) variableEnd = variableSpan.Length;
+
+            return variableSpan[..variableEnd].ToString();
+        }
+
+        /**
+         * Extracts a string surrounded by a character at the index in the formula. Does not return the character at the beginning and end.
+         */
+        public static string ExtractSurrounded(string formula, int index)
+        {
+            var character = formula[index];
+            var variableSpan = formula.AsSpan(index + 1);
+            var variableEnd = variableSpan.IndexOf(character);
+
+            if (variableEnd == -1) variableEnd = variableSpan.Length;
+
+            return variableSpan[..variableEnd].ToString();
+        }
+
+        /**
+         * Extracts a string inside surrounders characters.
+         * The index is the index of the opening surrounder. Does not return the surrounders.
+         */
+        public static string ExtractInsideSurrounder(string formula, int index, char startSurrounder = '(',
+            char endSurrounder = ')')
+        {
+            // Get all the things inside surrounders
+            var depth = 0;
+            var i = index;
+            var startIndex = i + 1;
+
+            while (i < formula.Length)
+            {
+                if (formula[i] == startSurrounder) depth++;
+                if (formula[i] == endSurrounder) depth--;
+                if (depth == 0) break;
+                i++;
+            }
+
+            return formula.Substring(startIndex, i - startIndex);
+        }
+
+        /**
+         * Extracts string parameters inside brackets or other things. The index is the index of the opening bracket. Does not return the brackets.
+         */
+        public static List<string> ExtractMethodParameters(string formula, int index, char startSeparator = '(',
+            char endSeparator = ')')
+        {
+            var parameters = new List<string>();
+            var parameter = "";
+            var depth = 0;
+            var i = index + 1;
+
+            while (i < formula.Length)
+            {
+                if (formula[i] == startSeparator) depth++;
+
+                if (depth == 1 && formula[i] == ',')
+                {
+                    parameters.Add(parameter);
+                    parameter = "";
+                }
+                else if (depth > 1 || (formula[i] != endSeparator && formula[i] != startSeparator))
+                {
+                    parameter += formula[i];
+                }
+
+                if (formula[i] == endSeparator) depth--;
+
+                if (depth == 0)
+                {
+                    if (parameter != "") parameters.Add(parameter);
+                    parameter = "";
+                    break;
+                }
+
+                i++;
+            }
+
+            if (parameter != "") parameters.Add(parameter);
+
+            return parameters;
+        }
+
+        /**
+         * Extract a type from a string, the type can be a class, struct, enum or a primitive type.
+         * If a property (field or method) is searched, it will search for the type that contains the property.
+         */
+        public static Type ExtractType(string typeStr, string propertySearched = "")
+        {
+            var type = Type.GetType(typeStr) ?? typeStr switch
+            {
+                "int" => typeof(int),
+                "float" => typeof(float),
+                "double" => typeof(double),
+                "bool" => typeof(bool),
+                "string" => typeof(string),
+                "long" => typeof(long),
+                "short" => typeof(short),
+                "byte" => typeof(byte),
+                "char" => typeof(char),
+                "decimal" => typeof(decimal),
+                _ => null
+            };
+
+            if (type != null) return null;
+
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(t => (t.Name == typeStr || t.FullName == typeStr) && !t.IsNested)
+                .ToList();
+
+            if (propertySearched == string.Empty) return types.FirstOrDefault();
+
+            foreach (var t in types)
+            {
+                // Check if the type has the method or property
+                var methods = t.GetMethods();
+                var method = methods.FirstOrDefault(m => m.Name == propertySearched);
+                var field = t.GetField(propertySearched);
+                var property = t.GetProperty(propertySearched);
+
+                if (method != null || property != null || field != null) return t;
+
+                // Check if the type is an enum and contains the field
+                if (t.IsEnum && Enum.IsDefined(t, propertySearched)) return t;
+            }
+
+            return types.FirstOrDefault();
+        }
+    }
+}

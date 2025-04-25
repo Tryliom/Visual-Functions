@@ -1,0 +1,13 @@
+{
+  "name": "com.tryliom.tryliomfunctions",
+  "version": "0.1.0",
+  "displayName": "Tryliom Functions",
+  "description": "A system to run code logic from Unity Editor with a code-like syntax",
+  "unity": "2023.2",
+  "documentationUrl": "https://github.com/Tryliom/TryliomFunctions",
+  "keywords": ["editor tools"],
+  "author": 
+  { 
+    "name" : "Alexis Haldy"
+  }
+}
