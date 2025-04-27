@@ -116,7 +116,9 @@ namespace TryliomFunctions
         private static object ProcessFormula(string uid, string formula, List<ExpressionVariable> variables)
         {
             if (FormulaCache.Get(uid, formula, variables) is { } cachedResult)
+            {
                 return EvaluateExpression(uid, cachedResult, variables);
+            }
 
             var expressions = new List<object>(formula.Length);
             var numberBuilder = new StringBuilder();
@@ -219,11 +221,6 @@ namespace TryliomFunctions
                 {
                     // If the character is a quote, it indicates the start of a string
                     var str = ExpressionUtility.ExtractSurrounded(formula, i);
-
-                    if (str.Length == 0)
-                        throw new Exception("Empty string in formula {" + formula + "} on character " + i +
-                                            " with value " +
-                                            str[0] + "}");
 
                     i += str.Length + 2;
                     expressions.Add(str);
@@ -343,11 +340,9 @@ namespace TryliomFunctions
                             value = new MethodValue(type);
                         }
 
-                        if (methodType == AccessorType.Method)
-                            expressions.Add(new AccessorCaller(value, propertyName, parameters, leftProperties,
-                                genericTypes));
-                        else
-                            expressions.Add(new AccessorCaller(value, propertyName, leftProperties));
+                        expressions.Add(methodType == AccessorType.Method
+                            ? new AccessorCaller(value, propertyName, parameters, leftProperties, genericTypes)
+                            : new AccessorCaller(value, propertyName, leftProperties));
                     }
                     else if (variables.Find(v => v.Name == variable) is { } variableValue)
                     {
@@ -417,67 +412,67 @@ namespace TryliomFunctions
             return EvaluateExpression(uid, expressions, variables);
         }
 
-        private static object EvaluateExpression(string uid, List<object> expression,
-            List<ExpressionVariable> variables)
+        private static object EvaluateExpression(string uid, List<object> expression, List<ExpressionVariable> variables)
         {
             var stack = new Stack<object>(expression.Count);
             var output = new List<object>(expression.Count);
 
             foreach (var token in expression)
-                if (token is OperationType operation)
+            {
+                switch (token)
                 {
-                    if (operation == OperationType.OpenBracket)
-                    {
+                    case OperationType operation and OperationType.OpenBracket:
                         stack.Push(operation);
-                    }
-                    else if (operation == OperationType.CloseBracket)
+                        break;
+                    case OperationType.CloseBracket:
                     {
                         while (stack.Count > 0 && stack.Peek() is not OperationType.OpenBracket)
-                            output.Add(stack.Pop());
-                        stack.Pop(); // Remove the OpenBracket from the stack
-                    }
-                    else
-                    {
-                        while (stack.Count > 0 && stack.Peek() is OperationType topOperation &&
-                               GetPrecedence(topOperation) >= GetPrecedence(operation)) output.Add(stack.Pop());
-                        stack.Push(operation);
-                    }
-                }
-                else if (token is TernaryCaller ternaryCaller)
-                {
-                    var condition = EvaluateExpression(uid, ternaryCaller.ConditionList, variables) switch
-                    {
-                        IValue value => value.Value,
-                        AccessorCaller caller => caller.Result.Value ?? EvaluateAccessor(uid, caller, variables) switch
                         {
-                            AccessorCaller methodCaller => methodCaller.Result,
-                            IValue result => result.Value,
-                            { } res => res
-                        },
-                        { } obj => obj,
-                        _ => token
-                    };
+                            output.Add(stack.Pop());
+                        }
 
-                    if (condition is bool conditionValue)
-                    {
-                        output.Add(conditionValue
-                            ? EvaluateExpression(uid, ternaryCaller.IfTrue, variables)
-                            : EvaluateExpression(uid, ternaryCaller.IfFalse, variables));
+                        stack.Pop(); // Remove the OpenBracket from the stack
+                        break;
                     }
-                    else
+                    case OperationType operation:
                     {
-                        Debug.LogError("Ternary condition is not a boolean");
-                        return null;
+                        while (stack.Count > 0 && stack.Peek() is OperationType topOperation && GetPrecedence(topOperation) >= GetPrecedence(operation))
+                        {
+                            output.Add(stack.Pop());
+                        }
+
+                        stack.Push(operation);
+                        break;
                     }
+                    case TernaryCaller ternaryCaller:
+                    {
+                        var condition = ExpressionUtility.ExtractValue(
+                            EvaluateExpression(uid, ternaryCaller.ConditionList, variables),
+                            uid, variables
+                        );
+
+                        if (condition is bool conditionValue)
+                        {
+                            output.Add(conditionValue
+                                ? EvaluateExpression(uid, ternaryCaller.IfTrue, variables)
+                                : EvaluateExpression(uid, ternaryCaller.IfFalse, variables));
+                        }
+                        else
+                        {
+                            Debug.LogError("Ternary condition is not a boolean");
+                            return null;
+                        }
+
+                        break;
+                    }
+                    case AccessorCaller methodCaller:
+                        output.Add(EvaluateAccessor(uid, methodCaller, variables));
+                        break;
+                    default:
+                        output.Add(token);
+                        break;
                 }
-                else if (token is AccessorCaller methodCaller)
-                {
-                    output.Add(EvaluateAccessor(uid, methodCaller, variables));
-                }
-                else
-                {
-                    output.Add(token);
-                }
+            }
 
             while (stack.Count > 0) output.Add(stack.Pop());
 
@@ -518,38 +513,18 @@ namespace TryliomFunctions
             var stack = new Stack<object>(postfix.Count);
 
             foreach (var token in postfix)
+            {
                 if (token is OperationType operation)
                 {
                     var originalRight = stack.Pop();
                     var originalLeft = stack.Pop();
 
-                    dynamic right = originalRight switch
-                    {
-                        IValue value => value.Value,
-                        AccessorCaller caller => caller.Result.Value ?? EvaluateAccessor(uid, caller, variables) switch
-                        {
-                            AccessorCaller methodCaller => methodCaller.Result,
-                            IValue result => result.Value,
-                            { } res => res
-                        },
-                        _ => originalRight
-                    };
-
-                    dynamic left = originalLeft switch
-                    {
-                        IValue value => value.Value,
-                        AccessorCaller caller => caller.Result.Value ?? EvaluateAccessor(uid, caller, variables) switch
-                        {
-                            AccessorCaller methodCaller => methodCaller.Result,
-                            IValue result => result.Value,
-                            { } res => res
-                        },
-                        _ => originalLeft
-                    };
+                    dynamic right = ExpressionUtility.ExtractValue(originalRight, uid, variables);
+                    dynamic left = ExpressionUtility.ExtractValue(originalLeft, uid, variables);
 
                     if (operation == OperationType.Assignment)
                     {
-                        var convertedValue = ExpressionUtility.ConvertTo(right, left.GetType());
+                        var convertedValue = originalLeft is CustomValue ? right : ExpressionUtility.ConvertTo(right, left.GetType());
 
                         switch (originalLeft)
                         {
@@ -566,10 +541,14 @@ namespace TryliomFunctions
                     }
 
                     if (right is bool && operation is >= OperationType.Add and <= OperationType.Modulo)
+                    {
                         right = Convert.ToInt32(right);
+                    }
 
                     if (left is bool && operation is >= OperationType.Add and <= OperationType.Modulo)
+                    {
                         left = Convert.ToInt32(left);
+                    }
 
                     stack.Push(operation switch
                     {
@@ -601,6 +580,7 @@ namespace TryliomFunctions
                 {
                     stack.Push(token);
                 }
+            }
 
             return stack.Pop();
         }
@@ -608,52 +588,47 @@ namespace TryliomFunctions
         /**
          * Handles the operation and adds it to the expressions list. Returns true if the operation is an assignment operation.
          */
-        private static bool HandleOperation(List<object> expressions, OperationType operationType, string formula,
-            int i)
+        private static bool HandleOperation(List<object> expressions, OperationType operationType, string formula, int i)
         {
-            if (operationType > OperationType.Assignment)
+            switch (operationType)
             {
-                expressions.Add(OperationType.Assignment);
-                expressions.Add(expressions[0]);
-                expressions.Add(operationType switch
-                {
-                    OperationType.AssignmentAdd => OperationType.Add,
-                    OperationType.AssignmentSubstract => OperationType.Substract,
-                    OperationType.AssignmentMultiply => OperationType.Multiply,
-                    OperationType.AssignmentDivide => OperationType.Divide,
-                    OperationType.AssignmentModulo => OperationType.Modulo,
-                    OperationType.AssignmentAnd => OperationType.BitwiseAnd,
-                    OperationType.AssignmentOr => OperationType.BitwiseOr,
-                    OperationType.AssignmentXor => OperationType.BitwiseXor,
-                    OperationType.AssignmentLeftShift => OperationType.LeftShift,
-                    OperationType.AssignmentRightShift => OperationType.RightShift,
-                    _ => throw new InvalidOperationException("Invalid assignment operation")
-                });
-                expressions.Add(OperationType.OpenBracket);
+                case > OperationType.Assignment:
+                    expressions.Add(OperationType.Assignment);
+                    expressions.Add(expressions[0]);
+                    expressions.Add(operationType switch
+                    {
+                        OperationType.AssignmentAdd => OperationType.Add,
+                        OperationType.AssignmentSubstract => OperationType.Substract,
+                        OperationType.AssignmentMultiply => OperationType.Multiply,
+                        OperationType.AssignmentDivide => OperationType.Divide,
+                        OperationType.AssignmentModulo => OperationType.Modulo,
+                        OperationType.AssignmentAnd => OperationType.BitwiseAnd,
+                        OperationType.AssignmentOr => OperationType.BitwiseOr,
+                        OperationType.AssignmentXor => OperationType.BitwiseXor,
+                        OperationType.AssignmentLeftShift => OperationType.LeftShift,
+                        OperationType.AssignmentRightShift => OperationType.RightShift,
+                        _ => throw new InvalidOperationException("Invalid assignment operation")
+                    });
+                    expressions.Add(OperationType.OpenBracket);
 
-                return true;
-            }
-
-            if (operationType == OperationType.Substract &&
-                (i == 0 || Operations.ContainsKey(formula[i - 1].ToString())))
-            {
-                expressions.Add(-1);
-                expressions.Add(OperationType.Multiply);
-            }
-            else if (operationType == OperationType.Not)
-            {
-                expressions.Add(false);
-                expressions.Add(OperationType.Equal);
-            }
-            else
-            {
-                expressions.Add(operationType);
+                    return true;
+                case OperationType.Substract when i == 0 || Operations.ContainsKey(formula[i - 1].ToString()):
+                    expressions.Add(-1);
+                    expressions.Add(OperationType.Multiply);
+                    break;
+                case OperationType.Not:
+                    expressions.Add(false);
+                    expressions.Add(OperationType.Equal);
+                    break;
+                default:
+                    expressions.Add(operationType);
+                    break;
             }
 
             return false;
         }
 
-        private static object EvaluateAccessor(string uid, AccessorCaller caller, List<ExpressionVariable> variables)
+        public static object EvaluateAccessor(string uid, AccessorCaller caller, List<ExpressionVariable> variables)
         {
             var callerType = caller.Instance.Type.FullName == "System.RuntimeType"
                 ? (Type)caller.Instance.Value
@@ -683,31 +658,16 @@ namespace TryliomFunctions
             }
             else
             {
-                var parameters = new List<object>();
-
-                foreach (var parameter in caller.Parameters)
-                {
-                    var obj = Process(uid, parameter, variables);
-
-                    if (obj is IValue valueObj)
-                        parameters.Add(valueObj.Value);
-                    else if (obj is AccessorCaller methodCaller)
-                        parameters.Add(EvaluateAccessor(uid, methodCaller, variables) switch
-                        {
-                            AccessorCaller methodCallerResult => methodCallerResult.Result.Value,
-                            IValue value => value.Value,
-                            { } res => res
-                        });
-                    else
-                        parameters.Add(obj);
-                }
+                var parameters = caller.Parameters
+                    .Select(parameter => Process(uid, parameter, variables))
+                    .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
+                    .ToList();
 
                 var method = callerType.GetMethod(caller.Property, parameters.Select(p => p.GetType()).ToArray());
 
                 if (method == null)
                 {
-                    Debug.LogError(
-                        $"Method '{caller.Property}' not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
+                    Debug.LogError($"Method '{caller.Property}' not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
                     return null;
                 }
 
@@ -718,16 +678,19 @@ namespace TryliomFunctions
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogError(
-                            $"Failed to apply generic types to method '{caller.Property}' in '{callerType}': {ex.Message}");
+                        Debug.LogError($"Failed to apply generic types to method '{caller.Property}' in '{callerType}': {ex.Message}");
                         return null;
                     }
 
                 var methodParameters = method.GetParameters();
                 for (var i = 0; i < methodParameters.Length; i++)
+                {
                     if (methodParameters[i].ParameterType.IsEnum && parameters[i] is string enumValue)
+                    {
                         parameters[i] = Enum.Parse(methodParameters[i].ParameterType, enumValue);
-
+                    }
+                }
+                
                 if (method.ReturnType == typeof(void))
                 {
                     method.Invoke(callerValue, parameters.ToArray());

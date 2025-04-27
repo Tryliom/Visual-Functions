@@ -14,8 +14,9 @@ namespace TryliomFunctions
         public const string PathToVariables = "Assets/Resources/ScriptableObjects/Variables";
 
         private static readonly Dictionary<Type, Type> VariableTypes = new();
-        private static Dictionary<Type, Type> ReferenceTypes = new();
+        private static readonly Dictionary<Type, Type> ReferenceTypes = new();
         private static readonly Dictionary<Type, Type> ReferenceToVariable = new();
+        private static List<Type> _iValueTypes = new();
 
         static ReferenceUtility()
         {
@@ -27,8 +28,9 @@ namespace TryliomFunctions
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var variableTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
                 .Where(t => t.Name.EndsWith("Variable") && !t.IsAbstract);
-            var referenceTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
-                .Where(t => t.Name.EndsWith("Reference") && !t.IsAbstract);
+            var iValueTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
+                .Where(t => !t.IsGenericType && !t.IsInterface && !t.IsAbstract && 
+                            t.GetInterfaces().Contains(typeof(IValue)) && t.GetConstructor(Type.EmptyTypes) != null);
 
             foreach (var variableType in variableTypes)
             {
@@ -36,21 +38,24 @@ namespace TryliomFunctions
                 if (constantType != null) VariableTypes[constantType] = variableType;
             }
 
-            foreach (var referenceType in referenceTypes)
+            foreach (var iValueType in iValueTypes)
             {
-                var constantType = referenceType.BaseType?.GenericTypeArguments.FirstOrDefault();
+                var constantType = iValueType.BaseType?.GenericTypeArguments.FirstOrDefault();
+
+                _iValueTypes.Add(iValueType);
 
                 if (constantType == null) continue;
 
-                ReferenceTypes[constantType] = referenceType;
-                ReferenceToVariable[referenceType] = VariableTypes[constantType];
+                ReferenceTypes[constantType] = iValueType;
+                ReferenceToVariable[iValueType] = VariableTypes[constantType];
             }
 
-            // Reorder the reference types by: generic type, UnityEngine type, and then by name
-            ReferenceTypes = ReferenceTypes.OrderBy(x => x.Key.IsGenericType)
-                .ThenBy(x => x.Key.Namespace == "UnityEngine")
-                .ThenBy(x => x.Key.Name)
-                .ToDictionary(x => x.Key, x => x.Value);
+            // Reorder the IValue types by: generic type, UnityEngine type, and then by name
+            _iValueTypes = _iValueTypes.OrderBy(x => x.BaseType != null && x.BaseType.GenericTypeArguments.Length > 0 && x.BaseType.GenericTypeArguments[0].IsGenericType)
+                .ThenBy(x => x.BaseType == null || x.BaseType.GenericTypeArguments.Length == 0)
+                .ThenBy(x => x.BaseType != null && x.BaseType.GenericTypeArguments.Length > 0 && x.BaseType.GenericTypeArguments[0].Namespace == "UnityEngine")
+                .ThenBy(x => x.Name)
+                .ToList();
         }
 
         public static Type GetReferenceType(Type type)
@@ -58,9 +63,9 @@ namespace TryliomFunctions
             return ReferenceTypes.GetValueOrDefault(type);
         }
 
-        public static List<Type> GetAllReferenceTypes()
+        public static List<Type> GetAllIValueTypes()
         {
-            return ReferenceTypes.Values.ToList();
+            return _iValueTypes;
         }
 
         public static Type GetVariableFromReference(Type type)

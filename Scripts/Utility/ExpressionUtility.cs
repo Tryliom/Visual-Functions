@@ -167,5 +167,44 @@ namespace TryliomFunctions
                 _ => Convert.ChangeType(value, targetType)
             };
         }
+
+        public static object ExtractValue(object from, string uid, List<ExpressionVariable> variables)
+        {
+            var loops = 0;
+            
+            while (true)
+            {
+                loops++;
+                
+                if (loops > 100)
+                {
+                    Debug.LogError($"Infinite loop detected in {nameof(ExtractValue)}. Returning null.");
+                    return null;
+                }
+                
+                switch (from)
+                {
+                    case CustomValue customValue:
+                    {
+                        customValue.Evaluate(uid, variables);
+                        from = customValue.Value;
+                        continue;
+                    }
+                    case IValue value:
+                        return value.Value;
+                    case AccessorCaller caller:
+                        var extractValue = caller.Result.Value;
+                        if (extractValue != null) return extractValue;
+                        from = Evaluator.EvaluateAccessor(uid, caller, variables);
+                        continue;
+                    case not null:
+                        return from;
+                }
+
+                break;
+            }
+            
+            return null;
+        }
     }
 }

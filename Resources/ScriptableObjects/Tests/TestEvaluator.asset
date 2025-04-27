@@ -18,7 +18,7 @@ MonoBehaviour:
     FoldoutOpen: 1
   FunctionsToTest:
     FunctionsList:
-    - rid: 7936453624402018826
+    - rid: 4824914933113421899
     FoldoutOpen: 1
   Input:
     UseLocal: 0
@@ -28,38 +28,45 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 7936453624402018823
-      type: {class: Reset, ns: TryliomFunctions, asm: TryliomFunctions}
+    - rid: 4824914933113421899
+      type: {class: Evaluate, ns: TryliomFunctions, asm: TryliomFunctions}
       data:
-        FoldoutOpen: 0
+        FoldoutOpen: 1
         Enabled: 1
         Inputs:
+        - FieldName: Formula
+          Value:
+            rid: 4824914933113421900
+          SupportedTypes: []
+          InEdition: 0
+          EditValue: 
+          AcceptAnyMethod: 1
         - FieldName: A
           Value:
-            rid: 7936453624402018825
+            rid: 4824914933113421901
           SupportedTypes:
           - m_Name: BoolReference
             m_AssemblyQualifiedName: TryliomFunctions.BoolReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: IntReference
-            m_AssemblyQualifiedName: TryliomFunctions.IntReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: FloatReference
             m_AssemblyQualifiedName: TryliomFunctions.FloatReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: IntReference
+            m_AssemblyQualifiedName: TryliomFunctions.IntReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: StringReference
             m_AssemblyQualifiedName: TryliomFunctions.StringReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ColliderReference
-            m_AssemblyQualifiedName: TryliomFunctions.ColliderReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: Collider2DReference
             m_AssemblyQualifiedName: TryliomFunctions.Collider2DReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ColliderReference
+            m_AssemblyQualifiedName: TryliomFunctions.ColliderReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: ColorReference
@@ -74,12 +81,12 @@ MonoBehaviour:
             m_AssemblyQualifiedName: TryliomFunctions.QuaternionReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: RigidbodyReference
-            m_AssemblyQualifiedName: TryliomFunctions.RigidbodyReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: Rigidbody2DReference
             m_AssemblyQualifiedName: TryliomFunctions.Rigidbody2DReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: RigidbodyReference
+            m_AssemblyQualifiedName: TryliomFunctions.RigidbodyReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: TransformReference
@@ -93,6 +100,116 @@ MonoBehaviour:
           - m_Name: Vector3Reference
             m_AssemblyQualifiedName: TryliomFunctions.Vector3Reference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: CustomValue
+            m_AssemblyQualifiedName: CustomValue, TryliomFunctions, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: Formula
+            m_AssemblyQualifiedName: Formula, TryliomFunctions, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          InEdition: 0
+          EditValue: 
+          AcceptAnyMethod: 0
+        Outputs: []
+        EditableAttributes: []
+        AllowAddInputs: 1
+        FunctionInputSettings:
+          SupportedTypes: []
+          PrefixName: 
+          CanCallMethods: 1
+          AllowVoidMethods: 1
+        AllowAddOutputs: 0
+        FunctionOutputSettings:
+          SupportedTypes: []
+          PrefixName: 
+          CanCallMethods: 0
+          AllowVoidMethods: 0
+    - rid: 4824914933113421900
+      type: {class: Formula, ns: , asm: TryliomFunctions}
+      data:
+        FormulaValue: A = A * 2 + 3 * 5 - A
+    - rid: 4824914933113421901
+      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: 330d5aab41bfe3542a8a3afe17bf4085, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7936453624402018823
+      type: {class: Reset, ns: TryliomFunctions, asm: TryliomFunctions}
+      data:
+        FoldoutOpen: 0
+        Enabled: 1
+        Inputs:
+        - FieldName: A
+          Value:
+            rid: 7936453624402018825
+          SupportedTypes:
+          - m_Name: BoolReference
+            m_AssemblyQualifiedName: TryliomFunctions.BoolReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: FloatReference
+            m_AssemblyQualifiedName: TryliomFunctions.FloatReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: IntReference
+            m_AssemblyQualifiedName: TryliomFunctions.IntReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: StringReference
+            m_AssemblyQualifiedName: TryliomFunctions.StringReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: Collider2DReference
+            m_AssemblyQualifiedName: TryliomFunctions.Collider2DReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ColliderReference
+            m_AssemblyQualifiedName: TryliomFunctions.ColliderReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ColorReference
+            m_AssemblyQualifiedName: TryliomFunctions.ColorReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: GameObjectReference
+            m_AssemblyQualifiedName: TryliomFunctions.GameObjectReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: QuaternionReference
+            m_AssemblyQualifiedName: TryliomFunctions.QuaternionReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: Rigidbody2DReference
+            m_AssemblyQualifiedName: TryliomFunctions.Rigidbody2DReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: RigidbodyReference
+            m_AssemblyQualifiedName: TryliomFunctions.RigidbodyReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: TransformReference
+            m_AssemblyQualifiedName: TryliomFunctions.TransformReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: Vector2Reference
+            m_AssemblyQualifiedName: TryliomFunctions.Vector2Reference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: Vector3Reference
+            m_AssemblyQualifiedName: TryliomFunctions.Vector3Reference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: CustomValue
+            m_AssemblyQualifiedName: CustomValue, TryliomFunctions, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: Formula
+            m_AssemblyQualifiedName: Formula, TryliomFunctions, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           InEdition: 0
           EditValue: 
@@ -112,110 +229,6 @@ MonoBehaviour:
           CanCallMethods: 0
           AllowVoidMethods: 0
     - rid: 7936453624402018825
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: 330d5aab41bfe3542a8a3afe17bf4085, type: 2}
-        DisplayedInInspector: 0
-    - rid: 7936453624402018826
-      type: {class: Evaluate, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        FoldoutOpen: 1
-        Enabled: 1
-        Inputs:
-        - FieldName: Formula
-          Value:
-            rid: 7936453624402018827
-          SupportedTypes: []
-          InEdition: 0
-          EditValue: 
-          AcceptAnyMethod: 1
-        - FieldName: A
-          Value:
-            rid: 7936453624402018828
-          SupportedTypes:
-          - m_Name: BoolReference
-            m_AssemblyQualifiedName: TryliomFunctions.BoolReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: IntReference
-            m_AssemblyQualifiedName: TryliomFunctions.IntReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: FloatReference
-            m_AssemblyQualifiedName: TryliomFunctions.FloatReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: StringReference
-            m_AssemblyQualifiedName: TryliomFunctions.StringReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ColliderReference
-            m_AssemblyQualifiedName: TryliomFunctions.ColliderReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Collider2DReference
-            m_AssemblyQualifiedName: TryliomFunctions.Collider2DReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ColorReference
-            m_AssemblyQualifiedName: TryliomFunctions.ColorReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: GameObjectReference
-            m_AssemblyQualifiedName: TryliomFunctions.GameObjectReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: QuaternionReference
-            m_AssemblyQualifiedName: TryliomFunctions.QuaternionReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: RigidbodyReference
-            m_AssemblyQualifiedName: TryliomFunctions.RigidbodyReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Rigidbody2DReference
-            m_AssemblyQualifiedName: TryliomFunctions.Rigidbody2DReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: TransformReference
-            m_AssemblyQualifiedName: TryliomFunctions.TransformReference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Vector2Reference
-            m_AssemblyQualifiedName: TryliomFunctions.Vector2Reference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Vector3Reference
-            m_AssemblyQualifiedName: TryliomFunctions.Vector3Reference, TryliomFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          InEdition: 0
-          EditValue: 
-          AcceptAnyMethod: 0
-        Outputs: []
-        EditableAttributes: []
-        AllowAddInputs: 1
-        FunctionInputSettings:
-          SupportedTypes: []
-          PrefixName: 
-          CanCallMethods: 1
-          AllowVoidMethods: 1
-        AllowAddOutputs: 0
-        FunctionOutputSettings:
-          SupportedTypes: []
-          PrefixName: 
-          CanCallMethods: 0
-          AllowVoidMethods: 0
-    - rid: 7936453624402018827
-      type: {class: StringReference, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: A = A * 2 + 3 * 5 - A
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
-    - rid: 7936453624402018828
       type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
       data:
         UseLocal: 0

@@ -643,14 +643,13 @@ namespace TryliomFunctions
                 : function.FunctionOutputSettings;
             var put = function.Inputs.Contains(field) ? function.Inputs : function.Outputs;
 
-            if ((settings.CanCallMethods && isEditable) || field.AcceptAnyMethod)
+            if (field.Value != null && field.Value.Type != typeof(object) && 
+                ((settings.CanCallMethods && isEditable) || field.AcceptAnyMethod))
             {
                 var searchButton = new Button(() =>
                 {
-                    if (field.AcceptAnyMethod)
-                        MethodSearchWindow.ShowWindow(settings.AllowVoidMethods);
-                    else
-                        MethodSearchWindow.ShowWindow(field.Value.Type, settings.AllowVoidMethods);
+                    if (field.AcceptAnyMethod) MethodSearchWindow.ShowWindow(settings.AllowVoidMethods);
+                    else MethodSearchWindow.ShowWindow(field.Value.Type, settings.AllowVoidMethods);
                 })
                 {
                     text = "🔍",
@@ -772,8 +771,7 @@ namespace TryliomFunctions
                 propertyField.Bind(property.serializedObject);
                 row2.Add(propertyField);
 
-                var parentPath = Regex.Replace(AssetDatabase.GetAssetPath(property.serializedObject.targetObject),
-                    "/[^/]*$", "");
+                var parentPath = Regex.Replace(AssetDatabase.GetAssetPath(property.serializedObject.targetObject), "/[^/]*$", "");
 
                 if (parentPath == "") parentPath = ReferenceUtility.PathToVariables;
 
@@ -782,75 +780,68 @@ namespace TryliomFunctions
                 // Get the variable type of the field (Reference type)
                 var variableType = ReferenceUtility.GetVariableFromReference(field.Value.GetType());
 
-                if (variableType == null)
+                if (variableType != null)
                 {
-                    row1.Add(new Label("Variable type not found"));
+                    // Search all asset files in the parent path and subdirectories with the same type as the field
+                    var assets = AssetDatabase.FindAssets($"t:{variableType.Name}",
+                        new[] { searchPath, ReferenceUtility.PathToGlobalVariables, ReferenceUtility.PathToVariables });
 
-                    container.Add(row1);
-                    container.Add(row2);
+                    // Display a dropdown with all the assets found and an option to create a new one (the first option)
+                    var assetPaths = assets.Select(asset => AssetDatabase.GUIDToAssetPath(asset)
+                        .Replace($"{ReferenceUtility.PathToGlobalVariables}/", "")
+                        .Replace($"{ReferenceUtility.PathToVariables}/", "")
+                        .Replace($"{searchPath}/", "")
+                    ).ToList();
 
-                    return container;
+                    assetPaths.Insert(0, "Asset..");
+
+                    var buttonCreate = new Button(() =>
+                    {
+                        // Asset creation
+                        // Create a folder of the function name if it doesn't exist
+                        var folderPath = $"{parentPath}/{property.serializedObject.targetObject.name}";
+
+                        if (!AssetDatabase.IsValidFolder(folderPath))
+                            AssetDatabase.CreateFolder(parentPath, property.serializedObject.targetObject.name);
+
+                        var assetName = $"{function.GetType().Name}-{field.FieldName}";
+
+                        field.Value.Value = ReferenceUtility.CreateVariableAsset(type, assetName, folderPath);
+
+                        Refresh();
+                    })
+                    {
+                        text = "+",
+                        tooltip = "Create a new asset",
+                        style =
+                        {
+                            width = 20
+                        }
+                    };
+
+                    var popupField = new PopupField<string>(assetPaths, 0)
+                    {
+                        style =
+                        {
+                            marginRight = 5
+                        },
+                        tooltip = "Select an asset"
+                    };
+
+                    popupField.RegisterValueChangedCallback(_ =>
+                    {
+                        if (popupField.index == 0) return;
+
+                        field.Value.Value =
+                            AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assets[popupField.index - 1]),
+                                variableType);
+
+                        popupField.index = 0;
+                    });
+
+                    row2.Add(buttonCreate);
+                    row2.Add(popupField);
                 }
-
-                // Search all asset files in the parent path and subdirectories with the same type as the field
-                var assets = AssetDatabase.FindAssets($"t:{variableType.Name}",
-                    new[] { searchPath, ReferenceUtility.PathToGlobalVariables, ReferenceUtility.PathToVariables });
-
-                // Display a dropdown with all the assets found and an option to create a new one (the first option)
-                var assetPaths = assets.Select(asset => AssetDatabase.GUIDToAssetPath(asset)
-                    .Replace($"{ReferenceUtility.PathToGlobalVariables}/", "")
-                    .Replace($"{ReferenceUtility.PathToVariables}/", "")
-                    .Replace($"{searchPath}/", "")
-                ).ToList();
-
-                assetPaths.Insert(0, "Asset..");
-
-                var buttonCreate = new Button(() =>
-                {
-                    // Asset creation
-                    // Create a folder of the function name if it doesn't exist
-                    var folderPath = $"{parentPath}/{property.serializedObject.targetObject.name}";
-
-                    if (!AssetDatabase.IsValidFolder(folderPath))
-                        AssetDatabase.CreateFolder(parentPath, property.serializedObject.targetObject.name);
-
-                    var assetName = $"{function.GetType().Name}-{field.FieldName}";
-
-                    field.Value.Value = ReferenceUtility.CreateVariableAsset(type, assetName, folderPath);
-
-                    Refresh();
-                })
-                {
-                    text = "+",
-                    tooltip = "Create a new asset",
-                    style =
-                    {
-                        width = 20
-                    }
-                };
-
-                var popupField = new PopupField<string>(assetPaths, 0)
-                {
-                    style =
-                    {
-                        marginRight = 5
-                    },
-                    tooltip = "Select an asset"
-                };
-
-                popupField.RegisterValueChangedCallback(_ =>
-                {
-                    if (popupField.index == 0) return;
-
-                    field.Value.Value =
-                        AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assets[popupField.index - 1]),
-                            variableType);
-
-                    popupField.index = 0;
-                });
-
-                row2.Add(buttonCreate);
-                row2.Add(popupField);
             }
 
             if (field.SupportedTypes.Count > 0)

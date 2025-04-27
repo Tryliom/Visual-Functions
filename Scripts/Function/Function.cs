@@ -190,7 +190,9 @@ namespace TryliomFunctions
         public bool IsFieldEditable(Field field)
         {
             if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            {
                 throw new Exception("The function is not instantiated");
+            }
 
             if (Inputs.Contains(field))
             {
@@ -209,7 +211,9 @@ namespace TryliomFunctions
         public int GetMinEditableFieldIndex(Field field)
         {
             if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            {
                 throw new Exception("The function is not instantiated");
+            }
 
             if (Inputs.Contains(field))
             {
@@ -231,7 +235,9 @@ namespace TryliomFunctions
         public Field CreateNewField(bool input)
         {
             if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            {
                 throw new Exception("The function is not instantiated");
+            }
 
             var settings = input ? FunctionInputSettings : FunctionOutputSettings;
             var puts = input ? Inputs : Outputs;
@@ -245,12 +251,10 @@ namespace TryliomFunctions
             var name = "";
 
             if (settings.PrefixName != "") name = settings.PrefixName;
-
-
+            
             name += (char)('A' + puts.Count - instancePuts.Count);
 
             if (settings.SupportedType != null) return new Field(name, settings.SupportedType);
-
             if (settings.SupportedTypes.Count > 0) return new Field(name, settings.SupportedTypes.ToArray());
 
             return new Field(name);
@@ -285,9 +289,7 @@ namespace TryliomFunctions
 
                     if (savedField is { Value: not null } &&
                         ((instanceField is { Value: not null } && savedField.Value.Type == instanceField.Value.Type) ||
-                         (savedField.Value.Type != null &&
-                          instanceField.SupportedTypes.Contains(
-                              ReferenceUtility.GetReferenceType(savedField.Value.Type)))))
+                         instanceField.SupportedTypes.Contains(savedField.Value.GetType())))
                     {
                         if (savedField.SupportedTypes.Count != instanceField.SupportedTypes.Count)
                             savedField.SupportedTypes = new List<SerializableSystemType>(instanceField.SupportedTypes);
@@ -313,8 +315,10 @@ namespace TryliomFunctions
                     {
                         field.SupportedTypes.Clear();
 
-                        foreach (var supportedType in ReferenceUtility.GetAllReferenceTypes())
+                        foreach (var supportedType in ReferenceUtility.GetAllIValueTypes())
+                        {
                             field.SupportedTypes.Add(supportedType);
+                        }
                     }
 
                     localFields.Add(field);

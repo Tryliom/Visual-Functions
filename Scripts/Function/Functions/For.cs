@@ -18,8 +18,8 @@ namespace TryliomFunctions
 #if UNITY_EDITOR
         public override void GenerateFields()
         {
-            Inputs.Add(new Field("Loops", typeof(int)));
-            Inputs.Add(new Field("Index", typeof(int)));
+            Inputs.Add(new Field("Loops", typeof(IntReference)));
+            Inputs.Add(new Field("Index", typeof(IntReference)));
             EditableAttributes.Add(nameof(FunctionsToLoop));
         }
 #endif

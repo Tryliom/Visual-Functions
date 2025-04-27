@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace TryliomFunctions
@@ -8,15 +9,7 @@ namespace TryliomFunctions
     public class Loop : Function
     {
         public static readonly string Name = "Loop";
-
-        public static readonly string Description =
-            "While the condition is true, it will execute the functions inside the loop\n" +
-            "Support all logical operations (+,-,/,&&,||,...) and variables, as well as static class functions\n" +
-            "Boolean are converted to int when used in +, -, * and / operations\n" +
-            "Examples: \n" +
-            "1. A < B + 1\n" +
-            "2. Input.IsKeyDown(KeyCode.W) || Input.IsKeyDown(KeyCode.UpArrow)";
-
+        public static readonly string Description = "While the condition is true, it will execute the functions inside the loop";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
 
         public Functions FunctionsToLoop;
@@ -25,8 +18,15 @@ namespace TryliomFunctions
         public override void GenerateFields()
         {
             EditableAttributes.Add(nameof(FunctionsToLoop));
-            Inputs.Add(new Field("Condition", typeof(string)));
+            Inputs.Add(new Field("Condition", typeof(Formula)));
             AllowAddInput(new FunctionSettings().AllowMethods());
+        }
+        
+        protected override void OnEditField(string previousName, string newName)
+        {
+            var pattern = $@"(?<=\W|^){Regex.Escape(previousName)}(?=\W|$)";
+            
+            Inputs[0].Value.Value = Regex.Replace((string) Inputs[0].Value.Value, pattern, newName, RegexOptions.Multiline);
         }
 #endif
 

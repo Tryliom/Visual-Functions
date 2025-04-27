@@ -19,8 +19,11 @@ namespace TryliomFunctions
         protected override bool Process()
         {
             foreach (var input in Inputs)
-                if (input.Value is IResettable resettable)
-                    resettable.ResetValue();
+            {
+                var resettable = input.Value as IResettable;
+
+                resettable?.ResetValue();
+            }
 
             return true;
         }
