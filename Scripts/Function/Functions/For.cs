@@ -16,8 +16,8 @@ namespace TryliomFunctions
 #if UNITY_EDITOR
         public override void GenerateFields()
         {
-            Inputs.Add(new Field("Loops", typeof(IntReference)));
-            Inputs.Add(new Field("Index", typeof(IntReference)));
+            Inputs.Add(new Field("Loops", typeof(IntReference)).AllowRenameField());
+            Inputs.Add(new Field("Index", typeof(IntReference)).AllowRenameField());
             EditableAttributes.Add(nameof(FunctionsToLoop));
         }
 #endif
@@ -28,8 +28,8 @@ namespace TryliomFunctions
             
             allVariables.AddRange(FunctionsToLoop.GlobalVariables);
             
-            var loops = GetInput<int>("Loops");
-            var index = GetInput<int>("Index");
+            var loops = (IntReference) Inputs[0].Value;
+            var index = (IntReference) Inputs[1].Value;
 
             for (index.Value = 0; index.Value < loops.Value; index.Value++)
             {

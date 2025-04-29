@@ -680,42 +680,45 @@ namespace TryliomFunctions
                 row1.Add(new Label(field.FieldName));
             }
 
-            if (field.InEdition && isEditable)
+            if (isEditable || field.AllowRename)
             {
-                var stopButton = new Button(() =>
+                if (field.InEdition)
                 {
-                    editFieldAction(field.FieldName, field.EditValue);
-                    Refresh();
-                })
-                {
-                    text = "✓",
-                    style =
+                    var stopButton = new Button(() =>
                     {
-                        width = 20,
-                        height = 20
-                    }
-                };
-
-                row1.Add(stopButton);
-            }
-            else if (isEditable)
-            {
-                var editButton = new Button(() =>
-                {
-                    field.InEdition = true;
-                    field.EditValue = field.FieldName;
-                    Refresh();
-                })
-                {
-                    text = "✎",
-                    style =
+                        editFieldAction(field.FieldName, field.EditValue);
+                        Refresh();
+                    })
                     {
-                        width = 20,
-                        height = 20
-                    }
-                };
+                        text = "✓",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
 
-                row1.Add(editButton);
+                    row1.Add(stopButton);
+                }
+                else
+                {
+                    var editButton = new Button(() =>
+                    {
+                        field.InEdition = true;
+                        field.EditValue = field.FieldName;
+                        Refresh();
+                    })
+                    {
+                        text = "✎",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
+
+                    row1.Add(editButton);
+                }
             }
 
             var rightValue = 0;

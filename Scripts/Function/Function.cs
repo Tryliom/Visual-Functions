@@ -267,12 +267,12 @@ namespace TryliomFunctions
             Outputs = new List<Field>();
 
             if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            {
                 throw new Exception("The function is not instantiated");
+            }
 
             // Check if the fields are valid
-            var check = new Action<List<Field>, List<Field>, List<Field>, bool, FunctionSettings>((instanceFields,
-                fields,
-                localFields, allowAdd, settings) =>
+            var check = new Action<List<Field>, List<Field>, List<Field>, bool, FunctionSettings>((instanceFields, fields, localFields, allowAdd, settings) =>
             {
                 foreach (var instanceField in instanceFields)
                 {
@@ -283,10 +283,12 @@ namespace TryliomFunctions
                          instanceField.SupportedTypes.Contains(savedField.Value.GetType())))
                     {
                         if (savedField.SupportedTypes.Count != instanceField.SupportedTypes.Count)
+                        {
                             savedField.SupportedTypes = new List<SerializableSystemType>(instanceField.SupportedTypes);
+                        }
 
                         savedField.AcceptAnyMethod = instanceField.AcceptAnyMethod;
-
+                        savedField.AllowRename = instanceField.AllowRename;
                         localFields.Add(savedField.Clone());
                     }
                     else

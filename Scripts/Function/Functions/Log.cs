@@ -22,7 +22,7 @@ namespace TryliomFunctions
         {
             var logString = string.Empty;
 
-            foreach (var field in Inputs) logString += GetInputValue(field.FieldName).Value + " ";
+            foreach (var field in Inputs) logString += field.Value.Value + " ";
 
             Debug.Log(logString);
 

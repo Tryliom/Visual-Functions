@@ -12,6 +12,7 @@ namespace TryliomFunctions
         [SerializeReference] public IValue Value;
         public List<SerializableSystemType> SupportedTypes = new();
 
+        public bool AllowRename;
         public bool InEdition;
         public string EditValue;
 
@@ -73,6 +74,12 @@ namespace TryliomFunctions
         public Field AllowAnyMethod()
         {
             AcceptAnyMethod = true;
+            return this;
+        }
+        
+        public Field AllowRenameField()
+        {
+            AllowRename = true;
             return this;
         }
         
