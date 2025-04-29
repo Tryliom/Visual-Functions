@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TryliomFunctions
 {
@@ -18,7 +19,7 @@ namespace TryliomFunctions
         }
 #endif
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
             GameEventData.Invoke();
 

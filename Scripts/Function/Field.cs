@@ -75,6 +75,70 @@ namespace TryliomFunctions
             AcceptAnyMethod = true;
             return this;
         }
+        
+        public void OnEditField(string previousName, string newName)
+        {
+            if (string.IsNullOrEmpty(newName)) return;
+
+            var formula = Value switch
+            {
+                CustomValue customValue => customValue.Formula,
+                Formula formulaValue => formulaValue.FormulaValue,
+                _ => string.Empty
+            };
+
+            if (formula != string.Empty)
+            {
+                var newFormula = "";
+
+                for (var i = 0; i < formula.Length; i++)
+                {
+                    var currentChar = formula[i];
+                    
+                    if (formula[i] == '\"' || formula[i] == '\'')
+                    {
+                        // If the character is a quote, it indicates the start of a string
+                        var str = ExpressionUtility.ExtractSurrounded(formula, i);
+
+                        i += str.Length + 2;
+                        newFormula += str;
+                    }
+                    else if (char.IsLetter(currentChar))
+                    {
+                        var variable = ExpressionUtility.ExtractVariable(formula, i);
+                        i += variable.Length - 1;
+
+                        if (variable == previousName)
+                        {
+                            newFormula += newName;
+                        }
+                        else
+                        {
+                            newFormula += variable;
+                        }
+                    }
+                    else
+                    {
+                        newFormula += currentChar;
+                    }
+                }
+                
+                switch (Value)
+                {
+                    case CustomValue customValue1:
+                        customValue1.Formula = newFormula;
+                        break;
+                    case Formula formulaValue1:
+                        formulaValue1.FormulaValue = newFormula;
+                        break;
+                }
+            }
+
+            if (previousName != FieldName || !InEdition) return; 
+            
+            FieldName = newName;
+            InEdition = false;
+        }
 #endif
     }
 }

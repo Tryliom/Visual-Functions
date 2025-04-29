@@ -71,8 +71,7 @@ namespace TryliomFunctions
 
         private static void ShowResults(TestResult result, Type testType)
         {
-            Debug.Log(
-                $"{testType.Name} - Code {result.CodeTime} ticks - Function {result.FunctionTime} ticks ({result.FunctionTime / result.CodeTime:F2}x slower)");
+            Debug.Log($"{testType.Name} - Code {result.CodeTime} ticks - Function {result.FunctionTime} ticks ({result.FunctionTime / result.CodeTime:F2}x slower)");
         }
 
         private class Counter
@@ -125,8 +124,12 @@ namespace TryliomFunctions
             if (GUILayout.Button("Run All Tests")) testsRunner.RunTests();
 
             foreach (var test in testsRunner.Tests)
+            {
                 if (GUILayout.Button($"Run {test.GetType().Name}"))
+                {
                     testsRunner.RunTest(test);
+                }
+            }
         }
     }
 #endif

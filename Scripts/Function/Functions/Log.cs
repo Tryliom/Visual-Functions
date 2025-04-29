@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TryliomFunctions
@@ -17,7 +18,7 @@ namespace TryliomFunctions
         }
 #endif
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
             var logString = string.Empty;
 

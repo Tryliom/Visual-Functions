@@ -630,10 +630,10 @@ namespace TryliomFunctions
 
         public static object EvaluateAccessor(string uid, AccessorCaller caller, List<ExpressionVariable> variables)
         {
+            var callerValue = caller.Instance.Type == typeof(Type) ? null : ExpressionUtility.ExtractValue(caller.Instance, uid, variables);
             var callerType = caller.Instance.Type.FullName == "System.RuntimeType"
                 ? (Type)caller.Instance.Value
-                : caller.Instance.Type;
-            var callerValue = caller.Instance.Type == typeof(Type) ? null : caller.Instance.Value;
+                : callerValue.GetType();
 
             if (caller.AccessorType is AccessorType.Property)
             {

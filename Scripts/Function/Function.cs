@@ -63,10 +63,10 @@ namespace TryliomFunctions
 
         public bool Enabled = true;
 
-        // Only use Reference types
+        // Only use IValue types
         public List<Field> Inputs = new();
 
-        // Only use Reference types
+        // Only use IValue types
         public List<Field> Outputs = new();
 
         // Add the name of the attributes that can be edited in the inspector
@@ -91,9 +91,9 @@ namespace TryliomFunctions
             Uid = Guid.NewGuid().ToString();
         }
 
-        public bool Invoke()
+        public bool Invoke(List<Field> variables)
         {
-            return !Enabled || Process();
+            return !Enabled || Process(variables);
         }
 
 #if UNITY_EDITOR
@@ -105,25 +105,16 @@ namespace TryliomFunctions
         }
 #endif
 
-        protected abstract bool Process();
+        protected abstract bool Process(List<Field> variables);
 
         public void EditField(string previousName, string newName)
         {
             if (string.IsNullOrEmpty(newName)) return;
 
-            OnEditField(previousName, newName);
-
-            var field = Inputs.Find(field => field.FieldName == previousName) ??
-                        Outputs.Find(field1 => field1.FieldName == previousName);
-
-            if (field == null) return;
-
-            field.FieldName = newName;
-            field.InEdition = false;
-        }
-
-        protected virtual void OnEditField(string previousName, string newName)
-        {
+            foreach (var input in Inputs)
+            {
+                input.OnEditField(previousName, newName);
+            }
         }
 
         /**

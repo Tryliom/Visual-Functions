@@ -115,62 +115,65 @@ namespace TryliomFunctions
 
                 return;
             }
+            
+            var targetObject = property.serializedObject.targetObject;
+            var propertyPath = property.propertyPath.Replace(".Array.data[", "[");
+            var pathParts = propertyPath.Split('.');
+
+            object currentObject = targetObject;
+            foreach (var part in pathParts)
+            {
+                if (part.Contains("["))
+                {
+                    var arrayPart = part[..part.IndexOf("[", StringComparison.Ordinal)];
+                    var indexPart = int.Parse(part.Substring(
+                        part.IndexOf("[", StringComparison.Ordinal) + 1,
+                        part.IndexOf("]", StringComparison.Ordinal) - part.IndexOf("[", StringComparison.Ordinal) - 1
+                    ));
+
+                    var field = currentObject.GetType().GetField(arrayPart, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                    if (field == null)
+                    {
+                        Debug.LogError(
+                            $"Field '{arrayPart}' not found on object of type '{currentObject.GetType().Name}'");
+                        return;
+                    }
+
+                    var array = field.GetValue(currentObject) as IList;
+                    if (array == null)
+                    {
+                        Debug.LogError(
+                            $"Field '{arrayPart}' is not an array on object of type '{currentObject.GetType().Name}'");
+                        return;
+                    }
+
+                    currentObject = array[indexPart];
+                }
+                else
+                {
+                    var field = currentObject.GetType().GetField(part,
+                        BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                    if (field == null)
+                    {
+                        Debug.LogError(
+                            $"Field '{part}' not found on object of type '{currentObject.GetType().Name}'");
+                        return;
+                    }
+
+                    currentObject = field.GetValue(currentObject);
+                }
+            }
+
+            if (currentObject is not Functions functionsInstance)
+            {
+                Debug.LogError("Failed to cast the resolved object to 'Functions'");
+                return;
+            }
 
             // Add a button to launch the functions using Functions.Invoke()
             var launchButton = new Button(() =>
             {
-                var targetObject = property.serializedObject.targetObject;
-                var propertyPath = property.propertyPath.Replace(".Array.data[", "[");
-                var pathParts = propertyPath.Split('.');
-
-                object currentObject = targetObject;
-                foreach (var part in pathParts)
-                    if (part.Contains("["))
-                    {
-                        var arrayPart = part[..part.IndexOf("[", StringComparison.Ordinal)];
-                        var indexPart = int.Parse(part.Substring(
-                            part.IndexOf("[", StringComparison.Ordinal) + 1,
-                            part.IndexOf("]", StringComparison.Ordinal) - part.IndexOf("[", StringComparison.Ordinal) -
-                            1
-                        ));
-
-                        var field = currentObject.GetType().GetField(arrayPart,
-                            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                        if (field == null)
-                        {
-                            Debug.LogError(
-                                $"Field '{arrayPart}' not found on object of type '{currentObject.GetType().Name}'");
-                            return;
-                        }
-
-                        var array = field.GetValue(currentObject) as IList;
-                        if (array == null)
-                        {
-                            Debug.LogError(
-                                $"Field '{arrayPart}' is not an array on object of type '{currentObject.GetType().Name}'");
-                            return;
-                        }
-
-                        currentObject = array[indexPart];
-                    }
-                    else
-                    {
-                        var field = currentObject.GetType().GetField(part,
-                            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                        if (field == null)
-                        {
-                            Debug.LogError(
-                                $"Field '{part}' not found on object of type '{currentObject.GetType().Name}'");
-                            return;
-                        }
-
-                        currentObject = field.GetValue(currentObject);
-                    }
-
-                if (currentObject is Functions functionsInstance)
-                    functionsInstance.Invoke();
-                else
-                    Debug.LogError("Failed to cast the resolved object to 'Functions'");
+                functionsInstance.Invoke();
             })
             {
                 text = "Launch",
@@ -204,6 +207,76 @@ namespace TryliomFunctions
             });
 
             container.Add(foldout);
+            
+            var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
+            var globalValuesContainer = new VisualElement
+            {
+                style =
+                {
+                    marginLeft = 15,
+                    marginTop = 5,
+                    marginBottom = 5
+                }
+            };
+            
+            globalValuesContainer.Add(
+                new Label("Global Values")
+                {
+                    style =
+                    {
+                        marginBottom = 5,
+                        width = 35,
+                        marginLeft = 17
+                    }
+                }
+            );
+            
+            var descriptionImage = new Image
+            {
+                tooltip = "Global values are available for all functions, use their name in formulas",
+                style =
+                {
+                    position = Position.Absolute,
+                    width = 15,
+                    height = 15,
+                    top = 0,
+                    left = 0
+                },
+                image = EditorGUIUtility.IconContent("console.infoicon").image
+            };
+
+            globalValuesContainer.Add(descriptionImage);
+
+            foreach (var field in functionsInstance.GlobalVariables)
+            {
+                globalValuesContainer.Add(
+                    GetFunctionField(
+                        globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
+                        field, functionsInstance.GetType().Name, true, new FunctionSettings(),
+                        functionsInstance.GlobalVariables, 0,
+                        (previousName, newName) => functionsInstance.EditField(previousName, newName)
+                    )
+                );
+            }
+            
+            var addValueButton = new Button(() =>
+            {
+                functionsInstance.GlobalVariables.Add(new Field("Var" + (char)('A' + functionsInstance.GlobalVariables.Count)));
+                FormulaCache.Clear();
+                Refresh();
+            })
+            {
+                text = "Add value",
+                style =
+                {
+                    width = 80,
+                    left = 0,
+                    marginBottom = 5
+                }
+            };
+
+            globalValuesContainer.Add(addValueButton);
+            container.Add(globalValuesContainer);
 
             var functionsProperty = property.FindPropertyRelative("FunctionsList");
 
@@ -464,12 +537,17 @@ namespace TryliomFunctions
                 };
 
                 foreach (var field in fields)
-                    fieldContainer.Add(GetFunctionField(
+                {
+                    fieldContainer.Add(
+                        GetFunctionField(
                             property.FindPropertyRelative(name).GetArrayElementAtIndex(fields.IndexOf(field)),
-                            field,
-                            myFunction
+                            field, myFunction.GetType().Name, myFunction.IsFieldEditable(field), 
+                            myFunction.Inputs.Contains(field) ? myFunction.FunctionInputSettings : myFunction.FunctionOutputSettings,
+                            fields, myFunction.GetMinEditableFieldIndex(field),
+                            (fieldName, fieldValue) => myFunction.EditField(fieldName, fieldValue)
                         )
                     );
+                }
 
                 parametersContainer.Add(fieldContainer);
 
@@ -515,13 +593,18 @@ namespace TryliomFunctions
             container.Add(parametersContainer);
 
             if (!foldoutOpen.boolValue)
+            {
                 for (var i = currentIndex; i < container.Children().Count(); i++)
+                {
                     container.Children().ElementAt(i).style.display = DisplayStyle.None;
+                }
+            }
 
             return container;
         }
-
-        private VisualElement GetFunctionField(SerializedProperty property, Field field, Function function)
+        
+        private VisualElement GetFunctionField(SerializedProperty property, Field field, 
+            string functionName, bool isEditable, FunctionSettings settings, List<Field> fields, int minEditableFieldIndex, Action<string, string> editFieldAction)
         {
             var container = new Box
             {
@@ -586,7 +669,7 @@ namespace TryliomFunctions
                 {
                     if (evt.keyCode is not (KeyCode.Return or KeyCode.KeypadEnter)) return;
 
-                    function.EditField(field.FieldName, field.EditValue);
+                    editFieldAction(field.FieldName, field.EditValue);
                     Refresh();
                 });
 
@@ -597,13 +680,11 @@ namespace TryliomFunctions
                 row1.Add(new Label(field.FieldName));
             }
 
-            var isEditable = function.IsFieldEditable(field);
-
             if (field.InEdition && isEditable)
             {
                 var stopButton = new Button(() =>
                 {
-                    function.EditField(field.FieldName, field.EditValue);
+                    editFieldAction(field.FieldName, field.EditValue);
                     Refresh();
                 })
                 {
@@ -638,10 +719,6 @@ namespace TryliomFunctions
             }
 
             var rightValue = 0;
-            var settings = function.Inputs.Contains(field)
-                ? function.FunctionInputSettings
-                : function.FunctionOutputSettings;
-            var put = function.Inputs.Contains(field) ? function.Inputs : function.Outputs;
 
             if (field.Value != null && field.Value.Type != typeof(object) && 
                 ((settings.CanCallMethods && isEditable) || field.AcceptAnyMethod))
@@ -664,11 +741,11 @@ namespace TryliomFunctions
                 row1.Add(searchButton);
             }
 
-            if (function.IsFieldEditable(field))
+            if (isEditable)
             {
                 var removeButton = new Button(() =>
                 {
-                    put.Remove(field);
+                    fields.Remove(field);
                     FormulaCache.Clear();
                     Refresh();
                 })
@@ -686,15 +763,15 @@ namespace TryliomFunctions
                 row1.Add(removeButton);
                 rightValue += 20;
 
-                var index = put.IndexOf(field);
+                var index = fields.IndexOf(field);
 
-                if (index != function.GetMinEditableFieldIndex(field))
+                if (index != minEditableFieldIndex)
                 {
                     var upButton = new Button(() =>
                     {
                         // Move the field up in the list
-                        put.Remove(field);
-                        put.Insert(index - 1, field);
+                        fields.Remove(field);
+                        fields.Insert(index - 1, field);
                         Refresh();
                     })
                     {
@@ -712,13 +789,13 @@ namespace TryliomFunctions
                     rightValue += 20;
                 }
 
-                if (index != put.Count - 1)
+                if (index != fields.Count - 1)
                 {
                     var downButton = new Button(() =>
                     {
                         // Move the field down in the list
-                        put.Remove(field);
-                        put.Insert(index + 1, field);
+                        fields.Remove(field);
+                        fields.Insert(index + 1, field);
                         Refresh();
                     })
                     {
@@ -804,7 +881,7 @@ namespace TryliomFunctions
                         if (!AssetDatabase.IsValidFolder(folderPath))
                             AssetDatabase.CreateFolder(parentPath, property.serializedObject.targetObject.name);
 
-                        var assetName = $"{function.GetType().Name}-{field.FieldName}";
+                        var assetName = $"{functionName}-{field.FieldName}";
 
                         field.Value.Value = ReferenceUtility.CreateVariableAsset(type, assetName, folderPath);
 

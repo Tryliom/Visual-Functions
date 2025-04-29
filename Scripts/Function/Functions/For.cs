@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TryliomFunctions
@@ -7,12 +8,9 @@ namespace TryliomFunctions
     public class For : Function
     {
         public static readonly string Name = "For";
-
-        public static readonly string Description =
-            "It will execute the functions inside the loop a number of times. Index is the current loop index";
-
+        public static readonly string Description = "It will execute the functions inside the loop a number of times. Index is the current loop index";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
-
+        
         public Functions FunctionsToLoop = new();
 
 #if UNITY_EDITOR
@@ -24,14 +22,19 @@ namespace TryliomFunctions
         }
 #endif
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
+            var allVariables = new List<Field>(variables);
+            
+            allVariables.AddRange(FunctionsToLoop.GlobalVariables);
+            
             var loops = GetInput<int>("Loops");
             var index = GetInput<int>("Index");
 
             for (index.Value = 0; index.Value < loops.Value; index.Value++)
-                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke()))
-                    break;
+            {
+                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke(allVariables))) break;
+            }
 
             return true;
         }

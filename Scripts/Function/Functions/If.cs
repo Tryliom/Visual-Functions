@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -23,24 +24,23 @@ namespace TryliomFunctions
             Inputs.Add(new Field("Condition", typeof(Formula)));
             AllowAddInput(new FunctionSettings().AllowMethods());
         }
-        
-        protected override void OnEditField(string previousName, string newName)
-        {
-            var pattern = $@"(?<=\W|^){Regex.Escape(previousName)}(?=\W|$)";
-            
-            Inputs[0].Value.Value = Regex.Replace((string) Inputs[0].Value.Value, pattern, newName, RegexOptions.Multiline);
-        }
 #endif
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
+            var allVariables = new List<Field>(variables);
+            
             if (CheckCondition())
             {
-                if (IfBranch.FunctionsList.Any(function => !function.Invoke())) return false;
+                allVariables.AddRange(IfBranch.GlobalVariables);
+                
+                if (IfBranch.FunctionsList.Any(function => !function.Invoke(allVariables))) return false;
             }
             else
             {
-                if (ElseBranch.FunctionsList.Any(function => !function.Invoke())) return false;
+                allVariables.AddRange(ElseBranch.GlobalVariables);
+                
+                if (ElseBranch.FunctionsList.Any(function => !function.Invoke(allVariables))) return false;
             }
 
             return true;
@@ -49,7 +49,7 @@ namespace TryliomFunctions
         private bool CheckCondition()
         {
             var formula = GetInput<string>("Condition").Value;
-            var variables = Inputs.Select(x => new ExpressionVariable(x.FieldName, GetInputValue(x.FieldName)))
+            var variables = Inputs.Select(x => new ExpressionVariable(x.FieldName, x.Value))
                 .ToList();
             var result = Evaluator.Process(Uid, formula, variables) switch
             {

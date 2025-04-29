@@ -71,7 +71,7 @@ namespace TryliomFunctions
                 }
                 else
                 {
-                    propertyInfo.SetValue(Instance.Value, value);
+                    propertyInfo.SetValue(Instance.Value is AccessorCaller caller ? caller.Result.Value : Instance.Value, value);
                 }
             }
             else if (fieldInfo != null)
@@ -84,7 +84,7 @@ namespace TryliomFunctions
                 }
                 else
                 {
-                    fieldInfo.SetValue(Instance.Value, value);
+                    fieldInfo.SetValue(Instance.Value is AccessorCaller caller ? caller.Result.Value : Instance.Value, value);
                 }
             }
             else

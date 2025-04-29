@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TryliomFunctions
 {
@@ -9,7 +10,7 @@ namespace TryliomFunctions
         public static readonly string Description = "Will stop the execution of the function or loop";
         public static readonly FunctionCategory Category = FunctionCategory.Utility;
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
             return false;
         }

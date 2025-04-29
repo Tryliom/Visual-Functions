@@ -14,13 +14,25 @@ using UnityEngine;
 public class CustomValue : IValue
 {
     // The formula to be evaluated to define the value
-    public string Formula;
+    public string Formula = string.Empty;
     private string _lastEvaluatedFormula = string.Empty;
     public bool RecalculateOnUpdate = true;
 
     public object Value { get; set; }
-    public Type Type { get; } = typeof(object);
-    
+
+    public Type Type
+    {
+        get
+        {
+            return Value switch
+            {
+                null => typeof(object),
+                AccessorCaller accessorCaller => accessorCaller.Result.Value.GetType(),
+                _ => Value.GetType()
+            };
+        }
+    }
+
     /**
      * Set the value from the formula.
      */

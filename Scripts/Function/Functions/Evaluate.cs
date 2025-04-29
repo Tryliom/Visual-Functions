@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -18,22 +19,17 @@ namespace TryliomFunctions
 
             AllowAddInput(new FunctionSettings().AllowMethods(true));
         }
-        
-        protected override void OnEditField(string previousName, string newName)
-        {
-            var pattern = $@"(?<=\W|^){Regex.Escape(previousName)}(?=\W|$)";
-            
-            Inputs[0].Value.Value = Regex.Replace((string) Inputs[0].Value.Value, pattern, newName, RegexOptions.Multiline);
-        }
 #endif
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
+            var allVariables = new List<Field>(variables);
+            
+            allVariables.AddRange(Inputs);
+            
             var formula = GetInput<string>("Formula").Value;
-            var variables = Inputs.Select(x => new ExpressionVariable(x.FieldName, GetInputValue(x.FieldName)))
-                .ToList();
 
-            Evaluator.Process(Uid, formula, variables);
+            Evaluator.Process(Uid, formula, allVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList());
 
             return true;
         }

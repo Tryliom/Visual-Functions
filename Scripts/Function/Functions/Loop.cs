@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -21,17 +22,14 @@ namespace TryliomFunctions
             Inputs.Add(new Field("Condition", typeof(Formula)));
             AllowAddInput(new FunctionSettings().AllowMethods());
         }
-        
-        protected override void OnEditField(string previousName, string newName)
-        {
-            var pattern = $@"(?<=\W|^){Regex.Escape(previousName)}(?=\W|$)";
-            
-            Inputs[0].Value.Value = Regex.Replace((string) Inputs[0].Value.Value, pattern, newName, RegexOptions.Multiline);
-        }
 #endif
 
-        protected override bool Process()
+        protected override bool Process(List<Field> variables)
         {
+            var allVariables = new List<Field>(variables);
+            
+            allVariables.AddRange(Inputs);
+            
             var loops = 0;
 
             while (CheckCondition())
@@ -44,7 +42,7 @@ namespace TryliomFunctions
                     break;
                 }
 
-                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke())) break;
+                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke(allVariables))) break;
             }
 
             return true;
