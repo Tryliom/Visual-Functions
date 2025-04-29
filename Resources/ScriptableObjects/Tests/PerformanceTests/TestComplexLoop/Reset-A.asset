@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Reset-A
   m_EditorClassIdentifier: 
   DeveloperDescription: 
-  _value: 0
+  _value: 0.20529938
   OnValueChanged: {fileID: 0}

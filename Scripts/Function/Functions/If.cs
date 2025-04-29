@@ -15,6 +15,8 @@ namespace TryliomFunctions
 
         public Functions IfBranch;
         public Functions ElseBranch;
+        
+        private List<Field> _globalVariables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
@@ -28,19 +30,22 @@ namespace TryliomFunctions
 
         protected override bool Process(List<Field> variables)
         {
-            var allVariables = new List<Field>(variables);
+            _globalVariables.Clear();
+            _globalVariables.Capacity = variables.Count + Inputs.Count;
+            _globalVariables.AddRange(variables);
+            _globalVariables.AddRange(Inputs);
             
             if (CheckCondition())
             {
-                allVariables.AddRange(IfBranch.GlobalVariables);
+                _globalVariables.AddRange(IfBranch.GlobalVariables);
                 
-                if (IfBranch.FunctionsList.Any(function => !function.Invoke(allVariables))) return false;
+                if (IfBranch.FunctionsList.Any(function => !function.Invoke(_globalVariables))) return false;
             }
             else
             {
-                allVariables.AddRange(ElseBranch.GlobalVariables);
+                _globalVariables.AddRange(ElseBranch.GlobalVariables);
                 
-                if (ElseBranch.FunctionsList.Any(function => !function.Invoke(allVariables))) return false;
+                if (ElseBranch.FunctionsList.Any(function => !function.Invoke(_globalVariables))) return false;
             }
 
             return true;
@@ -49,8 +54,7 @@ namespace TryliomFunctions
         private bool CheckCondition()
         {
             var formula = GetInput<string>("Condition").Value;
-            var variables = Inputs.Select(x => new ExpressionVariable(x.FieldName, x.Value))
-                .ToList();
+            var variables = _globalVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList();
             var result = Evaluator.Process(Uid, formula, variables) switch
             {
                 AccessorCaller methodCaller => methodCaller.Result.Value,

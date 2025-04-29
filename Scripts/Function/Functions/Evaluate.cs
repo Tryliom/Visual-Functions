@@ -11,6 +11,8 @@ namespace TryliomFunctions
         public static readonly string Name = "Evaluator";
         public static readonly string Description = "Perform evaluations on a formula string";
         public static readonly FunctionCategory Category = FunctionCategory.Logic;
+        
+        private List<Field> _globalVariables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
@@ -23,13 +25,14 @@ namespace TryliomFunctions
 
         protected override bool Process(List<Field> variables)
         {
-            var allVariables = new List<Field>(variables);
-            
-            allVariables.AddRange(Inputs);
+            _globalVariables.Clear();
+            _globalVariables.Capacity = variables.Count + Inputs.Count;
+            _globalVariables.AddRange(variables);
+            _globalVariables.AddRange(Inputs);
             
             var formula = GetInput<string>("Formula").Value;
 
-            Evaluator.Process(Uid, formula, allVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList());
+            Evaluator.Process(Uid, formula, _globalVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList());
 
             return true;
         }

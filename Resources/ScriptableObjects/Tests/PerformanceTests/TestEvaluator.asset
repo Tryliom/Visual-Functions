@@ -15,10 +15,12 @@ MonoBehaviour:
   OnStart:
     FunctionsList:
     - rid: 7936453624402018823
+    GlobalVariables: []
     FoldoutOpen: 1
   FunctionsToTest:
     FunctionsList:
     - rid: 4824914933113421899
+    GlobalVariables: []
     FoldoutOpen: 1
   Input:
     UseLocal: 0

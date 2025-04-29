@@ -14,6 +14,8 @@ namespace TryliomFunctions
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
 
         public Functions FunctionsToLoop;
+        
+        private List<Field> _globalVariables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
@@ -26,9 +28,10 @@ namespace TryliomFunctions
 
         protected override bool Process(List<Field> variables)
         {
-            var allVariables = new List<Field>(variables);
-            
-            allVariables.AddRange(Inputs);
+            _globalVariables.Clear();
+            _globalVariables.Capacity = variables.Count + Inputs.Count;
+            _globalVariables.AddRange(variables);
+            _globalVariables.AddRange(Inputs);
             
             var loops = 0;
 
@@ -42,7 +45,7 @@ namespace TryliomFunctions
                     break;
                 }
 
-                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke(allVariables))) break;
+                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke(_globalVariables))) break;
             }
 
             return true;
@@ -51,8 +54,7 @@ namespace TryliomFunctions
         private bool CheckCondition()
         {
             var formula = GetInput<string>("Condition").Value;
-            var variables = Inputs.Select(x => new ExpressionVariable(x.FieldName, GetInputValue(x.FieldName)))
-                .ToList();
+            var variables = _globalVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList();
             var result = Evaluator.Process(Uid, formula, variables) switch
             {
                 AccessorCaller methodCaller => methodCaller.Result.Value,
