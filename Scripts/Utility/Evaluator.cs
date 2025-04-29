@@ -230,17 +230,10 @@ namespace TryliomFunctions
                     var variable = ExpressionUtility.ExtractVariable(formula, i);
                     i += variable.Length - 1;
 
-                    switch (variable)
+                    if (ExpressionUtility.IsReservedWord(variable))
                     {
-                        case "true":
-                            expressions.Add(true);
-                            continue;
-                        case "false":
-                            expressions.Add(false);
-                            continue;
-                        case "null":
-                            expressions.Add(null);
-                            continue;
+                        expressions.Add(ExpressionUtility.GetReservedWordValue(variable));
+                        continue;
                     }
 
                     if (i < formula.Length - 1 && formula[i + 1] == '.')

@@ -206,5 +206,36 @@ namespace TryliomFunctions
             
             return null;
         }
+        
+        public static bool IsReservedWord(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+
+            return name is "true" or "false" or "null";
+        }
+        
+        public static object GetReservedWordValue(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return null;
+
+            return name switch
+            {
+                "true" => true,
+                "false" => false,
+                _ => null
+            };
+        }
+        
+        public static bool IsFieldNameValid(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+
+            foreach (var c in name)
+            {
+                if (!char.IsLetter(c)) return false;
+            }
+
+            return !IsReservedWord(name);
+        }
     }
 }

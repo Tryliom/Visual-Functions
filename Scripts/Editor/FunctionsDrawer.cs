@@ -655,7 +655,9 @@ namespace TryliomFunctions
                 {
                     var newValue = evt.newData;
                     if (newValue.Any(c => !char.IsLetter(c)))
+                    {
                         textField.value = new string(textField.value.Where(char.IsLetter).ToArray());
+                    }
                 });
 
                 textField.RegisterValueChangedCallback(evt =>
@@ -668,6 +670,12 @@ namespace TryliomFunctions
                 textField.RegisterCallback<KeyUpEvent>(evt =>
                 {
                     if (evt.keyCode is not (KeyCode.Return or KeyCode.KeypadEnter)) return;
+                    
+                    if (!ExpressionUtility.IsFieldNameValid(field.EditValue))
+                    {
+                        Debug.LogError($"Invalid field name: {field.EditValue}");
+                        return;
+                    }
 
                     editFieldAction(field.FieldName, field.EditValue);
                     Refresh();
@@ -686,6 +694,12 @@ namespace TryliomFunctions
                 {
                     var stopButton = new Button(() =>
                     {
+                        if (!ExpressionUtility.IsFieldNameValid(field.EditValue))
+                        {
+                            Debug.LogError($"Invalid field name: {field.EditValue}");
+                            return;
+                        }
+                        
                         editFieldAction(field.FieldName, field.EditValue);
                         Refresh();
                     })
