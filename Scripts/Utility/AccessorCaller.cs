@@ -63,6 +63,11 @@ namespace TryliomFunctions
 
             if (propertyInfo != null)
             {
+                if (!propertyInfo.CanWrite)
+                {
+                    throw new Exception($"Property '{Property}' is read-only from type '{instanceType.Name}'.");
+                }
+                
                 if (instanceType.IsValueType && !instanceType.IsGenericType)
                 {
                     var tempValue = Instance.Value;
@@ -76,6 +81,11 @@ namespace TryliomFunctions
             }
             else if (fieldInfo != null)
             {
+                if (fieldInfo.IsInitOnly)
+                {
+                    throw new Exception($"Field '{Property}' is read-only from type '{instanceType.Name}'.");
+                }
+                
                 if (instanceType.IsValueType && !instanceType.IsGenericType)
                 {
                     var tempValue = Instance.Value;

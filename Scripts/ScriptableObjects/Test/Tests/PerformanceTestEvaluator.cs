@@ -2,8 +2,8 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(fileName = "TestEvaluator", menuName = "TryliomFunctions/Test/Tests/TestEvaluator")]
-    public class TestEvaluator : Test
+    [CreateAssetMenu(fileName = "TestEvaluator", menuName = "TryliomFunctions/Test/PerfTests/TestEvaluator")]
+    public class PerformanceTestEvaluator : PerformanceTest
     {
         public IntReference Input;
 

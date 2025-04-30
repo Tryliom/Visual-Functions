@@ -2,8 +2,8 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(fileName = "TestReset", menuName = "TryliomFunctions/Test/Tests/TestReset")]
-    public class TestReset : Test
+    [CreateAssetMenu(fileName = "TestReset", menuName = "TryliomFunctions/Test/PerfTests/TestReset")]
+    public class PerformanceTestReset : PerformanceTest
     {
         public IntReference input;
 

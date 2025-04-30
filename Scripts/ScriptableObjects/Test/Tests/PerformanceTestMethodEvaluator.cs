@@ -2,8 +2,8 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(fileName = "TestMethodEvaluator", menuName = "TryliomFunctions/Test/Tests/TestMethodEvaluator")]
-    public class TestMethodEvaluator : Test
+    [CreateAssetMenu(fileName = "TestMethodEvaluator", menuName = "TryliomFunctions/Test/PerfTests/TestMethodEvaluator")]
+    public class PerformanceTestMethodEvaluator : PerformanceTest
     {
         public GameObjectVariable Input;
         public StringVariable Result;

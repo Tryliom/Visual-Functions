@@ -2,8 +2,8 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(fileName = "TestComplexLoop", menuName = "TryliomFunctions/Test/Tests/TestComplexLoop")]
-    public class TestComplexLoop : Test
+    [CreateAssetMenu(fileName = "TestComplexLoop", menuName = "TryliomFunctions/Test/PerfTests/TestComplexLoop")]
+    public class PerformanceTestComplexLoop : PerformanceTest
     {
         public FloatReference MaxNumberCondition;
         public FloatReference A;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TryliomFunctions;
 
 #if UNITY_EDITOR
@@ -41,17 +42,17 @@ public class CustomValue : IValue
         if (_lastEvaluatedFormula != Formula)
         {
             _lastEvaluatedFormula = Formula;
-            Value = Evaluator.Process(uid, Formula, variables);
+            Value = Evaluator.Process(uid, Formula, variables).FirstOrDefault();
             return;
         }
 
         if (RecalculateOnUpdate)
         {
-            Value = Evaluator.Process(uid, Formula, variables);
+            Value = Evaluator.Process(uid, Formula, variables).FirstOrDefault();
             return;
         }
 
-        Value ??= Evaluator.Process(uid, Formula, variables);
+        Value ??= Evaluator.Process(uid, Formula, variables).FirstOrDefault();
     }
 }
 

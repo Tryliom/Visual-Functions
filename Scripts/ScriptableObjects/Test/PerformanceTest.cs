@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TryliomFunctions
 {
-    public abstract class Test : ScriptableObject
+    public abstract class PerformanceTest : ScriptableObject
     {
         public Functions OnStart;
         public Functions FunctionsToTest;

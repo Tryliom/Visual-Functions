@@ -2,8 +2,8 @@
 
 namespace TryliomFunctions
 {
-    [CreateAssetMenu(fileName = "TestLoop", menuName = "TryliomFunctions/Test/Tests/TestLoop")]
-    public class TestLoop : Test
+    [CreateAssetMenu(fileName = "TestLoop", menuName = "TryliomFunctions/Test/PerfTests/TestLoop")]
+    public class PerformanceTestLoop : PerformanceTest
     {
         public IntReference Loops;
         public IntReference Iterations;

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
 #if UNITY_EDITOR
@@ -14,9 +15,10 @@ namespace TryliomFunctions
     public class TestsRunner : ScriptableObject
     {
         [SerializeField] private int _testCount = 10000;
-        public Test[] Tests;
+        public PerformanceTest[] PerformanceTests;
+        public UnitTest[] UnitTests;
 
-        public void RunTests()
+        public void RunPerformanceTests()
         {
             var totalTimeCode = 0f;
             var totalCounterCode = 0;
@@ -24,7 +26,7 @@ namespace TryliomFunctions
             var totalTimeFunction = 0f;
             var totalCounterFunction = 0;
 
-            foreach (var test in Tests)
+            foreach (var test in PerformanceTests)
             {
                 var result = Test(test);
 
@@ -37,26 +39,27 @@ namespace TryliomFunctions
             }
 
             if (totalCounterFunction > 0 && totalCounterCode > 0)
-                Debug.Log(
-                    $"Average Function / Code: {totalTimeFunction / totalCounterFunction / (totalTimeCode / totalCounterCode):F2}x slower");
+            {
+                Debug.Log($"Average Function / Code: {totalTimeFunction / totalCounterFunction / (totalTimeCode / totalCounterCode):F2}x slower");
+            }
         }
 
-        public void RunTest(Test test)
+        public void RunTest(PerformanceTest performanceTest)
         {
-            ShowResults(Test(test), test.GetType());
+            ShowResults(Test(performanceTest), performanceTest.GetType());
         }
 
-        private TestResult Test(Test test)
+        private TestResult Test(PerformanceTest performanceTest)
         {
-            test.OnStart.Invoke();
+            performanceTest.OnStart.Invoke();
 
-            var counterCode = new Counter(test.RunCode);
+            var counterCode = new Counter(performanceTest.RunCode);
 
             for (var i = 0; i < _testCount; i++) counterCode.Test();
 
             var resultCode = counterCode.GetTime();
-
-            var counterFunction = new Counter(test.FunctionsToTest.Invoke);
+            
+            var counterFunction = new Counter(performanceTest.FunctionsToTest.Invoke);
 
             for (var i = 0; i < _testCount; i++) counterFunction.Test();
 
@@ -67,6 +70,21 @@ namespace TryliomFunctions
                 CodeTime = resultCode,
                 FunctionTime = resultFunction
             };
+        }
+        
+        public void RunUnitTests()
+        {
+            foreach (var test in UnitTests)
+            {
+                try
+                {
+                    test.Tests.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"{test.GetType().Name} - Failed: {e.Message}");
+                }
+            }
         }
 
         private static void ShowResults(TestResult result, Type testType)
@@ -112,7 +130,8 @@ namespace TryliomFunctions
         private void OnEnable()
         {
             var testsRunner = (TestsRunner)target;
-            testsRunner.Tests = Resources.LoadAll<Test>("").ToArray();
+            testsRunner.PerformanceTests = Resources.LoadAll<PerformanceTest>("").ToArray();
+            testsRunner.UnitTests = Resources.LoadAll<UnitTest>("").ToArray();
         }
 
         public override void OnInspectorGUI()
@@ -121,13 +140,32 @@ namespace TryliomFunctions
 
             var testsRunner = (TestsRunner)target;
 
-            if (GUILayout.Button("Run All Tests")) testsRunner.RunTests();
+            if (GUILayout.Button("Run All Performance Tests")) testsRunner.RunPerformanceTests();
+            if (GUILayout.Button("Run All Unit Tests")) testsRunner.RunUnitTests();
+            
+            EditorGUILayout.LabelField("Performance Tests", EditorStyles.boldLabel);
 
-            foreach (var test in testsRunner.Tests)
+            foreach (var test in testsRunner.PerformanceTests)
             {
                 if (GUILayout.Button($"Run {test.GetType().Name}"))
                 {
                     testsRunner.RunTest(test);
+                }
+            }
+            
+            EditorGUILayout.LabelField("Unit Tests", EditorStyles.boldLabel);
+            
+            foreach (var test in testsRunner.UnitTests)
+            {
+                if (!GUILayout.Button($"Run {test.GetType().Name}")) continue;
+                
+                try
+                {
+                    test.Tests.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"{test.GetType().Name} - Failed: {e.Message}");
                 }
             }
         }

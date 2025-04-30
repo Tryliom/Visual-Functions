@@ -32,6 +32,7 @@ public class FormulaPropertyDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        var formulaProperty = property.FindPropertyRelative("FormulaValue");
         var helpIcon = EditorGUIUtility.IconContent("_Help");
         helpIcon.tooltip = "Support all logical operations (+,-,/,&&,||,...) and variables.\nAssign result to a variable with: varA = A + B. Execute functions also work.\n" +
                            "Boolean are converted to int when used in +, -, * and / operations\n" +
@@ -46,8 +47,17 @@ public class FormulaPropertyDrawer : PropertyDrawer
         EditorGUI.LabelField(iconRect, helpIcon);
         
         position.width -= 25;
+        position.height = EditorStyles.textArea.CalcHeight(new GUIContent(formulaProperty.stringValue), position.width);
+        formulaProperty.stringValue = EditorGUI.TextArea(position, formulaProperty.stringValue, EditorStyles.textArea);
+        position.y += position.height + EditorGUIUtility.standardVerticalSpacing;
+    }
+    
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
         var formulaProperty = property.FindPropertyRelative("FormulaValue");
-        EditorGUI.PropertyField(position, formulaProperty, label);
+        var textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(formulaProperty.stringValue), EditorGUIUtility.currentViewWidth);
+        
+        return textHeight + EditorGUIUtility.standardVerticalSpacing;
     }
 }
 #endif

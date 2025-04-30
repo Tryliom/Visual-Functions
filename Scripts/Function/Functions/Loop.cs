@@ -10,7 +10,8 @@ namespace TryliomFunctions
     public class Loop : Function
     {
         public static readonly string Name = "Loop";
-        public static readonly string Description = "While the condition is true, it will execute the functions inside the loop";
+        public static readonly string Description = "While the condition is true, it will execute the functions inside the loop.\n" +
+                                                    "If there is multiple lines (;), it will check the ones that are a boolean.";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
 
         public Functions FunctionsToLoop;
@@ -21,7 +22,7 @@ namespace TryliomFunctions
         public override void GenerateFields()
         {
             EditableAttributes.Add(nameof(FunctionsToLoop));
-            Inputs.Add(new Field("Condition", typeof(Formula)));
+            Inputs.Add(new Field("Condition", typeof(Formula)).AllowAnyMethod());
             AllowAddInput(new FunctionSettings().AllowMethods());
         }
 #endif
@@ -55,21 +56,15 @@ namespace TryliomFunctions
         {
             var formula = GetInput<string>("Condition").Value;
             var variables = _globalVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList();
-            var result = Evaluator.Process(Uid, formula, variables) switch
-            {
-                AccessorCaller methodCaller => methodCaller.Result.Value,
-                MethodValue methodValue => methodValue.Value,
-                bool booleanValue => booleanValue,
-                _ => throw new InvalidOperationException("Invalid type")
-            };
+            var results = Evaluator.Process(Uid, formula, variables);
 
-            if (result is not bool res)
+            foreach (var result in results)
             {
-                Debug.LogError("The result of the operation is not a boolean");
-                return false;
+                if (ExpressionUtility.ExtractValue(result, Uid, variables) is not bool res) continue;
+                if (!res) return false;
             }
-
-            return res;
+            
+            return true;
         }
     }
 }

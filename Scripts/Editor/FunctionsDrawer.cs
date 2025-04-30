@@ -252,7 +252,7 @@ namespace TryliomFunctions
                 globalValuesContainer.Add(
                     GetFunctionField(
                         globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
-                        field, functionsInstance.GetType().Name, true, new FunctionSettings(),
+                        field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
                         functionsInstance.GlobalVariables, 0,
                         (previousName, newName) => functionsInstance.EditField(previousName, newName)
                     )
@@ -261,7 +261,7 @@ namespace TryliomFunctions
             
             var addValueButton = new Button(() =>
             {
-                functionsInstance.GlobalVariables.Add(new Field("Var" + (char)('A' + functionsInstance.GlobalVariables.Count)));
+                functionsInstance.GlobalVariables.Add(new Field("" + (char)('a' + functionsInstance.GlobalVariables.Count)));
                 FormulaCache.Clear();
                 Refresh();
             })

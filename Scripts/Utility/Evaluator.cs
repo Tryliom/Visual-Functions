@@ -98,7 +98,7 @@ namespace TryliomFunctions
             { ">>=", OperationType.AssignmentRightShift }
         };
 
-        public static object Process(string uid, string formula, List<ExpressionVariable> variables)
+        public static List<object> Process(string uid, string formula, List<ExpressionVariable> variables)
         {
             // Separate the formula into other formulas if it contains a ;
             var formulas = formula.Split(';');
@@ -106,11 +106,21 @@ namespace TryliomFunctions
 
             foreach (var f in formulas)
             {
-                var result = ProcessFormula(uid, f, variables);
-                results.Add(result);
+                switch (f)
+                {
+                    case "":
+                    case "\n":
+                        continue;
+                    default:
+                    {
+                        var result = ProcessFormula(uid, f, variables);
+                        results.Add(result);
+                        break;
+                    }
+                }
             }
 
-            return results[0];
+            return results;
         }
 
         private static object ProcessFormula(string uid, string formula, List<ExpressionVariable> variables)
@@ -123,6 +133,7 @@ namespace TryliomFunctions
             var expressions = new List<object>(formula.Length);
             var numberBuilder = new StringBuilder();
             var useAssignment = false;
+            var encapsulateNext = false;
             // Ternary operators
             var ternaryCallers = new List<TernaryCaller>();
             var ternaryDepth = -1;
@@ -140,20 +151,22 @@ namespace TryliomFunctions
 
                 if (currentChar == ' ') continue; // Skip spaces
                 if (currentChar == '\n') continue; // Skip new lines
+                
+                var ignoreEncapsulation = !encapsulateNext;
 
                 if (Operations.TryGetValue(threeCharComparison, out var threeCharOperation))
                 {
-                    if (HandleOperation(expressions, threeCharOperation, formula, i)) useAssignment = true;
+                    HandleOperation(expressions, threeCharOperation, i, ref useAssignment, ref encapsulateNext);
                     i += 2; // Skip the next two characters as they are part of the three-character operation
                 }
                 else if (Operations.TryGetValue(twoCharComparison, out var operationType))
                 {
-                    if (HandleOperation(expressions, operationType, formula, i)) useAssignment = true;
+                    HandleOperation(expressions, operationType, i, ref useAssignment, ref encapsulateNext);
                     i++; // Skip the next character as it is part of the two-character operation
                 }
                 else if (Operations.TryGetValue(currentChar.ToString(), out var operation))
                 {
-                    if (HandleOperation(expressions, operation, formula, i)) useAssignment = true;
+                    HandleOperation(expressions, operation, i, ref useAssignment, ref encapsulateNext);
                 }
                 else if (currentChar == '?')
                 {
@@ -381,6 +394,12 @@ namespace TryliomFunctions
                     Debug.LogError($"Unexpected ')' in formula: {formula}");
                     return false;
                 }
+                
+                if (!ignoreEncapsulation && encapsulateNext)
+                {
+                    expressions.Add(OperationType.CloseBracket);
+                    encapsulateNext = false;
+                }
             }
 
             while (ternaryDepth != -1)
@@ -581,7 +600,7 @@ namespace TryliomFunctions
         /**
          * Handles the operation and adds it to the expressions list. Returns true if the operation is an assignment operation.
          */
-        private static bool HandleOperation(List<object> expressions, OperationType operationType, string formula, int i)
+        private static void HandleOperation(List<object> expressions, OperationType operationType, int i, ref bool useAssignment, ref bool encapsulateNext)
         {
             switch (operationType)
             {
@@ -604,10 +623,17 @@ namespace TryliomFunctions
                     });
                     expressions.Add(OperationType.OpenBracket);
 
-                    return true;
-                case OperationType.Substract when i == 0 || Operations.ContainsKey(formula[i - 1].ToString()):
+                    useAssignment = true;
+                    break;
+                case OperationType.Substract when i == 0 || expressions.Count == 0 || expressions[^1] is OperationType:
+                    if (expressions.Count != 0 && (expressions[^1] is not OperationType || expressions[^1] is OperationType.CloseBracket))
+                    {
+                        expressions.Add(OperationType.Add);
+                    }
+                    expressions.Add(OperationType.OpenBracket);
                     expressions.Add(-1);
                     expressions.Add(OperationType.Multiply);
+                    encapsulateNext = true;
                     break;
                 case OperationType.Not:
                     expressions.Add(false);
@@ -617,8 +643,6 @@ namespace TryliomFunctions
                     expressions.Add(operationType);
                     break;
             }
-
-            return false;
         }
 
         public static object EvaluateAccessor(string uid, AccessorCaller caller, List<ExpressionVariable> variables)
@@ -642,7 +666,10 @@ namespace TryliomFunctions
                         return null;
                     }
 
-                    if (property.CanRead) caller.Result = new MethodValue(property.GetValue(callerValue));
+                    if (property.CanRead)
+                    {
+                        caller.Result = new MethodValue(property.GetValue(callerValue));
+                    }
                 }
                 else
                 {
@@ -652,7 +679,7 @@ namespace TryliomFunctions
             else
             {
                 var parameters = caller.Parameters
-                    .Select(parameter => Process(uid, parameter, variables))
+                    .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
                     .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
                     .ToList();
 
@@ -700,7 +727,7 @@ namespace TryliomFunctions
             var variableName = variables[^2].Name + variables.Count;
             var newList = new List<ExpressionVariable>(variables) { new(variableName, caller.Result) };
 
-            return Process(uid, variableName + "." + caller.LeftMethod, newList);
+            return Process(uid, variableName + "." + caller.LeftMethod, newList).FirstOrDefault();
         }
     }
 }
