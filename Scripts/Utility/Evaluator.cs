@@ -175,10 +175,22 @@ namespace TryliomFunctions
                     ternaryCallers.Add(new TernaryCaller());
                     ternaryBracketDepths.Add(bracketDepth);
                     var index = 0;
+                    var depth = 0;
 
                     for (var j = expressions.Count - 1; j >= 0; j--)
                     {
+                        if (expressions[j] is OperationType.CloseBracket)
+                        {
+                            depth++;
+                        }
+                        else if (expressions[j] is OperationType.OpenBracket)
+                        {
+                            depth--;
+                            if (depth >= 0) continue;
+                        }
+
                         if (expressions[j] is not OperationType.OpenBracket and not OperationType.Assignment) continue;
+                        if (depth > 0) continue;
 
                         index = j + 1;
                         break;
