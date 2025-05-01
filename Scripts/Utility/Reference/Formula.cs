@@ -24,6 +24,14 @@ public class Formula : IValue<string>
     }
 
     public Type Type { get; } = typeof(string);
+    
+    public IValue Clone()
+    {
+        return new Formula
+        {
+            FormulaValue = FormulaValue
+        };
+    }
 }
 
 #if UNITY_EDITOR

@@ -54,6 +54,16 @@ public class CustomValue : IValue
 
         Value ??= Evaluator.Process(uid, Formula, variables).FirstOrDefault();
     }
+    
+    public IValue Clone()
+    {
+        return new CustomValue
+        {
+            Formula = Formula,
+            RecalculateOnUpdate = RecalculateOnUpdate,
+            Value = Value
+        };
+    }
 }
 
 #if UNITY_EDITOR

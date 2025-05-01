@@ -13,6 +13,11 @@ namespace TryliomFunctions
         public object Value { get; set; }
 
         public Type Type => Value.GetType();
+        
+        public IValue Clone()
+        {
+            return new MethodValue(Value);
+        }
     }
 
     public enum AccessorType

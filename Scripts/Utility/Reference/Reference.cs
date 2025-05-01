@@ -62,6 +62,11 @@ namespace TryliomFunctions
          }
          
          public Type Type => typeof(TType);
+
+         public IValue Clone()
+         {
+             return MemberwiseClone() as IValue;
+         }
      
          public static implicit operator TType(Reference<TType> reference)
          {

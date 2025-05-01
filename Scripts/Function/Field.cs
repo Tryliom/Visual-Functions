@@ -65,7 +65,12 @@ namespace TryliomFunctions
 
         public Field Clone()
         {
-            return MemberwiseClone() as Field;
+            if (MemberwiseClone() is not Field field) return null;
+            
+            field.Value = field.Value.Clone();
+            field.SupportedTypes = new List<SerializableSystemType>(SupportedTypes);
+            
+            return field;
         }
 
         /**

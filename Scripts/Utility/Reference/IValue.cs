@@ -6,6 +6,8 @@ namespace TryliomFunctions
     {
         public object Value { get; set; }
         public Type Type { get; }
+
+        public IValue Clone();
     }
 
     public interface IValue<TType> : IValue

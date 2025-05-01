@@ -18,6 +18,9 @@ namespace TryliomFunctions
         private SerializedProperty _property;
         private string _selectedFunctionIndex;
         private GameObject _targetObject;
+        
+        private static Field _copiedField = null;
+        private static Function _copiedFunction = null;
 
         private void Refresh()
         {
@@ -259,6 +262,17 @@ namespace TryliomFunctions
                 );
             }
             
+            var globalValuesButtons = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    justifyContent = Justify.FlexStart,
+                    alignItems = Align.Center,
+                    marginBottom = 5
+                }
+            };
+            
             var addValueButton = new Button(() =>
             {
                 functionsInstance.GlobalVariables.Add(new Field("" + (char)('a' + functionsInstance.GlobalVariables.Count)));
@@ -269,13 +283,33 @@ namespace TryliomFunctions
                 text = "Add value",
                 style =
                 {
-                    width = 80,
-                    left = 0,
-                    marginBottom = 5
+                    width = 80
                 }
             };
 
-            globalValuesContainer.Add(addValueButton);
+            globalValuesButtons.Add(addValueButton);
+            
+            if (_copiedField != null)
+            {
+                var pasteButton = new Button(() =>
+                {
+                    functionsInstance.GlobalVariables.Add(_copiedField.Clone());
+                    _copiedField = null;
+                    FormulaCache.Clear();
+                    Refresh();
+                })
+                {
+                    text = "📋 Paste",
+                    style =
+                    {
+                        width = 60
+                    }
+                };
+                
+                globalValuesButtons.Add(pasteButton);
+            }
+            
+            globalValuesContainer.Add(globalValuesButtons);
             container.Add(globalValuesContainer);
 
             var functionsProperty = property.FindPropertyRelative("FunctionsList");
@@ -553,6 +587,17 @@ namespace TryliomFunctions
 
                 if ((fields == myFunction.Inputs && !myFunction.AllowAddInputs) ||
                     (fields == myFunction.Outputs && !myFunction.AllowAddOutputs)) continue;
+                
+                var globalValuesButtons = new VisualElement
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                        justifyContent = Justify.FlexStart,
+                        alignItems = Align.Center,
+                        marginBottom = 5
+                    }
+                };
 
                 var addButton = new Button(() =>
                 {
@@ -565,13 +610,33 @@ namespace TryliomFunctions
                     text = "Add " + (fields == myFunction.Inputs ? "input" : "output"),
                     style =
                     {
-                        width = 80,
-                        left = 0,
-                        marginBottom = 5
+                        width = 80
                     }
                 };
+                
+                globalValuesButtons.Add(addButton);
+                
+                if (_copiedField != null)
+                {
+                    var pasteButton = new Button(() =>
+                    {
+                        fields.Add(_copiedField.Clone());
+                        _copiedField = null;
+                        FormulaCache.Clear();
+                        Refresh();
+                    })
+                    {
+                        text = "📋 Paste",
+                        style =
+                        {
+                            width = 60
+                        }
+                    };
+                
+                    globalValuesButtons.Add(pasteButton);
+                }
 
-                parametersContainer.Add(addButton);
+                parametersContainer.Add(globalValuesButtons);
             }
 
             foreach (var exposedProperty in myFunction.EditableAttributes)
@@ -757,6 +822,27 @@ namespace TryliomFunctions
 
                 row1.Add(searchButton);
             }
+            
+            if (field.Value != null)
+            {
+                // Add a button to copy the field
+                var copyButton = new Button(() =>
+                {
+                    _copiedField = field.Clone();
+                    Refresh();
+                })
+                {
+                    text = "📋",
+                    tooltip = "Copy the field name and value",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
+
+                row1.Add(copyButton);
+            }
 
             if (isEditable)
             {
@@ -926,9 +1012,7 @@ namespace TryliomFunctions
                     {
                         if (popupField.index == 0) return;
 
-                        field.Value.Value =
-                            AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assets[popupField.index - 1]),
-                                variableType);
+                        field.Value.Value = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assets[popupField.index - 1]), variableType);
 
                         popupField.index = 0;
                     });
@@ -944,14 +1028,15 @@ namespace TryliomFunctions
                 var defaultIndex = 0;
 
                 if (field.Value is null)
+                {
                     baseList.Add("None");
+                }
                 else
+                {
                     defaultIndex = field.SupportedTypes.IndexOf(field.Value.GetType());
+                }
 
-                var supportedTypes = baseList
-                    .Concat(field.SupportedTypes.Select(type =>
-                        ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")))
-                    .ToList();
+                var supportedTypes = baseList.Concat(field.SupportedTypes.Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", ""))).ToList();
                 var popupField = new PopupField<string>(supportedTypes, defaultIndex)
                 {
                     style =
