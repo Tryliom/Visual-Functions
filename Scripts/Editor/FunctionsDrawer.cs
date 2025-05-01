@@ -19,7 +19,7 @@ namespace TryliomFunctions
         private string _selectedFunctionIndex;
         private GameObject _targetObject;
         
-        private static Field _copiedField = null;
+        private static Field _copiedField;
         private static Function _copiedFunction = null;
 
         private void Refresh()
@@ -354,6 +354,28 @@ namespace TryliomFunctions
                 box.Add(removeButton);
 
                 var rightValue = 20;
+                
+                var copyButton = new Button(() =>
+                {
+                    _copiedFunction = (functionProperty.managedReferenceValue as Function)?.Clone();
+                    Refresh();
+                })
+                {
+                    text = "📋",
+                    tooltip = "Copy the function",
+                    style =
+                    {
+                        position = Position.Absolute,
+                        width = 20,
+                        height = 20,
+                        top = box.layout.y,
+                        right = rightValue
+                    }
+                };
+            
+                box.Add(copyButton);
+                
+                rightValue += 20;
 
                 if (index != 0)
                 {
@@ -437,15 +459,43 @@ namespace TryliomFunctions
             {
                 text = "Add"
             };
+            
 
             buttonContainer.Add(functionDropdown);
             buttonContainer.Add(addButton);
 
+            if (_copiedFunction != null)
+            {
+                var pasteButton = new Button(() =>
+                {
+                    functionsProperty.arraySize++;
+                    var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
+                    
+                    functionProperty.managedReferenceValue = _copiedFunction.Clone();
+                    
+                    _copiedFunction = null;
+                    FormulaCache.Clear();
+                    Refresh();
+                })
+                {
+                    text = "📋 Paste",
+                    style =
+                    {
+                        width = 60
+                    }
+                };
+                
+                buttonContainer.Add(pasteButton);
+            }
+
             container.Add(buttonContainer);
 
-            if (!isFoldoutOpen)
-                for (var i = currentIndex; i < container.Children().Count(); i++)
-                    container.Children().ElementAt(i).style.display = DisplayStyle.None;
+            if (isFoldoutOpen) return;
+
+            for (var i = currentIndex; i < container.Children().Count(); i++)
+            {
+                container.Children().ElementAt(i).style.display = DisplayStyle.None;
+            }
         }
 
         private VisualElement GetFunction(SerializedProperty property)
@@ -536,8 +586,9 @@ namespace TryliomFunctions
                 property.serializedObject.ApplyModifiedProperties();
 
                 for (var i = currentIndex; i < container.Children().Count(); i++)
-                    container.Children().ElementAt(i).style.display =
-                        foldoutOpen.boolValue ? DisplayStyle.Flex : DisplayStyle.None;
+                {
+                    container.Children().ElementAt(i).style.display = foldoutOpen.boolValue ? DisplayStyle.Flex : DisplayStyle.None;
+                }
             });
 
             container.Add(foldout);

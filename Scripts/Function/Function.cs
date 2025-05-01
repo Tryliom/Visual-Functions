@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TryliomFunctions
 {
@@ -102,6 +103,16 @@ namespace TryliomFunctions
          */
         public virtual void GenerateFields()
         {
+        }
+
+        public Function Clone()
+        {
+            var clone = (Function)MemberwiseClone();
+            clone.Inputs = new List<Field>(Inputs.Select(input => input.Clone()));
+            clone.Outputs = new List<Field>(Outputs.Select(output => output.Clone()));
+            clone.EditableAttributes = new List<string>(EditableAttributes);
+            clone.Uid = Guid.NewGuid().ToString();
+            return clone;
         }
 #endif
 
