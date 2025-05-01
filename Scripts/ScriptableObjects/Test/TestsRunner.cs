@@ -147,17 +147,16 @@ namespace TryliomFunctions
 
             foreach (var test in testsRunner.PerformanceTests)
             {
-                if (GUILayout.Button($"Run {test.GetType().Name}"))
-                {
-                    testsRunner.RunTest(test);
-                }
+                if (!GUILayout.Button($"Run {ObjectNames.NicifyVariableName(test.name)}")) continue;
+                    
+                testsRunner.RunTest(test);
             }
             
             EditorGUILayout.LabelField("Unit Tests", EditorStyles.boldLabel);
             
             foreach (var test in testsRunner.UnitTests)
             {
-                if (!GUILayout.Button($"Run {test.GetType().Name}")) continue;
+                if (!GUILayout.Button($"Run {ObjectNames.NicifyVariableName(test.name)}")) continue;
                 
                 try
                 {
