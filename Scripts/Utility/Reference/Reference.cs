@@ -233,4 +233,13 @@ namespace TryliomFunctions
     
     [Serializable]
     public class QuaternionReference : Reference<Quaternion> {}
+    
+    [Serializable]
+    public class AnimationCurveReference : Reference<AnimationCurve> {}
+    
+    [Serializable]
+    public class RectReference : Reference<Rect> {}
+    
+    [Serializable]
+    public class BoundsReference : Reference<Bounds> {}
 }
