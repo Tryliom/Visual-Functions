@@ -180,10 +180,14 @@ namespace TryliomFunctions
                 functionsInstance.Invoke();
             })
             {
+                tooltip = "Run the function",
                 style =
                 {
                     width = 27,
-                    height = 20
+                    height = 20,
+                    position = Position.Absolute,
+                    top = 0,
+                    right = 0
                 }
             };
             
@@ -200,32 +204,25 @@ namespace TryliomFunctions
             
             topRow.Add(launchButton);
             
-            var choices = new List<string> { "Add function" };
-            choices.AddRange(Function.Functions.Keys.ToList());
-
-            var functionDropdown = new PopupField<string>(choices, 0)
+            var selectFunctionButton = new Button(() =>
             {
-                tooltip = "Choose a new function to add",
-                style =
+                FunctionSelectionWindow.ShowWindow(selectedFunction =>
                 {
-                    marginRight = 3,
-                    marginLeft = 5
-                }
+                    functionsProperty.arraySize++;
+                    var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
+
+                    selectedFunction?.GenerateFields();
+                    functionProperty.managedReferenceValue = selectedFunction;
+
+                    Refresh();
+                });
+            })
+            {
+                text = "Add Function",
+                tooltip = "Open a window to select a function"
             };
 
-            functionDropdown.RegisterValueChangedCallback(evt =>
-            {
-                functionsProperty.arraySize++;
-                var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
-                var function = Activator.CreateInstance(Function.Functions[evt.newValue].Type) as Function;
-
-                function?.GenerateFields();
-
-                functionProperty.managedReferenceValue = function;
-                Refresh();
-            });
-            
-            topRow.Add(functionDropdown);
+            topRow.Add(selectFunctionButton);
 
             if (_copiedFunction != null)
             {
@@ -284,9 +281,7 @@ namespace TryliomFunctions
             {
                 style =
                 {
-                    marginLeft = 15,
-                    marginTop = 5,
-                    marginBottom = 5
+                    marginTop = 5
                 }
             };
             var globalValuesTopRow = new VisualElement
@@ -295,8 +290,7 @@ namespace TryliomFunctions
                 {
                     flexDirection = FlexDirection.Row,
                     justifyContent = Justify.FlexStart,
-                    alignItems = Align.Center,
-                    marginBottom = 5
+                    alignItems = Align.Center
                 }
             };
             

@@ -77,17 +77,20 @@ namespace TryliomFunctions
                 {
                     EditorGUILayout.BeginHorizontal();
 
-                    EditorGUILayout.LabelField($"{method.Name}({string.Join(", ", method.Parameters)})",
-                        EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField($"{method.Name}({string.Join(", ", method.Parameters)})", EditorStyles.boldLabel);
                     EditorGUILayout.LabelField(method.ReturnType, EditorStyles.boldLabel, GUILayout.Width(100));
 
                     if (GUILayout.Button(EditorGUIUtility.IconContent("Clipboard"), GUILayout.Width(60)))
+                    {
                         EditorGUIUtility.systemCopyBuffer = method.Name;
+                    }
 
                     EditorGUILayout.EndHorizontal();
 
                     if (method.Description != string.Empty)
+                    {
                         EditorGUILayout.LabelField(method.Description, EditorStyles.miniLabel);
+                    }
 
                     EditorGUILayout.Space();
                 }
@@ -100,12 +103,16 @@ namespace TryliomFunctions
                     EditorGUILayout.LabelField(property.Type, EditorStyles.boldLabel, GUILayout.Width(100));
 
                     if (GUILayout.Button(EditorGUIUtility.IconContent("Clipboard"), GUILayout.Width(60)))
+                    {
                         EditorGUIUtility.systemCopyBuffer = property.Name;
+                    }
 
                     EditorGUILayout.EndHorizontal();
 
                     if (property.Description != string.Empty)
+                    {
                         EditorGUILayout.LabelField(property.Description, EditorStyles.miniLabel);
+                    }
 
                     EditorGUILayout.Space();
                 }

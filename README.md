@@ -1,18 +1,29 @@
 # Tryliom Functions
 A tool to code small code logic or prototyping in Unity from the editor.
-
-Example: you need to make a torch break when an event like the rain happens, you can use this tool to call logic on an event without writing a single line of code.
+Designed to be more used by developers since most of the functions are using a code syntax to run the logic.
 
 Use these tools to make your life easier:
 - Variable: A scriptable object that contains a type
-- Reference: A field that can accept a Variable or a constant type
+- Reference: A field that can accept a Variable or a local type
   
 ⚠️ This package is in development and can still change a lot, so be careful when using it in production ⚠️
+
+## Example 
+A system to move the player based on inputs WASD.
+
+Here the inputs are stored in a variable called MoveValue, that is a reference to a Vector3 variable, that can be used everywhere.
+![SimpleInputManager.png](documentation/images/SimpleInputManager.png)
+
+And here the player use the MoveValue to move the player very simply.
+![SimplePlayerMove.png](documentation/images/SimplePlayerMove.png)
+
+More examples can be [here](./documentation/MoreExamples.md).
 
 ## Pros
 - Easy to use
 - No need to write code
 - No need to compile
+- Powerful logic very scalable
 - Editable from the editor and when running
 - Builtin components
 - Can be extended with custom functions (code)
@@ -20,6 +31,7 @@ Use these tools to make your life easier:
 
 ## Cons
 The main cons is that it's way slower than writing code (150-300x slower) and that it can be hard to debug.
+This can also be hard to use for non-developers to run logic beyond the basic operations (+, -, *, /, %, ==, !=, >, <, >=, <=).
 
 ## Features
 Contains basic functions used to run code logic:
