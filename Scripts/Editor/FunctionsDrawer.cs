@@ -64,6 +64,7 @@ namespace TryliomFunctions
 
             // Put an alert if play mode is active and on a game object
             if (Application.isPlaying)
+            {
                 container.Add(new Label("⚠️ [Play Mode] " + (_targetObject
                     ? "The changes will not be saved"
                     : "The changes will be saved in the scriptable object") + " ⚠️")
@@ -74,20 +75,22 @@ namespace TryliomFunctions
                         marginBottom = 5
                     }
                 });
+            }
 
             var foldoutOpen = property.FindPropertyRelative("FoldoutOpen");
             var isFoldoutOpen = foldoutOpen is { boolValue: true };
-            var title = new VisualElement
+            var topRow = new VisualElement
             {
                 style =
                 {
                     flexDirection = FlexDirection.Row,
                     justifyContent = Justify.FlexStart,
-                    alignItems = Align.Center
+                    alignItems = Align.Center,
+                    marginLeft = 3
                 }
             };
 
-            title.Add(new Label(property.displayName));
+            topRow.Add(new Label(property.displayName));
 
             if (Function.Functions.Count == 0)
             {
@@ -100,12 +103,7 @@ namespace TryliomFunctions
                     }
                 });
 
-                var reloadButton = new Button(() =>
-                {
-                    EditorUtility.SetDirty(property.serializedObject.targetObject);
-                    AssetDatabase.SaveAssets();
-                    Refresh();
-                })
+                var reloadButton = new Button(Refresh)
                 {
                     text = "Reload",
                     style =
@@ -115,7 +113,7 @@ namespace TryliomFunctions
                     }
                 };
 
-                container.Add(title);
+                container.Add(topRow);
                 container.Add(reloadButton);
 
                 return;
@@ -174,10 +172,9 @@ namespace TryliomFunctions
                 Debug.LogError("Failed to cast the resolved object to 'Functions'");
                 return;
             }
-
-
+            
+            var functionsProperty = property.FindPropertyRelative("FunctionsList");
             var play = EditorGUIUtility.IconContent("d_PlayButton").image;
-            // Add a button to launch the functions using Functions.Invoke()
             var launchButton = new Button(() =>
             {
                 functionsInstance.Invoke();
@@ -186,8 +183,7 @@ namespace TryliomFunctions
                 style =
                 {
                     width = 27,
-                    height = 20,
-                    top = 0
+                    height = 20
                 }
             };
             
@@ -197,20 +193,78 @@ namespace TryliomFunctions
                 style =
                 {
                     width = 15,
-                    height = 15
+                    height = 15,
+                    marginTop = 1
                 }
             });
+            
+            topRow.Add(launchButton);
+            
+            var choices = new List<string> { "Add function" };
+            choices.AddRange(Function.Functions.Keys.ToList());
 
-            var foldout = new Foldout
+            var functionDropdown = new PopupField<string>(choices, 0)
             {
-                text = "Functions",
-                value = isFoldoutOpen
+                tooltip = "Choose a new function to add",
+                style =
+                {
+                    marginRight = 3,
+                    marginLeft = 5
+                }
             };
 
-            title.Add(launchButton);
-            container.Add(title);
+            functionDropdown.RegisterValueChangedCallback(evt =>
+            {
+                functionsProperty.arraySize++;
+                var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
+                var function = Activator.CreateInstance(Function.Functions[evt.newValue].Type) as Function;
+
+                function?.GenerateFields();
+
+                functionProperty.managedReferenceValue = function;
+                Refresh();
+            });
+            
+            topRow.Add(functionDropdown);
+
+            if (_copiedFunction != null)
+            {
+                var pasteButton = new Button(() =>
+                {
+                    functionsProperty.arraySize++;
+                    var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
+                    
+                    functionProperty.managedReferenceValue = _copiedFunction.Clone();
+                    
+                    _copiedFunction = null;
+                    FormulaCache.Clear();
+                    Refresh();
+                })
+                {
+                    text = "📋",
+                    tooltip = "Paste the function",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
+                
+                topRow.Add(pasteButton);
+            }
+
+            container.Add(topRow);
 
             var currentIndex = container.Children().Count() + 1;
+            var foldout = new Foldout
+            {
+                value = isFoldoutOpen,
+                style =
+                {
+                    position = Position.Absolute,
+                    top = 3,
+                }
+            };
 
             foldout.RegisterValueChangedCallback(evt =>
             {
@@ -218,8 +272,9 @@ namespace TryliomFunctions
                 property.serializedObject.ApplyModifiedProperties();
 
                 for (var i = currentIndex; i < container.Children().Count(); i++)
-                    container.Children().ElementAt(i).style.display =
-                        evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+                {
+                    container.Children().ElementAt(i).style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+                }
             });
 
             container.Add(foldout);
@@ -234,14 +289,22 @@ namespace TryliomFunctions
                     marginBottom = 5
                 }
             };
+            var globalValuesTopRow = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    justifyContent = Justify.FlexStart,
+                    alignItems = Align.Center,
+                    marginBottom = 5
+                }
+            };
             
-            globalValuesContainer.Add(
+            globalValuesTopRow.Add(
                 new Label("Global Values")
                 {
                     style =
                     {
-                        marginBottom = 5,
-                        width = 35,
                         marginLeft = 17
                     }
                 }
@@ -255,36 +318,13 @@ namespace TryliomFunctions
                     position = Position.Absolute,
                     width = 15,
                     height = 15,
-                    top = 0,
+                    top = 3,
                     left = 0
                 },
                 image = EditorGUIUtility.IconContent("console.infoicon").image
             };
 
-            globalValuesContainer.Add(descriptionImage);
-
-            foreach (var field in functionsInstance.GlobalVariables)
-            {
-                globalValuesContainer.Add(
-                    GetFunctionField(
-                        globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
-                        field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
-                        functionsInstance.GlobalVariables, 0,
-                        (previousName, newName) => functionsInstance.EditField(previousName, newName)
-                    )
-                );
-            }
-            
-            var globalValuesButtons = new VisualElement
-            {
-                style =
-                {
-                    flexDirection = FlexDirection.Row,
-                    justifyContent = Justify.FlexStart,
-                    alignItems = Align.Center,
-                    marginBottom = 5
-                }
-            };
+            globalValuesTopRow.Add(descriptionImage);
             
             var addValueButton = new Button(() =>
             {
@@ -293,14 +333,16 @@ namespace TryliomFunctions
                 Refresh();
             })
             {
-                text = "Add value",
+                text = "+",
+                tooltip = "Add a new global value",
                 style =
                 {
-                    width = 80
+                    width = 20,
+                    height = 20
                 }
             };
 
-            globalValuesButtons.Add(addValueButton);
+            globalValuesTopRow.Add(addValueButton);
             
             if (_copiedField != null)
             {
@@ -312,20 +354,43 @@ namespace TryliomFunctions
                     Refresh();
                 })
                 {
-                    text = "📋 Paste",
+                    text = "📋",
+                    tooltip = "Paste the field",
                     style =
                     {
-                        width = 60
+                        width = 20,
+                        height = 20
                     }
                 };
                 
-                globalValuesButtons.Add(pasteButton);
+                globalValuesTopRow.Add(pasteButton);
             }
             
-            globalValuesContainer.Add(globalValuesButtons);
-            container.Add(globalValuesContainer);
+            globalValuesContainer.Add(globalValuesTopRow);
+            
+            var globalFieldsContainer = new VisualElement
+            {
+                style =
+                {
+                    marginLeft = 15,
+                    marginBottom = 5
+                }
+            };
 
-            var functionsProperty = property.FindPropertyRelative("FunctionsList");
+            foreach (var field in functionsInstance.GlobalVariables)
+            {
+                globalFieldsContainer.Add(
+                    GetFunctionField(
+                        globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
+                        field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
+                        functionsInstance.GlobalVariables, 0,
+                        (previousName, newName) => functionsInstance.EditField(previousName, newName)
+                    )
+                );
+            }
+            
+            globalValuesContainer.Add(globalFieldsContainer);
+            container.Add(globalValuesContainer);
 
             for (var i = 0; i < functionsProperty.arraySize; i++)
             {
@@ -366,7 +431,7 @@ namespace TryliomFunctions
 
                 box.Add(removeButton);
 
-                var rightValue = 20;
+                var rightValue = 23;
                 
                 var copyButton = new Button(() =>
                 {
@@ -388,7 +453,7 @@ namespace TryliomFunctions
             
                 box.Add(copyButton);
                 
-                rightValue += 20;
+                rightValue += 23;
 
                 if (index != 0)
                 {
@@ -410,7 +475,7 @@ namespace TryliomFunctions
                     };
 
                     box.Add(upButton);
-                    rightValue += 20;
+                    rightValue += 23;
                 }
 
                 if (index != functionsProperty.arraySize - 1)
@@ -437,71 +502,6 @@ namespace TryliomFunctions
 
                 container.Add(box);
             }
-
-            var buttonContainer = new VisualElement
-            {
-                style =
-                {
-                    flexDirection = FlexDirection.Row,
-                    justifyContent = Justify.FlexStart,
-                    alignItems = Align.Center,
-                    marginBottom = 10
-                }
-            };
-
-            var functionDropdown = new PopupField<string>(Function.Functions.Keys.ToList(), 0)
-            {
-                label = "Add Function"
-            };
-
-            _selectedFunctionIndex = functionDropdown.value;
-
-            functionDropdown.RegisterValueChangedCallback(evt => { _selectedFunctionIndex = evt.newValue; });
-
-            var addButton = new Button(() =>
-            {
-                functionsProperty.arraySize++;
-                var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
-                var function = Activator.CreateInstance(Function.Functions[_selectedFunctionIndex].Type) as Function;
-
-                function?.GenerateFields();
-
-                functionProperty.managedReferenceValue = function;
-                Refresh();
-            })
-            {
-                text = "Add"
-            };
-            
-
-            buttonContainer.Add(functionDropdown);
-            buttonContainer.Add(addButton);
-
-            if (_copiedFunction != null)
-            {
-                var pasteButton = new Button(() =>
-                {
-                    functionsProperty.arraySize++;
-                    var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
-                    
-                    functionProperty.managedReferenceValue = _copiedFunction.Clone();
-                    
-                    _copiedFunction = null;
-                    FormulaCache.Clear();
-                    Refresh();
-                })
-                {
-                    text = "📋 Paste",
-                    style =
-                    {
-                        width = 60
-                    }
-                };
-                
-                buttonContainer.Add(pasteButton);
-            }
-
-            container.Add(buttonContainer);
 
             if (isFoldoutOpen) return;
 
@@ -613,17 +613,73 @@ namespace TryliomFunctions
                                                            (myFunction.AllowAddOutputs && field == myFunction.Outputs)))
             {
                 var name = fields == myFunction.Outputs ? "Outputs" : "Inputs";
-
-                parametersContainer.Add(
+                var topRow = new VisualElement
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                        justifyContent = Justify.FlexStart,
+                        alignItems = Align.Center,
+                        marginBottom = 5
+                    }
+                };
+                
+                topRow.Add(
                     new Label(name)
                     {
                         style =
                         {
-                            marginBottom = 5,
-                            width = 35
+                            width = 40
                         }
                     }
                 );
+                
+                if ((fields == myFunction.Inputs && myFunction.AllowAddInputs) ||
+                    (fields == myFunction.Outputs && myFunction.AllowAddOutputs))
+                {
+                    var addButton = new Button(() =>
+                    {
+                        fields.Add(myFunction.CreateNewField(fields == myFunction.Inputs));
+                        FormulaCache.Clear();
+
+                        Refresh();
+                    })
+                    {
+                        text = "+",
+                        tooltip = "Add a new field",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
+
+                    topRow.Add(addButton);
+
+                    if (_copiedField != null)
+                    {
+                        var pasteButton = new Button(() =>
+                        {
+                            fields.Add(_copiedField.Clone());
+                            _copiedField = null;
+                            FormulaCache.Clear();
+                            Refresh();
+                        })
+                        {
+                            text = "📋",
+                            tooltip = "Paste the field",
+                            style =
+                            {
+                                width = 20,
+                                height = 20
+                            }
+                        };
+
+                        topRow.Add(pasteButton);
+                    }
+                }
+
+                parametersContainer.Add(topRow);
 
                 var fieldContainer = new VisualElement
                 {
@@ -648,59 +704,6 @@ namespace TryliomFunctions
                 }
 
                 parametersContainer.Add(fieldContainer);
-
-                if ((fields == myFunction.Inputs && !myFunction.AllowAddInputs) ||
-                    (fields == myFunction.Outputs && !myFunction.AllowAddOutputs)) continue;
-                
-                var globalValuesButtons = new VisualElement
-                {
-                    style =
-                    {
-                        flexDirection = FlexDirection.Row,
-                        justifyContent = Justify.FlexStart,
-                        alignItems = Align.Center,
-                        marginBottom = 5
-                    }
-                };
-
-                var addButton = new Button(() =>
-                {
-                    fields.Add(myFunction.CreateNewField(fields == myFunction.Inputs));
-                    FormulaCache.Clear();
-
-                    Refresh();
-                })
-                {
-                    text = "Add " + (fields == myFunction.Inputs ? "input" : "output"),
-                    style =
-                    {
-                        width = 80
-                    }
-                };
-                
-                globalValuesButtons.Add(addButton);
-                
-                if (_copiedField != null)
-                {
-                    var pasteButton = new Button(() =>
-                    {
-                        fields.Add(_copiedField.Clone());
-                        _copiedField = null;
-                        FormulaCache.Clear();
-                        Refresh();
-                    })
-                    {
-                        text = "📋 Paste",
-                        style =
-                        {
-                            width = 60
-                        }
-                    };
-                
-                    globalValuesButtons.Add(pasteButton);
-                }
-
-                parametersContainer.Add(globalValuesButtons);
             }
 
             foreach (var exposedProperty in myFunction.EditableAttributes)
@@ -928,7 +931,7 @@ namespace TryliomFunctions
                 };
 
                 row1.Add(removeButton);
-                rightValue += 20;
+                rightValue += 23;
 
                 var index = fields.IndexOf(field);
 
@@ -953,7 +956,7 @@ namespace TryliomFunctions
                     };
 
                     row1.Add(upButton);
-                    rightValue += 20;
+                    rightValue += 23;
                 }
 
                 if (index != fields.Count - 1)
