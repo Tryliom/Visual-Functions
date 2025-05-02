@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace TryliomFunctions
@@ -14,7 +13,7 @@ namespace TryliomFunctions
                                                     "If there is multiple lines (;), it will check the ones that are a boolean.";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
 
-        public Functions FunctionsToLoop;
+        public Functions FunctionsToLoop = new Functions().DisableGlobalVariables();
         
         private List<Field> _globalVariables = new();
 

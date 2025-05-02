@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Serialization;
 
 namespace TryliomFunctions
 {
@@ -12,16 +13,16 @@ namespace TryliomFunctions
                                                     "If there is multiple lines (;), it will check the ones that are a boolean.";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
 
-        public Functions IfBranch;
-        public Functions ElseBranch;
+        public Functions Then = new Functions().DisableGlobalVariables();
+        public Functions Otherwise = new Functions().DisableGlobalVariables();
         
         private List<Field> _globalVariables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
         {
-            EditableAttributes.Add(nameof(IfBranch));
-            EditableAttributes.Add(nameof(ElseBranch));
+            EditableAttributes.Add(nameof(Then));
+            EditableAttributes.Add(nameof(Otherwise));
             Inputs.Add(new Field("Condition", typeof(Formula)).AllowAnyMethod());
             AllowAddInput(new FunctionSettings().AllowMethods());
         }
@@ -36,15 +37,15 @@ namespace TryliomFunctions
             
             if (CheckCondition())
             {
-                _globalVariables.AddRange(IfBranch.GlobalVariables);
+                _globalVariables.AddRange(Then.GlobalVariables);
                 
-                if (IfBranch.FunctionsList.Any(function => !function.Invoke(_globalVariables))) return false;
+                if (Then.FunctionsList.Any(function => !function.Invoke(_globalVariables))) return false;
             }
             else
             {
-                _globalVariables.AddRange(ElseBranch.GlobalVariables);
+                _globalVariables.AddRange(Otherwise.GlobalVariables);
                 
-                if (ElseBranch.FunctionsList.Any(function => !function.Invoke(_globalVariables))) return false;
+                if (Otherwise.FunctionsList.Any(function => !function.Invoke(_globalVariables))) return false;
             }
 
             return true;

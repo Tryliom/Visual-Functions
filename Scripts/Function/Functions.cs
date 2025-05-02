@@ -14,9 +14,19 @@ namespace TryliomFunctions
         public List<Field> GlobalVariables = new();
 #if UNITY_EDITOR
         public bool FoldoutOpen = true;
+        public bool AllowGlobalVariables = true;
 #endif
         
         private List<Field> _allVariables = new();
+
+        /**
+         * Disable the use of global variables in the functions.
+         */
+        public Functions DisableGlobalVariables()
+        {
+            AllowGlobalVariables = false;
+            return this;
+        }
         
         public void Invoke()
         {

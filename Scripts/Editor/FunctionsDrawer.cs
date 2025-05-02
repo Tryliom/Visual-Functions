@@ -276,115 +276,118 @@ namespace TryliomFunctions
 
             container.Add(foldout);
             
-            var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
-            var globalValuesContainer = new VisualElement
+            if (functionsInstance.AllowGlobalVariables)
             {
-                style =
-                {
-                    marginTop = 5
-                }
-            };
-            var globalValuesTopRow = new VisualElement
-            {
-                style =
-                {
-                    flexDirection = FlexDirection.Row,
-                    justifyContent = Justify.FlexStart,
-                    alignItems = Align.Center
-                }
-            };
-            
-            globalValuesTopRow.Add(
-                new Label("Global Values")
+                var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
+                var globalValuesContainer = new VisualElement
                 {
                     style =
                     {
-                        marginLeft = 17
+                        marginTop = 5
                     }
-                }
-            );
-            
-            var descriptionImage = new Image
-            {
-                tooltip = "Global values are available for all functions, use their name in formulas",
-                style =
+                };
+                var globalValuesTopRow = new VisualElement
                 {
-                    position = Position.Absolute,
-                    width = 15,
-                    height = 15,
-                    top = 3,
-                    left = 0
-                },
-                image = EditorGUIUtility.IconContent("console.infoicon").image
-            };
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                        justifyContent = Justify.FlexStart,
+                        alignItems = Align.Center
+                    }
+                };
+                
+                globalValuesTopRow.Add(
+                    new Label("Global Values")
+                    {
+                        style =
+                        {
+                            marginLeft = 17
+                        }
+                    }
+                );
+                
+                var descriptionImage = new Image
+                {
+                    tooltip = "Global values are available for all functions, use their name in formulas",
+                    style =
+                    {
+                        position = Position.Absolute,
+                        width = 15,
+                        height = 15,
+                        top = 3,
+                        left = 0
+                    },
+                    image = EditorGUIUtility.IconContent("console.infoicon").image
+                };
 
-            globalValuesTopRow.Add(descriptionImage);
-            
-            var addValueButton = new Button(() =>
-            {
-                functionsInstance.GlobalVariables.Add(new Field("" + (char)('a' + functionsInstance.GlobalVariables.Count)));
-                FormulaCache.Clear();
-                Refresh();
-            })
-            {
-                text = "+",
-                tooltip = "Add a new global value",
-                style =
+                globalValuesTopRow.Add(descriptionImage);
+                
+                var addValueButton = new Button(() =>
                 {
-                    width = 20,
-                    height = 20
-                }
-            };
-
-            globalValuesTopRow.Add(addValueButton);
-            
-            if (_copiedField != null)
-            {
-                var pasteButton = new Button(() =>
-                {
-                    functionsInstance.GlobalVariables.Add(_copiedField.Clone());
-                    _copiedField = null;
+                    functionsInstance.GlobalVariables.Add(new Field("" + (char)('a' + functionsInstance.GlobalVariables.Count)));
                     FormulaCache.Clear();
                     Refresh();
                 })
                 {
-                    text = "📋",
-                    tooltip = "Paste the field",
+                    text = "+",
+                    tooltip = "Add a new global value",
                     style =
                     {
                         width = 20,
                         height = 20
                     }
                 };
-                
-                globalValuesTopRow.Add(pasteButton);
-            }
-            
-            globalValuesContainer.Add(globalValuesTopRow);
-            
-            var globalFieldsContainer = new VisualElement
-            {
-                style =
-                {
-                    marginLeft = 15,
-                    marginBottom = 5
-                }
-            };
 
-            foreach (var field in functionsInstance.GlobalVariables)
-            {
-                globalFieldsContainer.Add(
-                    GetFunctionField(
-                        globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
-                        field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
-                        functionsInstance.GlobalVariables, 0,
-                        (previousName, newName) => functionsInstance.EditField(previousName, newName)
-                    )
-                );
+                globalValuesTopRow.Add(addValueButton);
+                
+                if (_copiedField != null)
+                {
+                    var pasteButton = new Button(() =>
+                    {
+                        functionsInstance.GlobalVariables.Add(_copiedField.Clone());
+                        _copiedField = null;
+                        FormulaCache.Clear();
+                        Refresh();
+                    })
+                    {
+                        text = "📋",
+                        tooltip = "Paste the field",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
+                    
+                    globalValuesTopRow.Add(pasteButton);
+                }
+                
+                globalValuesContainer.Add(globalValuesTopRow);
+                
+                var globalFieldsContainer = new VisualElement
+                {
+                    style =
+                    {
+                        marginLeft = 15,
+                        marginBottom = 5
+                    }
+                };
+
+                foreach (var field in functionsInstance.GlobalVariables)
+                {
+                    globalFieldsContainer.Add(
+                        GetFunctionField(
+                            globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
+                            field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
+                            functionsInstance.GlobalVariables, 0,
+                            (previousName, newName) => functionsInstance.EditField(previousName, newName)
+                        )
+                    );
+                }
+                
+                globalValuesContainer.Add(globalFieldsContainer);
+                container.Add(globalValuesContainer);
             }
-            
-            globalValuesContainer.Add(globalFieldsContainer);
-            container.Add(globalValuesContainer);
 
             for (var i = 0; i < functionsProperty.arraySize; i++)
             {

@@ -11,7 +11,7 @@ namespace TryliomFunctions
         public static readonly string Description = "It will execute the functions inside the loop a number of times. Index is the current loop index";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
         
-        public Functions FunctionsToLoop = new();
+        public Functions FunctionsToLoop = new Functions().DisableGlobalVariables();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
