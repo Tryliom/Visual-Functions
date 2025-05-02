@@ -49,8 +49,8 @@ namespace TryliomFunctions
 
     public class ExpressionVariable
     {
-        public readonly string Name;
-        public readonly IValue Value;
+        public string Name;
+        public IValue Value;
 
         public ExpressionVariable(string name, IValue value)
         {
@@ -125,7 +125,7 @@ namespace TryliomFunctions
 
         private static object ProcessFormula(string uid, string formula, List<ExpressionVariable> variables)
         {
-            if (FormulaCache.Get(uid, formula, variables) is { } cachedResult)
+            if (FormulaCache.Get(uid, formula) is { } cachedResult)
             {
                 return EvaluateExpression(uid, cachedResult, variables);
             }
@@ -431,7 +431,7 @@ namespace TryliomFunctions
 
             if (useAssignment) expressions.Add(OperationType.CloseBracket);
 
-            FormulaCache.Add(uid, formula, variables, expressions);
+            FormulaCache.Add(uid, formula, expressions);
 
             return EvaluateExpression(uid, expressions, variables);
         }

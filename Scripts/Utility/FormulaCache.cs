@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace TryliomFunctions
 {
@@ -7,16 +6,16 @@ namespace TryliomFunctions
     {
         private static readonly Dictionary<string, List<object>> Cache = new();
 
-        public static List<object> Get(string uid, string formula, List<ExpressionVariable> variables)
+        public static List<object> Get(string uid, string formula)
         {
-            var key = GenerateCacheKey(uid, formula, variables);
+            var key = GenerateCacheKey(uid, formula);
 
             return Cache.GetValueOrDefault(key);
         }
 
-        public static void Add(string uid, string formula, List<ExpressionVariable> variables, List<object> result)
+        public static void Add(string uid, string formula, List<object> result)
         {
-            var key = GenerateCacheKey(uid, formula, variables);
+            var key = GenerateCacheKey(uid, formula);
 
             Cache.TryAdd(key, result);
         }
@@ -26,11 +25,9 @@ namespace TryliomFunctions
             Cache.Clear();
         }
 
-        private static string GenerateCacheKey(string uid, string formula, List<ExpressionVariable> variables)
+        private static string GenerateCacheKey(string uid, string formula)
         {
-            var variableDetails = string.Join(",", variables.FindAll(v => v.Value != null)
-                .Select(v => $"{v.Name}:{v.Value.Type.Name}"));
-            return $"{uid}:{formula}:{variableDetails}";
+            return $"{uid}:{formula}";
         }
     }
 }

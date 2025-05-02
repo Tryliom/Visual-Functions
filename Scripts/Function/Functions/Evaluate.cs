@@ -12,7 +12,7 @@ namespace TryliomFunctions
         public static readonly string Description = "Perform evaluations on a formula string";
         public static readonly FunctionCategory Category = FunctionCategory.Logic;
         
-        private List<Field> _globalVariables = new();
+        private List<ExpressionVariable> _variables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
@@ -25,14 +25,39 @@ namespace TryliomFunctions
 
         protected override bool Process(List<Field> variables)
         {
-            _globalVariables.Clear();
-            _globalVariables.Capacity = variables.Count + Inputs.Count;
-            _globalVariables.AddRange(variables);
-            _globalVariables.AddRange(Inputs);
-            
-            var formula = GetInput<string>("Formula").Value;
+            if (_variables.Count != variables.Count + Inputs.Count)
+            {
+                _variables.Clear();
+                _variables.Capacity = variables.Count + Inputs.Count;
+                
+                foreach (var field in variables)
+                {
+                    _variables.Add(new ExpressionVariable(field.FieldName, field.Value));
+                }
+                
+                foreach (var field in Inputs)
+                {
+                    _variables.Add(new ExpressionVariable(field.FieldName, field.Value));
+                }
+            }
+            else
+            {
+                for (var i = 0; i < variables.Count; i++)
+                {
+                    _variables[i].Name = variables[i].FieldName;
+                    _variables[i].Value = variables[i].Value;
+                }
 
-            Evaluator.Process(Uid, formula, _globalVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList());
+                for (var i = variables.Count; i < Inputs.Count; i++)
+                {
+                    _variables[i].Name = Inputs[i].FieldName;
+                    _variables[i].Value = Inputs[i].Value;
+                }
+            }
+            
+            var formula = (string) Inputs[0].Value.Value;
+
+            Evaluator.Process(Uid, formula, _variables);
 
             return true;
         }

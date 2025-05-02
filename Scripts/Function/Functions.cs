@@ -16,25 +16,26 @@ namespace TryliomFunctions
         public bool FoldoutOpen = true;
 #endif
         
+        private List<Field> _allVariables = new();
+        
         public void Invoke()
         {
-            var allVariables = new List<Field>(GlobalVariables);
-            
             foreach (var function in FunctionsList)
             {
-                if (!function.Invoke(allVariables)) return;
+                if (!function.Invoke(GlobalVariables)) return;
             }
         }
 
         public void Invoke(List<Field> variables)
         {
-            var allVariables = new List<Field>(variables);
-            
-            allVariables.AddRange(GlobalVariables);
+            _allVariables.Clear();
+            _allVariables.Capacity = variables.Count + GlobalVariables.Count;
+            _allVariables.AddRange(variables);
+            _allVariables.AddRange(GlobalVariables);
             
             foreach (var function in FunctionsList)
             {
-                if (!function.Invoke(allVariables)) return;
+                if (!function.Invoke(_allVariables)) return;
             }
         }
         
