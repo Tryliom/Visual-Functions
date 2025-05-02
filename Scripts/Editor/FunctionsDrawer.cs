@@ -26,7 +26,9 @@ namespace TryliomFunctions
         {
             // Used for game objects
             if (_targetObject && PrefabUtility.IsPartOfPrefabInstance(_targetObject))
+            {
                 PrefabUtility.RecordPrefabInstancePropertyModifications(_targetObject);
+            }
 
             if (_property.serializedObject != null)
             {
@@ -173,20 +175,31 @@ namespace TryliomFunctions
                 return;
             }
 
+
+            var play = EditorGUIUtility.IconContent("d_PlayButton").image;
             // Add a button to launch the functions using Functions.Invoke()
             var launchButton = new Button(() =>
             {
                 functionsInstance.Invoke();
             })
             {
-                text = "Launch",
                 style =
                 {
-                    width = 80,
-                    height = 15,
+                    width = 27,
+                    height = 20,
                     top = 0
                 }
             };
+            
+            launchButton.Add(new Image
+            {
+                image = play,
+                style =
+                {
+                    width = 15,
+                    height = 15
+                }
+            });
 
             var foldout = new Foldout
             {
