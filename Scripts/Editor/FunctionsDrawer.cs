@@ -48,7 +48,13 @@ namespace TryliomFunctions
             _targetObject = Selection.activeObject as GameObject;
             _property = property;
 
-            var container = new VisualElement();
+            var container = new VisualElement()
+            {
+                style =
+                {
+                    marginTop = 5
+                }
+            };
             _content = new VisualElement();
 
             CreateGUI(_property, _content);
@@ -369,7 +375,8 @@ namespace TryliomFunctions
                     style =
                     {
                         marginLeft = 15,
-                        marginBottom = 5
+                        marginBottom = 5,
+                        marginTop = 10
                     }
                 };
 
@@ -392,22 +399,11 @@ namespace TryliomFunctions
             for (var i = 0; i < functionsProperty.arraySize; i++)
             {
                 var functionProperty = functionsProperty.GetArrayElementAtIndex(i);
-                var isEnabled = functionProperty.FindPropertyRelative("Enabled").boolValue;
-                var box = new Box
-                {
-                    style =
-                    {
-                        marginLeft = 15,
-                        marginBottom = 5,
-                        minHeight = 24,
-                        backgroundColor = isEnabled
-                            ? new Color(0.35f, 0.35f, 0.35f, 0.2f)
-                            : new Color(0.1f, 0.1f, 0.1f, 0.2f)
-                    }
-                };
+                var functionVisual = new VisualElement();
 
-                box.Add(GetFunction(functionProperty));
+                functionVisual.Add(GetFunction(functionProperty));
 
+                var topRightY = functionVisual.layout.y + 8;
                 var index = i;
                 var removeButton = new Button(() =>
                 {
@@ -421,14 +417,14 @@ namespace TryliomFunctions
                         position = Position.Absolute,
                         width = 20,
                         height = 20,
-                        top = box.layout.y,
-                        right = 0
+                        top = topRightY,
+                        right = 3
                     }
                 };
 
-                box.Add(removeButton);
+                functionVisual.Add(removeButton);
 
-                var rightValue = 23;
+                var rightValue = 23 + 3;
                 
                 var copyButton = new Button(() =>
                 {
@@ -443,12 +439,12 @@ namespace TryliomFunctions
                         position = Position.Absolute,
                         width = 20,
                         height = 20,
-                        top = box.layout.y,
+                        top = topRightY,
                         right = rightValue
                     }
                 };
             
-                box.Add(copyButton);
+                functionVisual.Add(copyButton);
                 
                 rightValue += 23;
 
@@ -466,12 +462,12 @@ namespace TryliomFunctions
                             position = Position.Absolute,
                             width = 20,
                             height = 20,
-                            top = box.layout.y,
+                            top = topRightY,
                             right = rightValue
                         }
                     };
 
-                    box.Add(upButton);
+                    functionVisual.Add(upButton);
                     rightValue += 23;
                 }
 
@@ -489,15 +485,15 @@ namespace TryliomFunctions
                             position = Position.Absolute,
                             width = 20,
                             height = 20,
-                            top = box.layout.y,
+                            top = topRightY,
                             right = rightValue
                         }
                     };
 
-                    box.Add(downButton);
+                    functionVisual.Add(downButton);
                 }
 
-                container.Add(box);
+                container.Add(functionVisual);
             }
 
             if (isFoldoutOpen) return;
@@ -510,73 +506,38 @@ namespace TryliomFunctions
 
         private VisualElement GetFunction(SerializedProperty property)
         {
-            var container = new VisualElement();
+            var container = new VisualElement()
+            {
+                style =
+                {
+                    marginLeft = 5 + 10,
+                    marginTop = 5
+                }
+            };
             var foldoutOpen = property.FindPropertyRelative("FoldoutOpen");
             var isEnabled = property.FindPropertyRelative("Enabled").boolValue;
             var refValue = property.managedReferenceValue;
             var functionName = refValue.GetType().GetField("Name").GetValue(refValue).ToString();
-
-            container.Add(new Label(ObjectNames.NicifyVariableName(functionName))
-            {
-                style =
-                {
-                    position = Position.Absolute,
-                    marginTop = 4,
-                    marginBottom = 5,
-                    left = 22 + 19
-                }
-            });
-
-            // Add checkbox to enable or disable the function
-            var toggle = new Toggle
-            {
-                value = isEnabled,
-                style =
-                {
-                    position = Position.Absolute,
-                    width = 20,
-                    height = 20,
-                    top = 0,
-                    left = 0
-                }
-            };
-
-            toggle.RegisterValueChangedCallback(evt =>
-            {
-                property.FindPropertyRelative("Enabled").boolValue = evt.newValue;
-                Refresh();
-            });
-
-            container.Add(toggle);
-
-            var parametersContainer = new VisualElement
-            {
-                style =
-                {
-                    marginLeft = 15,
-                    marginTop = 5
-                }
-            };
-
+            
             if (refValue is not Function myFunction) return container;
-
-            var description = myFunction.GetType().GetField("Description").GetValue(myFunction).ToString();
-            var descriptionImage = new Image
+            
+            const int radius = 6;
+            var topLeftRow = new VisualElement
             {
-                tooltip = description,
                 style =
                 {
-                    position = Position.Absolute,
-                    width = 15,
-                    height = 15,
-                    top = 4,
-                    left = 22
-                },
-                image = EditorGUIUtility.IconContent("console.infoicon").image
+                    flexDirection = FlexDirection.Row,
+                    justifyContent = Justify.FlexStart,
+                    alignItems = Align.Center,
+                    backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                    height = 30,
+                    borderTopLeftRadius = radius,
+                    borderTopRightRadius = radius,
+                    borderBottomLeftRadius = radius,
+                    borderBottomRightRadius = radius
+                }
             };
-
-            container.Add(descriptionImage);
-
+            
             var foldout = new Foldout
             {
                 text = "",
@@ -601,8 +562,96 @@ namespace TryliomFunctions
                 }
             });
 
-            container.Add(foldout);
+            topLeftRow.Add(foldout);
+            
+            // Add checkbox to enable or disable the function
+            var toggle = new Toggle
+            {
+                value = isEnabled,
+                style =
+                {
+                    width = 20,
+                    height = 20
+                }
+            };
 
+            toggle.RegisterValueChangedCallback(evt =>
+            {
+                property.FindPropertyRelative("Enabled").boolValue = evt.newValue;
+                Refresh();
+            });
+
+            topLeftRow.Add(toggle);
+
+            var description = myFunction.GetType().GetField("Description").GetValue(myFunction).ToString();
+            var descriptionImage = new Image
+            {
+                tooltip = description,
+                style =
+                {
+                    width = 15,
+                    height = 15,
+                    marginBottom = 1,
+                    marginLeft = 1,
+                    marginRight = 1,
+                },
+                image = EditorGUIUtility.IconContent("console.infoicon").image
+            };
+
+            topLeftRow.Add(descriptionImage);
+            
+            var displayNameField = new PropertyField(property.FindPropertyRelative("DisplayName"))
+            {
+                label = ""
+            };
+
+            displayNameField.RegisterCallback<FocusOutEvent>(evt =>
+            {
+                Refresh();
+            });
+
+            topLeftRow.Add(displayNameField);
+            
+            if (myFunction.DisplayName != myFunction.GetType().Name)
+            {
+                topLeftRow.Add(new Label($"({functionName})")
+                {
+                    style =
+                    {
+                        marginLeft = 10
+                    }
+                });
+            }
+            
+            container.Add(topLeftRow);
+
+            var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+            var functionContent = new Box
+            {
+                style =
+                {
+                    marginLeft = 5,
+                    paddingLeft = 10,
+                    marginRight = 5,
+                    paddingRight = 10,
+                    marginBottom = 5,
+                    paddingTop = 5,
+                    minHeight = 24,
+                    backgroundColor = isEnabled
+                        ? new Color(0.25f, 0.25f, 0.25f, 1f)
+                        : new Color(0.1f, 0.1f, 0.1f, 0.2f),
+                    borderLeftColor = borderColor,
+                    borderLeftWidth = 2,
+                    borderRightColor = borderColor,
+                    borderRightWidth = 2,
+                    borderBottomColor = borderColor,
+                    borderBottomWidth = 2,
+                    borderTopWidth = 3,
+                    borderTopColor = new Color(0.18f, 0.18f, 0.18f, 1f),
+                    borderBottomLeftRadius = radius,
+                    borderBottomRightRadius = radius
+                }
+            };
             var fieldsIO = new List<List<Field>> { myFunction.Inputs, myFunction.Outputs };
 
             foreach (var fields in fieldsIO.Where(field => field.Count != 0 ||
@@ -676,7 +725,7 @@ namespace TryliomFunctions
                     }
                 }
 
-                parametersContainer.Add(topRow);
+                functionContent.Add(topRow);
 
                 var fieldContainer = new VisualElement
                 {
@@ -700,7 +749,7 @@ namespace TryliomFunctions
                     );
                 }
 
-                parametersContainer.Add(fieldContainer);
+                functionContent.Add(fieldContainer);
             }
 
             foreach (var exposedProperty in myFunction.EditableAttributes)
@@ -716,10 +765,10 @@ namespace TryliomFunctions
                     }
                 };
                 propertyField.Bind(property.serializedObject);
-                parametersContainer.Add(propertyField);
+                functionContent.Add(propertyField);
             }
 
-            container.Add(parametersContainer);
+            container.Add(functionContent);
 
             if (!foldoutOpen.boolValue)
             {
