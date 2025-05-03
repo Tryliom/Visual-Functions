@@ -30,7 +30,7 @@ namespace TryliomFunctions
          
          public TType Value 
          {
-             get => UseLocal ? LocalValue : Variable.Value;
+             get => UseLocal ? LocalValue : Variable != null ? Variable.Value : default;
              set
              {
                  if (UseLocal)
@@ -61,7 +61,7 @@ namespace TryliomFunctions
              }
          }
          
-         public Type Type => typeof(TType);
+         public Type Type => Value == null ? typeof(TType) : Value.GetType();
 
          public IValue Clone()
          {
@@ -242,4 +242,10 @@ namespace TryliomFunctions
     
     [Serializable]
     public class BoundsReference : Reference<Bounds> {}
+    
+    [Serializable]
+    public class ScriptableObjectReference : Reference<ScriptableObject> {}
+    
+    [Serializable]
+    public class GameEventDataReference : Reference<GameEventData> {}
 }

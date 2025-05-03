@@ -14,6 +14,7 @@ namespace TryliomFunctions
         public List<Field> GlobalVariables = new();
 #if UNITY_EDITOR
         public bool FoldoutOpen = true;
+        public bool GlobalValuesFoldoutOpen = true;
         public bool AllowGlobalVariables = true;
 #endif
         

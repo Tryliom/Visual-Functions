@@ -179,6 +179,8 @@ namespace TryliomFunctions
                 "GetTypeCode", "Compare", "CompareTo", "GetEnumerator", "GetObjectData", "GetMethod", "GetField"
             };
             var methods = type.GetMethods();
+            
+            constantTypes.Add(typeof(void));
 
             foreach (var method in methods)
             {
@@ -188,18 +190,12 @@ namespace TryliomFunctions
                 if (method.IsPrivate) continue;
                 if (!displayVoid && method.ReturnType == typeof(void)) continue;
                 if (!constantTypes.Contains(method.ReturnType) && !method.ReturnType.IsEnum) continue;
-                if (method.GetParameters()
-                    .Any(p => !constantTypes.Contains(p.ParameterType) && !p.ParameterType.IsEnum)) continue;
+                if (method.GetParameters().Any(p => !constantTypes.Contains(p.ParameterType) && !p.ParameterType.IsEnum)) continue;
 
+                var name = method.IsStatic ? $"static {RenameTypes(type.Name)}.{method.Name}" : $"{RenameTypes(type.Name)} {method.Name}";
                 var description = method.GetCustomAttributes(typeof(DescriptionAttribute), false)
                     .Cast<DescriptionAttribute>()
                     .FirstOrDefault()?.Description ?? "";
-                var name = method.Name;
-
-                if (method.IsStatic)
-                    name = $"static {RenameTypes(type.Name)}.{name}";
-                else
-                    name = $"{RenameTypes(type.Name)} {name}";
 
                 self._methods.Add(new MethodInfos(
                     name,

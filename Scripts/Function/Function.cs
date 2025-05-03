@@ -61,7 +61,6 @@ namespace TryliomFunctions
 
 #if UNITY_EDITOR
         public bool FoldoutOpen = true;
-        public string DisplayName;
 #endif
 
         public bool Enabled = true;
@@ -89,11 +88,6 @@ namespace TryliomFunctions
         {
 #if UNITY_EDITOR
             FunctionUtility.RegisterFunction(this);
-            
-            if (string.IsNullOrEmpty(DisplayName))
-            {
-                DisplayName = GetType().Name;
-            }
 #endif
 
             Uid = Guid.NewGuid().ToString();

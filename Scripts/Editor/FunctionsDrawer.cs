@@ -20,7 +20,7 @@ namespace TryliomFunctions
         private GameObject _targetObject;
         
         private static Field _copiedField;
-        private static Function _copiedFunction = null;
+        private static Function _copiedFunction;
 
         private void Refresh()
         {
@@ -92,10 +92,33 @@ namespace TryliomFunctions
                     flexDirection = FlexDirection.Row,
                     justifyContent = Justify.FlexStart,
                     alignItems = Align.Center,
-                    marginLeft = 3
+                    borderBottomWidth = 2,
+                    borderBottomColor = new Color(0.15f, 0.15f, 0.15f, 1f),
+                    borderTopWidth = 2,
+                    borderTopColor = new Color(0.15f, 0.15f, 0.15f, 1f),
+                    marginBottom = 5,
+                    paddingBottom = 3,
+                    paddingTop = 3
                 }
             };
-
+            
+            var currentIndex = container.Children().Count() + 1;
+            var foldoutButton = new Button(() =>
+            {
+                foldoutOpen.boolValue = !foldoutOpen.boolValue;
+                property.serializedObject.ApplyModifiedProperties();
+                Refresh();
+            })
+            {
+                text = "=",
+                style =
+                {
+                    width = 20,
+                    height = 20
+                }
+            };
+            
+            topRow.Add(foldoutButton);
             topRow.Add(new Label(property.displayName));
 
             if (Function.Functions.Count == 0)
@@ -143,16 +166,14 @@ namespace TryliomFunctions
                     var field = currentObject.GetType().GetField(arrayPart, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                     if (field == null)
                     {
-                        Debug.LogError(
-                            $"Field '{arrayPart}' not found on object of type '{currentObject.GetType().Name}'");
+                        Debug.LogError($"Field '{arrayPart}' not found on object of type '{currentObject.GetType().Name}'");
                         return;
                     }
 
                     var array = field.GetValue(currentObject) as IList;
                     if (array == null)
                     {
-                        Debug.LogError(
-                            $"Field '{arrayPart}' is not an array on object of type '{currentObject.GetType().Name}'");
+                        Debug.LogError($"Field '{arrayPart}' is not an array on object of type '{currentObject.GetType().Name}'");
                         return;
                     }
 
@@ -160,12 +181,10 @@ namespace TryliomFunctions
                 }
                 else
                 {
-                    var field = currentObject.GetType().GetField(part,
-                        BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                    var field = currentObject.GetType().GetField(part, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                     if (field == null)
                     {
-                        Debug.LogError(
-                            $"Field '{part}' not found on object of type '{currentObject.GetType().Name}'");
+                        Debug.LogError($"Field '{part}' not found on object of type '{currentObject.GetType().Name}'");
                         return;
                     }
 
@@ -192,7 +211,7 @@ namespace TryliomFunctions
                     width = 27,
                     height = 20,
                     position = Position.Absolute,
-                    top = 0,
+                    top = 3,
                     right = 0
                 }
             };
@@ -219,6 +238,7 @@ namespace TryliomFunctions
 
                     selectedFunction?.GenerateFields();
                     functionProperty.managedReferenceValue = selectedFunction;
+                    foldoutOpen.boolValue = true;
 
                     Refresh();
                 });
@@ -257,39 +277,37 @@ namespace TryliomFunctions
             }
 
             container.Add(topRow);
-
-            var currentIndex = container.Children().Count() + 1;
-            var foldout = new Foldout
-            {
-                value = isFoldoutOpen,
-                style =
-                {
-                    position = Position.Absolute,
-                    top = 3,
-                }
-            };
-
-            foldout.RegisterValueChangedCallback(evt =>
-            {
-                property.FindPropertyRelative("FoldoutOpen").boolValue = evt.newValue;
-                property.serializedObject.ApplyModifiedProperties();
-
-                for (var i = currentIndex; i < container.Children().Count(); i++)
-                {
-                    container.Children().ElementAt(i).style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
-                }
-            });
-
-            container.Add(foldout);
+            
+            if (!foldoutOpen.boolValue) return;
             
             if (functionsInstance.AllowGlobalVariables)
             {
+                var globalValuesFoldout = property.FindPropertyRelative("GlobalValuesFoldoutOpen");
                 var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
+                var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+                const int radius = 6;
                 var globalValuesContainer = new VisualElement
                 {
                     style =
                     {
-                        marginTop = 5
+                        marginLeft = 5,
+                        paddingLeft = 10,
+                        marginRight = 5,
+                        paddingRight = 10,
+                        marginBottom = 5,
+                        paddingTop = 5,
+                        minHeight = 24,
+                        backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
+                        borderLeftColor = borderColor,
+                        borderLeftWidth = 2,
+                        borderRightColor = borderColor,
+                        borderRightWidth = 2,
+                        borderBottomColor = borderColor,
+                        borderBottomWidth = 2,
+                        borderTopWidth = 3,
+                        borderTopColor = new Color(0.18f, 0.18f, 0.18f, 1f),
+                        borderBottomLeftRadius = radius,
+                        borderBottomRightRadius = radius
                     }
                 };
                 var globalValuesTopRow = new VisualElement
@@ -298,32 +316,43 @@ namespace TryliomFunctions
                     {
                         flexDirection = FlexDirection.Row,
                         justifyContent = Justify.FlexStart,
-                        alignItems = Align.Center
+                        alignItems = Align.Center,
+                        backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                        height = 30,
+                        paddingLeft = 5,
+                        borderTopLeftRadius = radius,
+                        borderTopRightRadius = radius,
+                        borderBottomLeftRadius = radius,
+                        borderBottomRightRadius = radius
                     }
                 };
                 
-                globalValuesTopRow.Add(
-                    new Label("Global Values")
+                var globalValueFoldoutButton = new Button(() =>
+                {
+                    globalValuesFoldout.boolValue = !globalValuesFoldout.boolValue;
+                    property.serializedObject.ApplyModifiedProperties();
+                    Refresh();
+                })
+                {
+                    text = "=",
+                    style =
                     {
-                        style =
-                        {
-                            marginLeft = 17
-                        }
+                        width = 20,
+                        height = 20
                     }
-                );
+                };
+
+                globalValuesTopRow.Add(globalValueFoldoutButton);
+                globalValuesTopRow.Add(new Label("Global Values"));
                 
                 var descriptionImage = new Image
                 {
                     tooltip = "Global values are available for all functions, use their name in formulas",
                     style =
                     {
-                        position = Position.Absolute,
-                        width = 15,
-                        height = 15,
-                        top = 3,
-                        left = 0
+                        marginTop = 2
                     },
-                    image = EditorGUIUtility.IconContent("console.infoicon").image
+                    image = EditorGUIUtility.IconContent("_Help").image
                 };
 
                 globalValuesTopRow.Add(descriptionImage);
@@ -331,6 +360,7 @@ namespace TryliomFunctions
                 var addValueButton = new Button(() =>
                 {
                     functionsInstance.GlobalVariables.Add(new Field("" + (char)('a' + functionsInstance.GlobalVariables.Count)));
+                    functionsInstance.GlobalValuesFoldoutOpen = true;
                     FormulaCache.Clear();
                     Refresh();
                 })
@@ -368,32 +398,35 @@ namespace TryliomFunctions
                     globalValuesTopRow.Add(pasteButton);
                 }
                 
-                globalValuesContainer.Add(globalValuesTopRow);
+                container.Add(globalValuesTopRow);
                 
-                var globalFieldsContainer = new VisualElement
+                if (globalValuesFoldout.boolValue)
                 {
-                    style =
+                    var globalFieldsContainer = new VisualElement
                     {
-                        marginLeft = 15,
-                        marginBottom = 5,
-                        marginTop = 10
-                    }
-                };
+                        style =
+                        {
+                            marginLeft = 15,
+                            marginBottom = 5,
+                            marginTop = 10
+                        }
+                    };
 
-                foreach (var field in functionsInstance.GlobalVariables)
-                {
-                    globalFieldsContainer.Add(
-                        GetFunctionField(
-                            globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
-                            field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
-                            functionsInstance.GlobalVariables, 0,
-                            (previousName, newName) => functionsInstance.EditField(previousName, newName)
-                        )
-                    );
+                    foreach (var field in functionsInstance.GlobalVariables)
+                    {
+                        globalFieldsContainer.Add(
+                            GetFunctionField(
+                                globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
+                                field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
+                                functionsInstance.GlobalVariables, 0,
+                                (previousName, newName) => functionsInstance.EditField(previousName, newName)
+                            )
+                        );
+                    }
+
+                    globalValuesContainer.Add(globalFieldsContainer);
+                    container.Add(globalValuesContainer);
                 }
-                
-                globalValuesContainer.Add(globalFieldsContainer);
-                container.Add(globalValuesContainer);
             }
 
             for (var i = 0; i < functionsProperty.arraySize; i++)
@@ -510,7 +543,6 @@ namespace TryliomFunctions
             {
                 style =
                 {
-                    marginLeft = 5 + 10,
                     marginTop = 5
                 }
             };
@@ -521,6 +553,7 @@ namespace TryliomFunctions
             
             if (refValue is not Function myFunction) return container;
             
+            var hasContent = myFunction.Inputs.Count > 0 || myFunction.Outputs.Count > 0 || myFunction.AllowAddInputs || myFunction.AllowAddOutputs || myFunction.EditableAttributes.Count > 0;
             const int radius = 6;
             var topLeftRow = new VisualElement
             {
@@ -531,6 +564,7 @@ namespace TryliomFunctions
                     alignItems = Align.Center,
                     backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
                     height = 30,
+                    paddingLeft = 5,
                     borderTopLeftRadius = radius,
                     borderTopRightRadius = radius,
                     borderBottomLeftRadius = radius,
@@ -538,31 +572,25 @@ namespace TryliomFunctions
                 }
             };
             
-            var foldout = new Foldout
+            if (hasContent)
             {
-                text = "",
-                value = foldoutOpen.boolValue,
-                style =
+                var foldoutButton = new Button(() =>
                 {
-                    marginLeft = -5,
-                    width = 10
-                }
-            };
-
-            var currentIndex = container.Children().Count() + 1;
-
-            foldout.RegisterValueChangedCallback(evt =>
-            {
-                foldoutOpen.boolValue = evt.newValue;
-                property.serializedObject.ApplyModifiedProperties();
-
-                for (var i = currentIndex; i < container.Children().Count(); i++)
+                    foldoutOpen.boolValue = !foldoutOpen.boolValue;
+                    property.serializedObject.ApplyModifiedProperties();
+                    Refresh();
+                })
                 {
-                    container.Children().ElementAt(i).style.display = foldoutOpen.boolValue ? DisplayStyle.Flex : DisplayStyle.None;
-                }
-            });
+                    text = "=",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
 
-            topLeftRow.Add(foldout);
+                topLeftRow.Add(foldoutButton);
+            }
             
             // Add checkbox to enable or disable the function
             var toggle = new Toggle
@@ -571,7 +599,8 @@ namespace TryliomFunctions
                 style =
                 {
                     width = 20,
-                    height = 20
+                    height = 20,
+                    marginTop = 2
                 }
             };
 
@@ -589,41 +618,17 @@ namespace TryliomFunctions
                 tooltip = description,
                 style =
                 {
-                    width = 15,
-                    height = 15,
-                    marginBottom = 1,
-                    marginLeft = 1,
-                    marginRight = 1,
+                    marginTop = 2
                 },
-                image = EditorGUIUtility.IconContent("console.infoicon").image
+                image = EditorGUIUtility.IconContent("_Help").image
             };
 
+            topLeftRow.Add(new Label(functionName));
             topLeftRow.Add(descriptionImage);
             
-            var displayNameField = new PropertyField(property.FindPropertyRelative("DisplayName"))
-            {
-                label = ""
-            };
-
-            displayNameField.RegisterCallback<FocusOutEvent>(evt =>
-            {
-                Refresh();
-            });
-
-            topLeftRow.Add(displayNameField);
-            
-            if (myFunction.DisplayName != myFunction.GetType().Name)
-            {
-                topLeftRow.Add(new Label($"({functionName})")
-                {
-                    style =
-                    {
-                        marginLeft = 10
-                    }
-                });
-            }
-            
             container.Add(topLeftRow);
+            
+            if (!hasContent || !foldoutOpen.boolValue) return container;
 
             var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
             var functionContent = new Box
@@ -636,6 +641,7 @@ namespace TryliomFunctions
                     paddingRight = 10,
                     marginBottom = 5,
                     paddingTop = 5,
+                    paddingBottom = 5,
                     minHeight = 24,
                     backgroundColor = isEnabled
                         ? new Color(0.25f, 0.25f, 0.25f, 1f)
@@ -769,14 +775,6 @@ namespace TryliomFunctions
             }
 
             container.Add(functionContent);
-
-            if (!foldoutOpen.boolValue)
-            {
-                for (var i = currentIndex; i < container.Children().Count(); i++)
-                {
-                    container.Children().ElementAt(i).style.display = DisplayStyle.None;
-                }
-            }
 
             return container;
         }
@@ -1189,13 +1187,6 @@ namespace TryliomFunctions
             if (type == typeof(string)) return "String";
 
             return type.Name;
-        }
-
-        private static string RenameTypes(string str)
-        {
-            return str
-                .Replace("Int32", "Integer")
-                .Replace("Single", "Float");
         }
     }
 }
