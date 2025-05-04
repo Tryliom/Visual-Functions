@@ -1,6 +1,6 @@
 ﻿{
-  "name": "TryliomFunctions",
-  "rootNamespace": "TryliomFunctions",
+  "name": "VisualFunctions",
+  "rootNamespace": "VisualFunctions",
   "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],

@@ -29,21 +29,21 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 7793651881821864130
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
         UseLocal: 1
         LocalValue: 10
         Variable: {fileID: 0}
         DisplayedInInspector: 0
     - rid: 7793651881821864131
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
         UseLocal: 1
         LocalValue: 0
         Variable: {fileID: 0}
         DisplayedInInspector: 0
     - rid: 7936453624402018819
-      type: {class: For, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: For, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FoldoutOpen: 1
         Enabled: 1
@@ -87,7 +87,7 @@ MonoBehaviour:
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
     - rid: 7936453624402018822
-      type: {class: Break, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: Break, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FoldoutOpen: 1
         Enabled: 1

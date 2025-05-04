@@ -33,7 +33,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 7936453624402018862
-      type: {class: For, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: For, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FoldoutOpen: 1
         Enabled: 1
@@ -71,14 +71,14 @@ MonoBehaviour:
           FunctionsList: []
           FoldoutOpen: 1
     - rid: 7936453624402018863
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
         UseLocal: 0
         LocalValue: 0
         Variable: {fileID: 11400000, guid: f16d8717e3b865c47919ccb432a708c7, type: 2}
         DisplayedInInspector: 0
     - rid: 7936453624402018864
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
         UseLocal: 0
         LocalValue: 0

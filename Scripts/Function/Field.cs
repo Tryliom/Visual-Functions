@@ -10,8 +10,11 @@ namespace VisualFunctions
     {
         public string FieldName;
         [SerializeReference] public IValue Value;
+        
+#if UNITY_EDITOR
         public List<SerializableSystemType> SupportedTypes = new();
-
+#endif
+        
         public bool AllowRename;
         public bool InEdition;
         public string EditValue;

@@ -21,7 +21,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 4824914975934382180
-      type: {class: Expect, ns: TryliomFunctions, asm: TryliomFunctions}
+      type: {class: Expect, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FoldoutOpen: 1
         Enabled: 1
@@ -49,7 +49,7 @@ MonoBehaviour:
           CanCallMethods: 0
           AllowVoidMethods: 0
     - rid: 4824914975934382181
-      type: {class: Formula, ns: , asm: TryliomFunctions}
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: '3 * (2 + 5) == 21;
 
