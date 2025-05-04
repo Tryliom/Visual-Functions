@@ -247,7 +247,7 @@ namespace TryliomFunctions
                     // If the character is a quote, it indicates the start of a string
                     var str = ExpressionUtility.ExtractSurrounded(formula, i);
 
-                    i += str.Length + 2;
+                    i += str.Length + 1;
                     expressions.Add(str);
                 }
                 else if (char.IsLetter(currentChar))

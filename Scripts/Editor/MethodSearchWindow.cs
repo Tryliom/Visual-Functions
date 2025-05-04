@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Component = UnityEngine.Component;
 
 namespace TryliomFunctions
 {
@@ -181,6 +182,7 @@ namespace TryliomFunctions
             var methods = type.GetMethods();
             
             constantTypes.Add(typeof(void));
+            constantTypes.Add(typeof(Component));
 
             foreach (var method in methods)
             {

@@ -15,7 +15,7 @@ namespace TryliomFunctions
 
             foreach (var key in Evaluator.Operations.Keys) operators += key[0];
 
-            operators += ",.";
+            operators += ",.;\n";
 
             Operators = operators.ToCharArray();
         }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -230,6 +228,7 @@ namespace TryliomFunctions
                 
                 var globalValuesFoldout = property.FindPropertyRelative("GlobalValuesFoldoutOpen");
                 var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
+                var hasContent = functionsInstance.GlobalVariables.Count != 0;
                 var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
                 const int radius = 6;
                 var globalValuesContainer = new VisualElement
@@ -250,8 +249,6 @@ namespace TryliomFunctions
                         borderRightWidth = 2,
                         borderBottomColor = borderColor,
                         borderBottomWidth = 2,
-                        borderTopWidth = 3,
-                        borderTopColor = new Color(0.18f, 0.18f, 0.18f, 1f),
                         borderBottomLeftRadius = radius,
                         borderBottomRightRadius = radius
                     }
@@ -273,22 +270,26 @@ namespace TryliomFunctions
                     }
                 };
                 
-                var globalValueFoldoutButton = new Button(() =>
+                if (hasContent)
                 {
-                    globalValuesFoldout.boolValue = !globalValuesFoldout.boolValue;
-                    property.serializedObject.ApplyModifiedProperties();
-                    Refresh();
-                })
-                {
-                    text = "=",
-                    style =
+                    var globalValueFoldoutButton = new Button(() =>
                     {
-                        width = 20,
-                        height = 20
-                    }
-                };
+                        globalValuesFoldout.boolValue = !globalValuesFoldout.boolValue;
+                        property.serializedObject.ApplyModifiedProperties();
+                        Refresh();
+                    })
+                    {
+                        text = "=",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
 
-                globalValuesTopRow.Add(globalValueFoldoutButton);
+                    globalValuesTopRow.Add(globalValueFoldoutButton);
+                }
+                
                 globalValuesTopRow.Add(new Label("Global Values"));
                 
                 var descriptionImage = new Image
@@ -346,7 +347,7 @@ namespace TryliomFunctions
                 
                 container.Add(globalValuesTopRow);
                 
-                if (globalValuesFoldout.boolValue)
+                if (globalValuesFoldout.boolValue && hasContent)
                 {
                     var globalFieldsContainer = new VisualElement
                     {
@@ -354,7 +355,7 @@ namespace TryliomFunctions
                         {
                             marginLeft = 15,
                             marginBottom = 5,
-                            marginTop = 10
+                            marginTop = 5
                         }
                     };
 
@@ -598,8 +599,6 @@ namespace TryliomFunctions
                     borderRightWidth = 2,
                     borderBottomColor = borderColor,
                     borderBottomWidth = 2,
-                    borderTopWidth = 3,
-                    borderTopColor = new Color(0.18f, 0.18f, 0.18f, 1f),
                     borderBottomLeftRadius = radius,
                     borderBottomRightRadius = radius
                 }
@@ -728,13 +727,23 @@ namespace TryliomFunctions
         private VisualElement GetFunctionField(SerializedProperty property, Field field, 
             string functionName, bool isEditable, FunctionSettings settings, List<Field> fields, int minEditableFieldIndex, Action<string, string> editFieldAction)
         {
+            const int borderWidth = 2;
+            var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
             var container = new Box
             {
                 style =
                 {
                     marginBottom = 3,
                     marginTop = 3,
-                    marginRight = 5
+                    marginRight = 5,
+                    borderLeftColor = borderColor,
+                    borderLeftWidth = borderWidth,
+                    borderRightColor = borderColor,
+                    borderRightWidth = borderWidth,
+                    borderBottomColor = borderColor,
+                    borderBottomWidth = borderWidth,
+                    borderTopColor = borderColor,
+                    borderTopWidth = borderWidth,
                 }
             };
             var row1 = new VisualElement
@@ -768,7 +777,6 @@ namespace TryliomFunctions
                     value = field.EditValue,
                     style =
                     {
-                        width = 100,
                         marginRight = 5
                     }
                 };

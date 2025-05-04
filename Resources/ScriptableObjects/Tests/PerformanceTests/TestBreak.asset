@@ -14,14 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnStart:
     FunctionsList: []
-    FoldoutOpen: 1
+    GlobalVariables: []
+    FoldoutOpen: 0
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
   FunctionsToTest:
     FunctionsList:
     - rid: 7936453624402018819
+    GlobalVariables: []
     FoldoutOpen: 1
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
   references:
     version: 2
     RefIds:
+    - rid: 7793651881821864130
+      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      data:
+        UseLocal: 1
+        LocalValue: 10
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0
+    - rid: 7793651881821864131
+      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      data:
+        UseLocal: 1
+        LocalValue: 0
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0
     - rid: 7936453624402018819
       type: {class: For, ns: TryliomFunctions, asm: TryliomFunctions}
       data:
@@ -30,15 +50,17 @@ MonoBehaviour:
         Inputs:
         - FieldName: Loops
           Value:
-            rid: 7936453624402018820
+            rid: 7793651881821864130
           SupportedTypes: []
+          AllowRename: 1
           InEdition: 0
           EditValue: 
           AcceptAnyMethod: 0
         - FieldName: Index
           Value:
-            rid: 7936453624402018821
+            rid: 7793651881821864131
           SupportedTypes: []
+          AllowRename: 1
           InEdition: 0
           EditValue: 
           AcceptAnyMethod: 0
@@ -60,21 +82,10 @@ MonoBehaviour:
         FunctionsToLoop:
           FunctionsList:
           - rid: 7936453624402018822
+          GlobalVariables: []
           FoldoutOpen: 1
-    - rid: 7936453624402018820
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: 10
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
-    - rid: 7936453624402018821
-      type: {class: IntReference, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: 0
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
+          GlobalValuesFoldoutOpen: 1
+          AllowGlobalVariables: 0
     - rid: 7936453624402018822
       type: {class: Break, ns: TryliomFunctions, asm: TryliomFunctions}
       data:
