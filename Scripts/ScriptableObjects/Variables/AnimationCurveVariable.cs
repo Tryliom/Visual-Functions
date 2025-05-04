@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/AnimationCurve")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/AnimationCurve")]
     public class AnimationCurveVariable : Variable<AnimationCurve>
     {
     }

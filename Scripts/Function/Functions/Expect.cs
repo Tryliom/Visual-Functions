@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [Serializable]
     public class Expect : Function

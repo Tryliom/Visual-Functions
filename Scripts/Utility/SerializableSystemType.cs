@@ -7,7 +7,7 @@
 using System;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
 	[Serializable]
 	public class SerializableSystemType

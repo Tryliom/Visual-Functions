@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestMethodEvaluator", menuName = "TryliomFunctions/Test/PerfTests/TestMethodEvaluator")]
+    [CreateAssetMenu(fileName = "TestMethodEvaluator", menuName = "VisualFunctions/Test/PerfTests/TestMethodEvaluator")]
     public class PerformanceTestMethodEvaluator : PerformanceTest
     {
         public ComponentOfGameObjectVariable Input;

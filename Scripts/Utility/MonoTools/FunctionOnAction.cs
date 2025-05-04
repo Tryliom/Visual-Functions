@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     /**
      * Used to create a component that can assign to other callbacks the functions to be called.

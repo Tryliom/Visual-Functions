@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = System.Object;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public class FunctionSelectionWindow : EditorWindow
     {

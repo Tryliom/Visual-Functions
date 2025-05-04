@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     /**
      * Used to get a different type in a Reference type when processed

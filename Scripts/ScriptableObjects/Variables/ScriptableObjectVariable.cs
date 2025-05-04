@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/ScriptableObject")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/ScriptableObject")]
     public class ScriptableObjectVariable : Variable<ScriptableObject>
     {
     }

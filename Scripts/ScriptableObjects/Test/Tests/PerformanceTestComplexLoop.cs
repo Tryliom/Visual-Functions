@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestComplexLoop", menuName = "TryliomFunctions/Test/PerfTests/TestComplexLoop")]
+    [CreateAssetMenu(fileName = "TestComplexLoop", menuName = "VisualFunctions/Test/PerfTests/TestComplexLoop")]
     public class PerformanceTestComplexLoop : PerformanceTest
     {
         public FloatReference MaxNumberCondition;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public class MethodValue : IValue
     {

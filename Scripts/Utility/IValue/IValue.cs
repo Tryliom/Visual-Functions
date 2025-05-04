@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public interface IValue
     {

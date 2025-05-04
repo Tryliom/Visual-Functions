@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "UnitTest", menuName = "TryliomFunctions/Test/UnitTest")]
+    [CreateAssetMenu(fileName = "UnitTest", menuName = "VisualFunctions/Test/UnitTest")]
     public class UnitTest : ScriptableObject
     {
         public Functions Tests;

@@ -1,10 +1,10 @@
 {
-  "name": "com.tryliom.tryliomfunctions",
+  "name": "com.tryliom.visual-functions",
   "version": "0.1.0",
-  "displayName": "Tryliom Functions",
-  "description": "A system to run code logic from Unity Editor with a code-like syntax",
+  "displayName": "Visual Functions",
+  "description": "A tool to code small code logic or prototyping in Unity from the editor designed for coders",
   "unity": "2023.2",
-  "documentationUrl": "https://github.com/Tryliom/TryliomFunctions",
+  "documentationUrl": "https://github.com/Tryliom/Visual-Functions",
   "keywords": ["editor tools"],
   "author": 
   { 

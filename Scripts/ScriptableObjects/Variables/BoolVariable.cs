@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Bool")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Bool")]
     public class BoolVariable : Variable<bool>
     {
     }

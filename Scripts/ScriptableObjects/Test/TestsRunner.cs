@@ -9,9 +9,9 @@ using Debug = UnityEngine.Debug;
 using UnityEditor;
 #endif
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestsRunner", menuName = "TryliomFunctions/Test/TestsRunner")]
+    [CreateAssetMenu(fileName = "TestsRunner", menuName = "VisualFunctions/Test/TestsRunner")]
     public class TestsRunner : ScriptableObject
     {
         [SerializeField] private int _testCount = 10000;

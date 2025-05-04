@@ -7,7 +7,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [CustomPropertyDrawer(typeof(Functions))]
     public class FunctionsDrawer : PropertyDrawer

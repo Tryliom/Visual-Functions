@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestBreak", menuName = "TryliomFunctions/Test/PerfTests/TestBreak")]
+    [CreateAssetMenu(fileName = "TestBreak", menuName = "VisualFunctions/Test/PerfTests/TestBreak")]
     public class PerformanceTestBreak : PerformanceTest
     {
         public override void RunCode()

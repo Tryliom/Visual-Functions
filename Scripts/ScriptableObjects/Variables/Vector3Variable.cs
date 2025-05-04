@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Vector3")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Vector3")]
     public class Vector3Variable : Variable<Vector3>
     {
     }

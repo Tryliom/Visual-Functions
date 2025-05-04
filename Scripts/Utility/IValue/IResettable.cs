@@ -1,4 +1,4 @@
-﻿namespace TryliomFunctions
+﻿namespace VisualFunctions
 {
     public interface IResettable
     {

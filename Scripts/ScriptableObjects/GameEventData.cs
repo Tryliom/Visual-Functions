@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "GameEventData", menuName = "TryliomFunctions/GameEventData", order = 0)]
+    [CreateAssetMenu(fileName = "GameEventData", menuName = "VisualFunctions/GameEventData", order = 0)]
     public class GameEventData : ScriptableObject
     {
         private readonly List<Action> _functions = new ();

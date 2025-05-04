@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [Serializable]
     public class For : Function

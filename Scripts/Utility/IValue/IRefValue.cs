@@ -1,4 +1,4 @@
-﻿namespace TryliomFunctions
+﻿namespace VisualFunctions
 {
     /**
      * Used to get a different value in a Reference type when processed

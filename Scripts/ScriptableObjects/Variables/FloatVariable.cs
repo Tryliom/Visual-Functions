@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Float")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Float")]
     public class FloatVariable : Variable<float>
     {
     }

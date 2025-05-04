@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/String")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/String")]
     public class StringVariable : Variable<string>
     {
     }

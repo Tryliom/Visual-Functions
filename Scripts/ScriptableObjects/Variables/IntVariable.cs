@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Int")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Int")]
     public class IntVariable : Variable<int>
     {
     }

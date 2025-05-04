@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public static class ReferenceUtility
     {

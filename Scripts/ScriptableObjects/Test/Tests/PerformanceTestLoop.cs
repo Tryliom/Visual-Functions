@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestLoop", menuName = "TryliomFunctions/Test/PerfTests/TestLoop")]
+    [CreateAssetMenu(fileName = "TestLoop", menuName = "VisualFunctions/Test/PerfTests/TestLoop")]
     public class PerformanceTestLoop : PerformanceTest
     {
         public IntReference Loops;

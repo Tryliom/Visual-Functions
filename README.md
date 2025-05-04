@@ -1,4 +1,4 @@
-# Tryliom Functions
+# Visual Functions
 A tool to code small code logic or prototyping in Unity from the editor.
 Designed to be more used by developers since most of the functions are using a code syntax to run the logic.
 

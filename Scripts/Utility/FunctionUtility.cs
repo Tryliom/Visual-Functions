@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [InitializeOnLoad]
     public static class FunctionUtility

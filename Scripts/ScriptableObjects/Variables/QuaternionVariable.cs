@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Quaternion")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Quaternion")]
     public class QuaternionVariable : Variable<Quaternion>
     {
     }

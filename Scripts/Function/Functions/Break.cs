@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [Serializable]
     public class Break : Function

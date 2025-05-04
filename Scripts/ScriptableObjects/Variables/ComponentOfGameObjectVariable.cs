@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/ComponentOfGameObject")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/ComponentOfGameObject")]
     public class ComponentOfGameObjectVariable : Variable<ComponentOfGameObject>
     {
     }

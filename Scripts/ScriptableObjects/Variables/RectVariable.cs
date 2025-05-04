@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Rect")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Rect")]
     public class RectVariable : Variable<Rect>
     {
     }

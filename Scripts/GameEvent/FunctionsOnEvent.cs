@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [Serializable]
     public class FunctionsOnEvent

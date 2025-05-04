@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public static class FormulaCache
     {

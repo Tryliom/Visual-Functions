@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [Serializable]
     public class Variable<TType> : ScriptableObject

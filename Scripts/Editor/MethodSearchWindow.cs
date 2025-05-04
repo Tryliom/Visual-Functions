@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Component = UnityEngine.Component;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public class MethodInfos
     {

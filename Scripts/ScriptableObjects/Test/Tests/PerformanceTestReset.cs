@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestReset", menuName = "TryliomFunctions/Test/PerfTests/TestReset")]
+    [CreateAssetMenu(fileName = "TestReset", menuName = "VisualFunctions/Test/PerfTests/TestReset")]
     public class PerformanceTestReset : PerformanceTest
     {
         public IntReference input;

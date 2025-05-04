@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
      [Serializable]
      public class Reference<TType> : IResettable, IValue<TType>

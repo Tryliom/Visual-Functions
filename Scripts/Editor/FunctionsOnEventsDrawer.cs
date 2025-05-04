@@ -3,7 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [CustomPropertyDrawer(typeof(FunctionsOnEvents))]
     public class FunctionsOnEventsDrawer : PropertyDrawer

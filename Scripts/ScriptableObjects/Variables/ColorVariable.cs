@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Color")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Color")]
     public class ColorVariable : Variable<Color>
     {
     }

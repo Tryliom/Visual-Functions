@@ -9,7 +9,7 @@ public enum LogLevel
     Error
 }
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     [Serializable]
     public class Log : Function

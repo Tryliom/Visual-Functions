@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public abstract class PerformanceTest : ScriptableObject
     {

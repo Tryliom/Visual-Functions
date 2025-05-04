@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     public class FunctionOnUpdate : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
     /**
      * This class is used to store a list of functions that can be invoked.

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TryliomFunctions
+namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "TryliomFunctions/Variables/Bounds")]
+    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Bounds")]
     public class BoundsVariable : Variable<Bounds>
     {
     }
