@@ -94,7 +94,8 @@ namespace TryliomFunctions
         private void AddItemsToMenu(GenericMenu menu, string prefix, IEnumerable<Component> components, SerializedProperty gameObject, SerializedProperty componentProperty)
         {
             var isAddedList = new List<string>();
-            var componentOfGameObject = (ComponentOfGameObject) PropertyDrawerUtility.RetrieveTargetObject(_property);
+            var componentOfGameObject = _property.serializedObject.targetObject is ComponentOfGameObjectVariable comp ?
+                comp.Value : (ComponentOfGameObject) PropertyDrawerUtility.RetrieveTargetObject(_property);
             
             foreach (var component in components)
             {

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeveloperDescription: 
   _value:
-    GameObject: {fileID: 0}
+    GameObject: {fileID: 2427414869671675565, guid: 086d182be403aad4fb45b996d5689228, type: 3}
     Component: {fileID: 0}
   OnValueChanged: {fileID: 0}
