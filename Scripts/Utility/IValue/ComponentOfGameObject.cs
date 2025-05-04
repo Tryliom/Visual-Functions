@@ -81,9 +81,9 @@ namespace TryliomFunctions
                 var actualItem = gameObject.GetComponents<Component>();
                 var children = gameObject.GetComponentsInChildren<Component>().Where(x => !actualItem.Contains(x)).ToArray();
                 
-                AddItemsToMenu(menu, "Parent", parents, gameObjectProperty, componentProperty);
-                AddItemsToMenu(menu, "", actualItem, gameObjectProperty, componentProperty);
-                AddItemsToMenu(menu, gameObject.name, children, gameObjectProperty, componentProperty);
+                AddItemsToMenu(menu, "Parent", parents);
+                AddItemsToMenu(menu, "", actualItem);
+                AddItemsToMenu(menu, gameObject.name, children);
 
                 menu.ShowAsContext();
             }
@@ -91,7 +91,7 @@ namespace TryliomFunctions
             EditorGUI.EndProperty();
         }
         
-        private void AddItemsToMenu(GenericMenu menu, string prefix, IEnumerable<Component> components, SerializedProperty gameObject, SerializedProperty componentProperty)
+        private void AddItemsToMenu(GenericMenu menu, string prefix, IEnumerable<Component> components)
         {
             var isAddedList = new List<string>();
             var componentOfGameObject = _property.serializedObject.targetObject is ComponentOfGameObjectVariable comp ?
@@ -106,7 +106,7 @@ namespace TryliomFunctions
                 {
                     isAddedList.Add(componentName);
 
-                    menu.AddItem(new GUIContent($"{startStr}/Game Object"), !componentProperty.objectReferenceValue, () =>
+                    menu.AddItem(new GUIContent($"{startStr}/Game Object"), !componentOfGameObject.Component, () =>
                     {
                         componentOfGameObject.GameObject = component.gameObject;
                         componentOfGameObject.Component = null;
@@ -114,7 +114,7 @@ namespace TryliomFunctions
                     });
                 }
                 
-                menu.AddItem(new GUIContent($"{startStr}/{ObjectNames.NicifyVariableName(component.GetType().Name)}"), componentProperty.objectReferenceValue == component, () =>
+                menu.AddItem(new GUIContent($"{startStr}/{ObjectNames.NicifyVariableName(component.GetType().Name)}"), componentOfGameObject.Component == component, () =>
                 {
                     componentOfGameObject.GameObject = component.gameObject;
                     componentOfGameObject.Component = component;
