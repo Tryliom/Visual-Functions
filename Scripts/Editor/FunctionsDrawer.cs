@@ -24,23 +24,11 @@ namespace TryliomFunctions
 
         private void Refresh()
         {
-            // Used for game objects
-            if (_targetObject && PrefabUtility.IsPartOfPrefabInstance(_targetObject))
-            {
-                PrefabUtility.RecordPrefabInstancePropertyModifications(_targetObject);
-            }
-
-            if (_property.serializedObject != null)
-            {
-                // The order is important
-                _property.serializedObject.ApplyModifiedProperties();
-                _property.serializedObject.Update();
-            }
-
-            CreateGUI(_property, _content);
-
-            // Used for scriptable objects
-            if (!_targetObject || !PrefabUtility.IsPartOfPrefabInstance(_targetObject)) AssetDatabase.SaveAssets();
+            PropertyDrawerUtility.SaveAndRefresh(
+                _property,
+                _targetObject,
+                () => CreateGUI(_property, _content)
+            );
         }
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
@@ -147,52 +135,8 @@ namespace TryliomFunctions
 
                 return;
             }
-            
-            var targetObject = property.serializedObject.targetObject;
-            var propertyPath = property.propertyPath.Replace(".Array.data[", "[");
-            var pathParts = propertyPath.Split('.');
 
-            object currentObject = targetObject;
-            foreach (var part in pathParts)
-            {
-                if (part.Contains("["))
-                {
-                    var arrayPart = part[..part.IndexOf("[", StringComparison.Ordinal)];
-                    var indexPart = int.Parse(part.Substring(
-                        part.IndexOf("[", StringComparison.Ordinal) + 1,
-                        part.IndexOf("]", StringComparison.Ordinal) - part.IndexOf("[", StringComparison.Ordinal) - 1
-                    ));
-
-                    var field = currentObject.GetType().GetField(arrayPart, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                    if (field == null)
-                    {
-                        Debug.LogError($"Field '{arrayPart}' not found on object of type '{currentObject.GetType().Name}'");
-                        return;
-                    }
-
-                    var array = field.GetValue(currentObject) as IList;
-                    if (array == null)
-                    {
-                        Debug.LogError($"Field '{arrayPart}' is not an array on object of type '{currentObject.GetType().Name}'");
-                        return;
-                    }
-
-                    currentObject = array[indexPart];
-                }
-                else
-                {
-                    var field = currentObject.GetType().GetField(part, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                    if (field == null)
-                    {
-                        Debug.LogError($"Field '{part}' not found on object of type '{currentObject.GetType().Name}'");
-                        return;
-                    }
-
-                    currentObject = field.GetValue(currentObject);
-                }
-            }
-
-            if (currentObject is not Functions functionsInstance)
+            if (PropertyDrawerUtility.RetrieveTargetObject(_property) is not Functions functionsInstance)
             {
                 Debug.LogError("Failed to cast the resolved object to 'Functions'");
                 return;
@@ -282,6 +226,8 @@ namespace TryliomFunctions
             
             if (functionsInstance.AllowGlobalVariables)
             {
+                functionsInstance.ValidateGlobalVariables();
+                
                 var globalValuesFoldout = property.FindPropertyRelative("GlobalValuesFoldoutOpen");
                 var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
                 var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);

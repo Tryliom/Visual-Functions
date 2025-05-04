@@ -704,6 +704,7 @@ namespace TryliomFunctions
                 }
 
                 if (method.IsGenericMethodDefinition && caller.GenericTypes.Count > 0)
+                {
                     try
                     {
                         method = method.MakeGenericMethod(caller.GenericTypes.ToArray());
@@ -713,6 +714,7 @@ namespace TryliomFunctions
                         Debug.LogError($"Failed to apply generic types to method '{caller.Property}' in '{callerType}': {ex.Message}");
                         return null;
                     }
+                }
 
                 var methodParameters = method.GetParameters();
                 for (var i = 0; i < methodParameters.Length; i++)

@@ -12,6 +12,7 @@ namespace TryliomFunctions
     {
         [SerializeReference] public List<Function> FunctionsList = new();
         public List<Field> GlobalVariables = new();
+        
 #if UNITY_EDITOR
         public bool FoldoutOpen = true;
         public bool GlobalValuesFoldoutOpen = true;
@@ -62,6 +63,19 @@ namespace TryliomFunctions
             foreach (var function in FunctionsList)
             {
                 function.EditField(previousName, newName);
+            }
+        }
+        
+        public void ValidateGlobalVariables()
+        {
+            foreach (var variable in GlobalVariables)
+            {
+                variable.SupportedTypes.Clear();
+                
+                foreach (var supportedType in ReferenceUtility.GetAllIValueTypes())
+                {
+                    variable.SupportedTypes.Add(supportedType);
+                }
             }
         }
     }

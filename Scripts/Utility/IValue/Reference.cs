@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -61,7 +63,7 @@ namespace TryliomFunctions
              }
          }
          
-         public Type Type => Value == null ? typeof(TType) : Value.GetType();
+         public Type Type => Value == null ? typeof(TType) : Value.GetType().GetInterfaces().Contains(typeof(IRefType)) ? ((IRefType)Value).Type : typeof(TType);
 
          public IValue Clone()
          {
@@ -211,24 +213,6 @@ namespace TryliomFunctions
     public class Vector3Reference : Reference<Vector3> {}
     
     [Serializable]
-    public class RigidbodyReference : Reference<Rigidbody> {}
-
-    [Serializable]
-    public class Rigidbody2DReference : Reference<Rigidbody2D> {}
-
-    [Serializable]
-    public class ColliderReference : Reference<Collider> {}
-    
-    [Serializable]
-    public class Collider2DReference : Reference<Collider2D> {}
-
-    [Serializable]
-    public class GameObjectReference : Reference<GameObject> {}   
-
-    [Serializable]
-    public class TransformReference : Reference<Transform> {}
-    
-    [Serializable]
     public class ColorReference : Reference<Color> {}
     
     [Serializable]
@@ -245,7 +229,7 @@ namespace TryliomFunctions
     
     [Serializable]
     public class ScriptableObjectReference : Reference<ScriptableObject> {}
-    
+
     [Serializable]
-    public class GameEventDataReference : Reference<GameEventData> {}
+    public class ComponentOfGameObjectReference : Reference<ComponentOfGameObject> {}
 }

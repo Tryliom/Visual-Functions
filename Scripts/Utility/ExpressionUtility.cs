@@ -191,6 +191,10 @@ namespace TryliomFunctions
                         continue;
                     }
                     case IValue value:
+                        if (value.Value is IRefValue refValue)
+                        {
+                            return refValue.RefValue;
+                        }
                         return value.Value;
                     case AccessorCaller caller:
                         var extractValue = caller.Result.Value;

@@ -7,7 +7,7 @@ namespace TryliomFunctions
         [Header("References")]
         [SerializeField]
         [Tooltip("The variable that will store the trigger GameObject [Optional]")]
-        private GameObjectVariable _triggerVariable;
+        private ComponentOfGameObjectVariable _triggerVariable;
 
         [Header("Events")] [SerializeField] private Functions _onEnter;
 
@@ -18,7 +18,7 @@ namespace TryliomFunctions
         {
             if (_onEnter.FunctionsList.Count == 0) return;
 
-            if (_triggerVariable) _triggerVariable.Value = other.gameObject;
+            if (_triggerVariable) _triggerVariable.Value.GameObject = other.gameObject;
 
             _onEnter.Invoke();
         }
@@ -27,7 +27,7 @@ namespace TryliomFunctions
         {
             if (_onExit.FunctionsList.Count == 0) return;
 
-            if (_triggerVariable) _triggerVariable.Value = other.gameObject;
+            if (_triggerVariable) _triggerVariable.Value.GameObject = other.gameObject;
 
             _onExit.Invoke();
         }
@@ -36,7 +36,7 @@ namespace TryliomFunctions
         {
             if (_onStay.FunctionsList.Count == 0) return;
 
-            if (_triggerVariable) _triggerVariable.Value = other.gameObject;
+            if (_triggerVariable) _triggerVariable.Value.GameObject = other.gameObject;
 
             _onStay.Invoke();
         }

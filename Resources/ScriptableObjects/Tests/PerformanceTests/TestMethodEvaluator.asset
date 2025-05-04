@@ -16,34 +16,20 @@ MonoBehaviour:
     FunctionsList: []
     GlobalVariables: []
     FoldoutOpen: 0
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
   FunctionsToTest:
     FunctionsList:
     - rid: 4824914933113421902
     GlobalVariables: []
     FoldoutOpen: 1
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
   Input: {fileID: 11400000, guid: fbd48f6d7cc988c468e9181969c6cdd3, type: 2}
   Result: {fileID: 11400000, guid: ce9dc375b48b3a54aac47a9ec8eca85a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 797582488812126748
-      type: {class: Formula, ns: , asm: TryliomFunctions}
-      data:
-        FormulaValue: 'Result = Input.CompareTag("Player") ? "A" : "B"'
-    - rid: 797582488812126749
-      type: {class: StringReference, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 
-        Variable: {fileID: 11400000, guid: ce9dc375b48b3a54aac47a9ec8eca85a, type: 2}
-        DisplayedInInspector: 0
-    - rid: 797582488812126750
-      type: {class: GameObjectReference, ns: TryliomFunctions, asm: TryliomFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: {fileID: 0}
-        Variable: {fileID: 11400000, guid: fbd48f6d7cc988c468e9181969c6cdd3, type: 2}
-        DisplayedInInspector: 0
     - rid: 4824914933113421902
       type: {class: Evaluate, ns: TryliomFunctions, asm: TryliomFunctions}
       data:
@@ -52,7 +38,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 797582488812126748
+            rid: 7793651879083246167
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -60,11 +46,15 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         - FieldName: Result
           Value:
-            rid: 797582488812126749
+            rid: 7793651879083246168
           SupportedTypes:
           - m_Name: BoolReference
             m_AssemblyQualifiedName: TryliomFunctions.BoolReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ComponentOfGameObjectReference
+            m_AssemblyQualifiedName: TryliomFunctions.ComponentOfGameObjectReference,
+              TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: FloatReference
             m_AssemblyQualifiedName: TryliomFunctions.FloatReference, TryliomFunctions,
@@ -76,6 +66,14 @@ MonoBehaviour:
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: StringReference
             m_AssemblyQualifiedName: TryliomFunctions.StringReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: AnimationCurveReference
+            m_AssemblyQualifiedName: TryliomFunctions.AnimationCurveReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: BoundsReference
+            m_AssemblyQualifiedName: TryliomFunctions.BoundsReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: Collider2DReference
@@ -98,6 +96,10 @@ MonoBehaviour:
             m_AssemblyQualifiedName: TryliomFunctions.QuaternionReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: RectReference
+            m_AssemblyQualifiedName: TryliomFunctions.RectReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: Rigidbody2DReference
             m_AssemblyQualifiedName: TryliomFunctions.Rigidbody2DReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -105,6 +107,10 @@ MonoBehaviour:
           - m_Name: RigidbodyReference
             m_AssemblyQualifiedName: TryliomFunctions.RigidbodyReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ScriptableObjectReference
+            m_AssemblyQualifiedName: TryliomFunctions.ScriptableObjectReference,
+              TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: TransformReference
             m_AssemblyQualifiedName: TryliomFunctions.TransformReference, TryliomFunctions,
@@ -132,11 +138,15 @@ MonoBehaviour:
           AcceptAnyMethod: 0
         - FieldName: Input
           Value:
-            rid: 797582488812126750
+            rid: 7793651879083246170
           SupportedTypes:
           - m_Name: BoolReference
             m_AssemblyQualifiedName: TryliomFunctions.BoolReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ComponentOfGameObjectReference
+            m_AssemblyQualifiedName: TryliomFunctions.ComponentOfGameObjectReference,
+              TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: FloatReference
             m_AssemblyQualifiedName: TryliomFunctions.FloatReference, TryliomFunctions,
@@ -148,6 +158,14 @@ MonoBehaviour:
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: StringReference
             m_AssemblyQualifiedName: TryliomFunctions.StringReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: AnimationCurveReference
+            m_AssemblyQualifiedName: TryliomFunctions.AnimationCurveReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: BoundsReference
+            m_AssemblyQualifiedName: TryliomFunctions.BoundsReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: Collider2DReference
@@ -170,6 +188,10 @@ MonoBehaviour:
             m_AssemblyQualifiedName: TryliomFunctions.QuaternionReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: RectReference
+            m_AssemblyQualifiedName: TryliomFunctions.RectReference, TryliomFunctions,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: Rigidbody2DReference
             m_AssemblyQualifiedName: TryliomFunctions.Rigidbody2DReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -177,6 +199,10 @@ MonoBehaviour:
           - m_Name: RigidbodyReference
             m_AssemblyQualifiedName: TryliomFunctions.RigidbodyReference, TryliomFunctions,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          - m_Name: ScriptableObjectReference
+            m_AssemblyQualifiedName: TryliomFunctions.ScriptableObjectReference,
+              TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             m_AssemblyName: TryliomFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           - m_Name: TransformReference
             m_AssemblyQualifiedName: TryliomFunctions.TransformReference, TryliomFunctions,
@@ -216,3 +242,23 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
+    - rid: 7793651879083246167
+      type: {class: Formula, ns: , asm: TryliomFunctions}
+      data:
+        FormulaValue: 'Result = Input.CompareTag("Player") ? "A" : "B"'
+    - rid: 7793651879083246168
+      type: {class: StringReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 
+        Variable: {fileID: 11400000, guid: ce9dc375b48b3a54aac47a9ec8eca85a, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7793651879083246170
+      type: {class: ComponentOfGameObjectReference, ns: TryliomFunctions, asm: TryliomFunctions}
+      data:
+        UseLocal: 0
+        LocalValue:
+          GameObject: {fileID: 0}
+          Component: {fileID: 0}
+        Variable: {fileID: 11400000, guid: f699fdefd4ea1964ba89d35d2fac6116, type: 2}
+        DisplayedInInspector: 0
