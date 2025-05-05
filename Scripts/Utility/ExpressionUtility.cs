@@ -241,5 +241,36 @@ namespace VisualFunctions
 
             return !IsReservedWord(name);
         }
+
+        public static string GetBetterTypeName(Type type)
+        {
+            if (type == null) return "null";
+            if (type == typeof(bool)) return "bool";
+            if (type == typeof(int)) return "int";
+            if (type == typeof(float)) return "float";
+            if (type == typeof(double)) return "double";
+            if (type == typeof(string)) return "string";
+            if (type == typeof(long)) return "long";
+            if (type == typeof(short)) return "short";
+            if (type == typeof(byte)) return "byte";
+            if (type == typeof(char)) return "char";
+            if (type == typeof(decimal)) return "decimal";
+            
+            if (!type.IsGenericType) return type.Name;
+            
+            var genericType = type.GetGenericTypeDefinition();
+                
+            if (genericType == typeof(List<>))
+            {
+                return $"List<{type.Name}>";
+            }
+                
+            if (genericType == typeof(Dictionary<,>))
+            {
+                return $"Dictionary<{type.Name}>";
+            }
+
+            return type.Name;
+        }
     }
 }

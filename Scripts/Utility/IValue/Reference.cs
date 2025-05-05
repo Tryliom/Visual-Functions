@@ -172,7 +172,7 @@ namespace VisualFunctions
             }
             else
             {
-                EditorGUI.PropertyField(position, useLocal.boolValue ? localValue : variable, GUIContent.none);
+                EditorGUI.PropertyField(position, useLocal.boolValue ? localValue : variable, GUIContent.none, true);
             }
 
             EditorGUI.indentLevel = indent;
@@ -182,14 +182,33 @@ namespace VisualFunctions
         {
             var useLocal = property.FindPropertyRelative("UseLocal");
             var localValue = property.FindPropertyRelative("LocalValue");
+            var variable = property.FindPropertyRelative("Variable");
+            var displayedInInspector = property.FindPropertyRelative("DisplayedInInspector");
 
-            if (useLocal.boolValue && localValue.propertyType == SerializedPropertyType.String)
+            float height = 0;
+
+            if (useLocal.boolValue)
             {
-                float textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(localValue.stringValue), EditorGUIUtility.currentViewWidth);
-                return textHeight;
+                if (localValue.propertyType == SerializedPropertyType.String)
+                {
+                    float textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(localValue.stringValue), EditorGUIUtility.currentViewWidth);
+                    height += textHeight;
+                }
+                else
+                {
+                    height += EditorGUI.GetPropertyHeight(localValue, true);
+                }
             }
-            
-            return base.GetPropertyHeight(property, label);
+            else if (variable.objectReferenceValue != null && displayedInInspector.boolValue)
+            {
+                height += EditorGUIUtility.singleLineHeight;
+            }
+            else
+            {
+                height += EditorGUI.GetPropertyHeight(useLocal.boolValue ? localValue : variable, true);
+            }
+
+            return height;
         }
     }
 #endif
@@ -232,4 +251,7 @@ namespace VisualFunctions
 
     [Serializable]
     public class ComponentOfGameObjectReference : Reference<ComponentOfGameObject> {}
+    
+    [Serializable]
+    public class ListOfReference : Reference<ListOf> {}
 }
