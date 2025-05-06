@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using log4net.Filter;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace VisualFunctions
 {
@@ -23,22 +20,32 @@ namespace VisualFunctions
             Operators = operators.ToCharArray();
         }
         
-        public static readonly List<Type> PrimitiveTypes = new()
+        public static readonly List<Type> PopularTypes = new()
         {
             typeof(int), typeof(float), typeof(double), typeof(bool), typeof(string),
-            typeof(long), typeof(short), typeof(byte), typeof(char), typeof(decimal)
+            typeof(long), typeof(short), typeof(byte), typeof(char),
+            typeof(Vector2), typeof(Vector3), typeof(Vector4),
+            typeof(Quaternion), typeof(Color), typeof(Rect),
+            typeof(AnimationCurve), typeof(ScriptableObject), typeof(GameObject),
+        };
+
+        // List of types displayed first when choosing a reference type
+        public static readonly List<Type> SupportedTypes = new()
+        {
+            typeof(AnyTypeReference), typeof(ListOfReference), typeof(ComponentOfGameObjectReference),
+            typeof(CustomValue), typeof(Formula), typeof(ScriptableObjectReference)
         };
         
         private static IEnumerable<Type> SortedTypes => AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(t => 
                 !t.IsNested && !t.IsGenericType && !t.IsAbstract && !t.IsSpecialName && !t.IsPointer && !t.IsInterface &&
-                !t.IsNotPublic && t.GetConstructors().Length > 0 && t.IsSerializable &&
+                !t.IsNotPublic && t.GetConstructors().Length > 0 &&
                 (t.IsClass || t.IsEnum || t.IsValueType) &&
                 (t.GetProperties().Length > 0 || t.GetFields().Length > 0 || t.GetMethods().Length > 0) &&
-                !t.IsSubclassOf(typeof(Exception))
+                !t.IsSubclassOf(typeof(Exception)) && (t.Namespace == null || !t.Namespace.Contains("UnityEditor"))
             )
-            .Except(PrimitiveTypes);
+            .Except(PopularTypes);
         
         public static List<Type> UnityTypes => SortedTypes
             .Where(t => t.IsSubclassOf(typeof(UnityEngine.Object)))

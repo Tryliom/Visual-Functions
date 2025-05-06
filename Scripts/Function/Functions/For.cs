@@ -8,7 +8,7 @@ namespace VisualFunctions
     public class For : Function
     {
         public static readonly string Name = "For";
-        public static readonly string Description = "It will execute the functions inside the loop a number of times. Index is the current loop index";
+        public static readonly string Description = "It will execute the functions inside the loop a number of times.\nIndex is the current loop index, it's reset to 0 at the start of the loop.";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
         
         public Functions FunctionsToLoop = new Functions().DisableGlobalVariables();

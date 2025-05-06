@@ -58,11 +58,6 @@ namespace VisualFunctions
                 .ToList();
         }
 
-        public static Type GetReferenceType(Type type)
-        {
-            return ReferenceTypes.GetValueOrDefault(type);
-        }
-
         public static List<Type> GetAllIValueTypes()
         {
             return _iValueTypes;

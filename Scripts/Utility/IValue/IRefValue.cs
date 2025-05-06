@@ -5,6 +5,6 @@
      */
     public interface IRefValue
     {
-        public object RefValue { get; }
+        public object RefValue { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace VisualFunctions
      */
     public interface IRefType
     {
-        Type Type { get; }
+        public Type Type { get; }
     }
 }

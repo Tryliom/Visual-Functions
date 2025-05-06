@@ -9,60 +9,60 @@ using UnityEditor;
 namespace VisualFunctions
 {
     [Serializable]
-    public class ListOf<TType> : IValue<List<TType>>
+    public class AnyType<TType> : IValue<TType>
     {
-        public List<TType> ListValue = new ();
+        public TType TypeValue;
         
         object IValue.Value
         {
             get => Value;
-            set => Value = (List<TType>) value;
+            set => Value = (TType) value;
         }
 
-        public List<TType> Value
+        public TType Value
         {
-            get => ListValue;
-            set => ListValue = value;
+            get => TypeValue;
+            set => TypeValue = value;
         }
-        public Type Type => typeof(List<TType>);
-        
+        public Type Type => typeof(TType);
+
         public IValue Clone()
         {
-            return new ListOf<TType>
+            return new AnyType<TType>
             {
-                Value = new List<TType>(Value)
+                Value = Value
             };
         }
     }
     
     [Serializable]
-    public class ListOf : IRefType, IRefValue
+    public class AnyType : IRefType, IRefValue
     {
-        [SerializeReference] public IValue ListValue;
+        [SerializeReference] public IValue TypeValue;
         
-        public Type Type => ListValue != null ? ListValue.Type : typeof(ListOf);
-        
+        public Type Type => TypeValue != null ? TypeValue.Type : typeof(AnyType);
+
         public object RefValue
         {
-            get => ListValue?.Value;
-            set => ListValue.Value = value;
+            get => TypeValue?.Value;
+            set => TypeValue.Value = value;
         }
         
-        public void SetList(Type type)
+        public void SetValue(Type type)
         {
-            var listType = typeof(ListOf<>).MakeGenericType(type);
+            var listType = typeof(AnyType<>).MakeGenericType(type);
             var listValue = Activator.CreateInstance(listType);
-            ListValue = (IValue) listValue;
+            TypeValue = (IValue) listValue;
         }
     }
     
 #if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(ListOf))]
-    public class ListOfDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AnyType))]
+    public class AnyTypeDrawer : PropertyDrawer
     {
         private SerializedProperty _property;
         private GameObject _targetObject;
-        private ListOf _listOf;
+        private AnyType _anyType;
         
         private void Refresh()
         {
@@ -75,11 +75,11 @@ namespace VisualFunctions
         {
             _property = property;
             _targetObject = Selection.activeObject as GameObject;
-            _listOf = _property.serializedObject.targetObject is ListOfVariable comp ? comp.Value : (ListOf) PropertyDrawerUtility.RetrieveTargetObject(_property);
+            _anyType = _property.serializedObject.targetObject is AnyTypeVariable comp ? comp.Value : (AnyType) PropertyDrawerUtility.RetrieveTargetObject(_property);
             
-            var isListDefined = _listOf.ListValue is not null;
-            var buttonText = isListDefined ? "..." : "Select Type";
-            var buttonWidth = isListDefined ? 20 : buttonText.Length * 8f;
+            var isDefined = _anyType.TypeValue is not null;
+            var buttonText = isDefined ? "..." : "Select Type";
+            var buttonWidth = isDefined ? 20 : buttonText.Length * 8f;
 
             position.height = EditorGUIUtility.singleLineHeight;
             
@@ -94,26 +94,26 @@ namespace VisualFunctions
                 menu.ShowAsContext();
             }
 
-            if (isListDefined)
+            if (isDefined)
             {
                 position.x += buttonWidth + 5f;
                 position.width -= buttonWidth + 5f;
                 
-                var listValue = _property.FindPropertyRelative("ListValue");
+                var listValue = _property.FindPropertyRelative("TypeValue");
                 EditorGUI.PropertyField(position, listValue, true);
             }
         }
         
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var listValue = property.FindPropertyRelative("ListValue");
+            var listValue = property.FindPropertyRelative("TypeValue");
 
             return EditorGUI.GetPropertyHeight(listValue, true);
         }
 
         private void AddItemsToMenu(GenericMenu menu, string prefix, List<Type> types)
         {
-            if (_listOf.ListValue == null)
+            if (_anyType.TypeValue == null)
             {
                 menu.AddItem(new GUIContent("None"), true, () => {});
             }
@@ -131,41 +131,43 @@ namespace VisualFunctions
                 
                 startStr += name;
                 
-                menu.AddItem(new GUIContent(startStr), _listOf.ListValue?.Type == type, () =>
+                menu.AddItem(new GUIContent(startStr), _anyType.TypeValue?.Type == type, () =>
                 {
-                    _listOf.SetList(type);
+                    _anyType.SetValue(type);
                     Refresh();
                 });
             }
         }
     }
     
-    [CustomPropertyDrawer(typeof(ListOf<>))]
-    public class ListOfGenericDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AnyType<>))]
+    public class AnyTypeGenericDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var listValue = property.FindPropertyRelative("ListValue");
-            
-            if (listValue == null)
+            var value = property.FindPropertyRelative("TypeValue");
+
+            if (value == null)
             {
-                EditorGUI.LabelField(position, "No GUI available for this type");
+                GUI.Label(position, "No GUI available for this type");
                 return;
             }
             
-            EditorGUI.PropertyField(position, listValue, new GUIContent("List of " + ObjectNames.NicifyVariableName(listValue.arrayElementType).Replace("P Ptr$", "")));
+            var name = ObjectNames.NicifyVariableName(value.type).Replace("P Ptr$", "");
+            
+            GUI.Label(position, new GUIContent(name));
+            
+            position.x += name.Length * 8f + 5f;
+            position.width -= name.Length * 8f + 5f;
+            
+            EditorGUI.PropertyField(position, value, new GUIContent(""));
         }
         
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var listValue = property.FindPropertyRelative("ListValue");
-
-            return listValue switch
-            {
-                null => EditorGUIUtility.singleLineHeight,
-                { isExpanded: true } => EditorGUI.GetPropertyHeight(listValue, true),
-                _ => EditorGUIUtility.singleLineHeight
-            };
+            var value = property.FindPropertyRelative("TypeValue");
+            
+            return value == null ? EditorGUIUtility.singleLineHeight : EditorGUI.GetPropertyHeight(value, true);
         }
     }
 #endif

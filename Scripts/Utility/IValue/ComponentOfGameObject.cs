@@ -30,6 +30,20 @@ namespace VisualFunctions
                 
                 return Component ? Component : GameObject;
             }
+            set
+            {
+                switch (value)
+                {
+                    case GameObject gameObject:
+                        GameObject = gameObject;
+                        Component = null;
+                        break;
+                    case Component component:
+                        GameObject = component.gameObject;
+                        Component = component;
+                        break;
+                }
+            }
         }
     }
     

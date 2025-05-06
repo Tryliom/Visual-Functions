@@ -75,7 +75,7 @@ namespace VisualFunctions
                 
                 if (instanceType.IsValueType && !instanceType.IsGenericType)
                 {
-                    var tempValue = Instance.Value;
+                    var tempValue = Instance.Value is IRefValue refValue ? refValue.RefValue : Instance.Value;
                     propertyInfo.SetValue(tempValue, value);
                     Instance.Value = tempValue;
                 }
@@ -93,7 +93,7 @@ namespace VisualFunctions
                 
                 if (instanceType.IsValueType && !instanceType.IsGenericType)
                 {
-                    var tempValue = Instance.Value;
+                    var tempValue = Instance.Value is IRefValue refValue ? refValue.RefValue : Instance.Value;
                     fieldInfo.SetValue(tempValue, value);
                     Instance.Value = tempValue;
                 }

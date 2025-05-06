@@ -14,11 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnStart:
     FunctionsList: []
+    GlobalVariables: []
     FoldoutOpen: 1
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
   FunctionsToTest:
     FunctionsList:
     - rid: 7936453624402018862
+    GlobalVariables: []
     FoldoutOpen: 1
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
   Loops:
     UseLocal: 0
     LocalValue: 0
@@ -32,6 +38,20 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 7793651929897238652
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: f16d8717e3b865c47919ccb432a708c7, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7793651929897238653
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: c78638c39a026704c8d8892498b6a0e2, type: 2}
+        DisplayedInInspector: 0
     - rid: 7936453624402018862
       type: {class: For, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -40,15 +60,17 @@ MonoBehaviour:
         Inputs:
         - FieldName: Loops
           Value:
-            rid: 7936453624402018863
+            rid: 7793651929897238652
           SupportedTypes: []
+          AllowRename: 1
           InEdition: 0
           EditValue: 
           AcceptAnyMethod: 0
         - FieldName: Index
           Value:
-            rid: 7936453624402018864
+            rid: 7793651929897238653
           SupportedTypes: []
+          AllowRename: 1
           InEdition: 0
           EditValue: 
           AcceptAnyMethod: 0
@@ -69,18 +91,7 @@ MonoBehaviour:
           AllowVoidMethods: 0
         FunctionsToLoop:
           FunctionsList: []
+          GlobalVariables: []
           FoldoutOpen: 1
-    - rid: 7936453624402018863
-      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: f16d8717e3b865c47919ccb432a708c7, type: 2}
-        DisplayedInInspector: 0
-    - rid: 7936453624402018864
-      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: c78638c39a026704c8d8892498b6a0e2, type: 2}
-        DisplayedInInspector: 0
+          GlobalValuesFoldoutOpen: 1
+          AllowGlobalVariables: 0

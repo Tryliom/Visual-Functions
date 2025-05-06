@@ -21,6 +21,10 @@ MonoBehaviour:
       Value:
         rid: 7793651879083245722
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -34,7 +38,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -45,26 +53,6 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Collider2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Collider2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColliderReference
-        m_AssemblyQualifiedName: VisualFunctions.ColliderReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: GameObjectReference
-        m_AssemblyQualifiedName: VisualFunctions.GameObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
         m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -73,20 +61,8 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Rigidbody2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Rigidbody2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: RigidbodyReference
-        m_AssemblyQualifiedName: VisualFunctions.RigidbodyReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: ScriptableObjectReference
         m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: TransformReference
-        m_AssemblyQualifiedName: VisualFunctions.TransformReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector2Reference
@@ -102,8 +78,8 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -113,6 +89,10 @@ MonoBehaviour:
       Value:
         rid: 7793651879083245723
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -126,7 +106,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -137,26 +121,6 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Collider2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Collider2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColliderReference
-        m_AssemblyQualifiedName: VisualFunctions.ColliderReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: GameObjectReference
-        m_AssemblyQualifiedName: VisualFunctions.GameObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
         m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -165,20 +129,8 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Rigidbody2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Rigidbody2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: RigidbodyReference
-        m_AssemblyQualifiedName: VisualFunctions.RigidbodyReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: ScriptableObjectReference
         m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: TransformReference
-        m_AssemblyQualifiedName: VisualFunctions.TransformReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector2Reference
@@ -194,8 +146,8 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -205,6 +157,10 @@ MonoBehaviour:
       Value:
         rid: 7793651879083245724
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -218,7 +174,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -229,26 +189,6 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Collider2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Collider2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColliderReference
-        m_AssemblyQualifiedName: VisualFunctions.ColliderReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: GameObjectReference
-        m_AssemblyQualifiedName: VisualFunctions.GameObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
         m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -257,20 +197,8 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Rigidbody2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Rigidbody2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: RigidbodyReference
-        m_AssemblyQualifiedName: VisualFunctions.RigidbodyReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: ScriptableObjectReference
         m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: TransformReference
-        m_AssemblyQualifiedName: VisualFunctions.TransformReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector2Reference
@@ -286,8 +214,8 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -297,6 +225,10 @@ MonoBehaviour:
       Value:
         rid: 7793651879083245725
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -310,7 +242,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -321,26 +257,6 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Collider2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Collider2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColliderReference
-        m_AssemblyQualifiedName: VisualFunctions.ColliderReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: GameObjectReference
-        m_AssemblyQualifiedName: VisualFunctions.GameObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
         m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -349,20 +265,8 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Rigidbody2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Rigidbody2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: RigidbodyReference
-        m_AssemblyQualifiedName: VisualFunctions.RigidbodyReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: ScriptableObjectReference
         m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: TransformReference
-        m_AssemblyQualifiedName: VisualFunctions.TransformReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector2Reference
@@ -378,8 +282,8 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -389,6 +293,10 @@ MonoBehaviour:
       Value:
         rid: 4824914975934382188
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -402,7 +310,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -413,26 +325,6 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Collider2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Collider2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColliderReference
-        m_AssemblyQualifiedName: VisualFunctions.ColliderReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: GameObjectReference
-        m_AssemblyQualifiedName: VisualFunctions.GameObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
         m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -441,20 +333,8 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Rigidbody2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Rigidbody2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: RigidbodyReference
-        m_AssemblyQualifiedName: VisualFunctions.RigidbodyReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: ScriptableObjectReference
         m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: TransformReference
-        m_AssemblyQualifiedName: VisualFunctions.TransformReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector2Reference
@@ -466,12 +346,12 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
-        m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -479,8 +359,12 @@ MonoBehaviour:
       AcceptAnyMethod: 0
     - FieldName: Vec
       Value:
-        rid: 4824914975934382189
+        rid: 7793651926141240174
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -494,7 +378,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -505,26 +393,6 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Collider2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Collider2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColliderReference
-        m_AssemblyQualifiedName: VisualFunctions.ColliderReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: GameObjectReference
-        m_AssemblyQualifiedName: VisualFunctions.GameObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
         m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -533,20 +401,8 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: Rigidbody2DReference
-        m_AssemblyQualifiedName: VisualFunctions.Rigidbody2DReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: RigidbodyReference
-        m_AssemblyQualifiedName: VisualFunctions.RigidbodyReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: ScriptableObjectReference
         m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: TransformReference
-        m_AssemblyQualifiedName: VisualFunctions.TransformReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector2Reference
@@ -558,12 +414,12 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
-        m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -583,7 +439,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651879083246144
+            rid: 7793651926141240306
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -608,13 +464,6 @@ MonoBehaviour:
       data:
         Formula: 
         RecalculateOnUpdate: 0
-    - rid: 4824914975934382189
-      type: {class: Vector2Reference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: {x: 2.2476654, y: 10}
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
     - rid: 4824914975934382190
       type: {class: Expect, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -623,7 +472,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651879083246145
+            rid: 7793651926141240307
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -679,7 +528,20 @@ MonoBehaviour:
           Component: {fileID: 982941145245120881, guid: e53e78561697d6a4c90f40c2bc9154d8, type: 3}
         Variable: {fileID: 0}
         DisplayedInInspector: 0
-    - rid: 7793651879083246144
+    - rid: 7793651926141240174
+      type: {class: AnyTypeReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 1
+        LocalValue:
+          TypeValue:
+            rid: 7793651926141240175
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0
+    - rid: 7793651926141240175
+      type: {class: 'AnyType`1[[UnityEngine.Vector2, UnityEngine.CoreModule]]', ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        TypeValue: {x: 0, y: 0}
+    - rid: 7793651926141240306
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Go.GetComponent<Transform>() == Transf;
@@ -697,7 +559,7 @@ MonoBehaviour:
 
           t.x
           == 3 && t.y == 3 && t.z == 3;'
-    - rid: 7793651879083246145
+    - rid: 7793651926141240307
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Vec.x = 7; Vec.y = -3;

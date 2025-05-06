@@ -15,19 +15,15 @@ MonoBehaviour:
   OnStart:
     FunctionsList:
     - rid: 4824914975934382159
-    GlobalVariables: []
-    FoldoutOpen: 0
-    GlobalValuesFoldoutOpen: 1
-    AllowGlobalVariables: 1
-  FunctionsToTest:
-    FunctionsList:
-    - rid: 7936453624402018842
-    - rid: 4824914933113421891
     GlobalVariables:
-    - FieldName: A
+    - FieldName: a
       Value:
-        rid: 4824914975934382153
+        rid: 7793651929897238647
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -41,7 +37,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -50,14 +50,6 @@ MonoBehaviour:
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: AnimationCurveReference
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
@@ -81,12 +73,156 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
-        m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      AllowRename: 0
+      InEdition: 0
+      EditValue: 
+      AcceptAnyMethod: 0
+    - FieldName: b
+      Value:
+        rid: 7793651929897238648
+      SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: BoolReference
+        m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ComponentOfGameObjectReference
+        m_AssemblyQualifiedName: VisualFunctions.ComponentOfGameObjectReference,
+          VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: FloatReference
+        m_AssemblyQualifiedName: VisualFunctions.FloatReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: IntReference
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: StringReference
+        m_AssemblyQualifiedName: VisualFunctions.StringReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: AnimationCurveReference
+        m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: QuaternionReference
+        m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: RectReference
+        m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ScriptableObjectReference
+        m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Vector2Reference
+        m_AssemblyQualifiedName: VisualFunctions.Vector2Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Vector3Reference
+        m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomValue
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Formula
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      AllowRename: 0
+      InEdition: 0
+      EditValue: 
+      AcceptAnyMethod: 0
+    FoldoutOpen: 0
+    GlobalValuesFoldoutOpen: 1
+    AllowGlobalVariables: 1
+  FunctionsToTest:
+    FunctionsList:
+    - rid: 7793651929897238619
+    - rid: 4824914933113421891
+    GlobalVariables:
+    - FieldName: A
+      Value:
+        rid: 7793651929897238628
+      SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: BoolReference
+        m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ComponentOfGameObjectReference
+        m_AssemblyQualifiedName: VisualFunctions.ComponentOfGameObjectReference,
+          VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: FloatReference
+        m_AssemblyQualifiedName: VisualFunctions.FloatReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: IntReference
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: StringReference
+        m_AssemblyQualifiedName: VisualFunctions.StringReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: AnimationCurveReference
+        m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: QuaternionReference
+        m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: RectReference
+        m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ScriptableObjectReference
+        m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Vector2Reference
+        m_AssemblyQualifiedName: VisualFunctions.Vector2Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Vector3Reference
+        m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomValue
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Formula
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -94,8 +230,12 @@ MonoBehaviour:
       AcceptAnyMethod: 0
     - FieldName: B
       Value:
-        rid: 4824914975934382154
+        rid: 7793651929897238630
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -109,7 +249,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -118,14 +262,6 @@ MonoBehaviour:
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: AnimationCurveReference
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
@@ -149,12 +285,12 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
-        m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -162,8 +298,12 @@ MonoBehaviour:
       AcceptAnyMethod: 0
     - FieldName: MaxNumber
       Value:
-        rid: 4824914975934382156
+        rid: 7793651929897238631
       SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: BoolReference
         m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -177,7 +317,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: IntReference
-        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: StringReference
@@ -186,14 +330,6 @@ MonoBehaviour:
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: AnimationCurveReference
         m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: BoundsReference
-        m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      - m_Name: ColorReference
-        m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: QuaternionReference
@@ -217,12 +353,12 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
-        m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Formula
-        m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
       InEdition: 0
@@ -233,18 +369,18 @@ MonoBehaviour:
     AllowGlobalVariables: 1
   MaxNumberCondition:
     UseLocal: 0
-    LocalValue: 0
-    Variable: {fileID: 11400000, guid: 5170cfee000eda949b60fd94f20abf6a, type: 2}
+    LocalValue: 50
+    Variable: {fileID: 11400000, guid: a8b366a0fd9c4674ea87a9b13cf90a0a, type: 2}
     DisplayedInInspector: 0
   A:
     UseLocal: 0
     LocalValue: 0
-    Variable: {fileID: 11400000, guid: 77323559fe9535c4ca2e6e209d190ff7, type: 2}
+    Variable: {fileID: 11400000, guid: b843d27d0151bd348a2646e458d2ebdf, type: 2}
     DisplayedInInspector: 0
   B:
     UseLocal: 0
-    LocalValue: 0
-    Variable: {fileID: 11400000, guid: 0938dd836cd377f4b89948bbaba1d30c, type: 2}
+    LocalValue: 5
+    Variable: {fileID: 11400000, guid: cc49952ac7b9dbb408231ab8cae3461b, type: 2}
     DisplayedInInspector: 0
   references:
     version: 2
@@ -257,7 +393,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793651881821864254
+            rid: 7793651929897238645
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -277,55 +413,6 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
-    - rid: 4824914933113421895
-      type: {class: Evaluate, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FoldoutOpen: 1
-        Enabled: 1
-        Inputs:
-        - FieldName: Formula
-          Value:
-            rid: 7793651881821864255
-          SupportedTypes: []
-          AllowRename: 0
-          InEdition: 0
-          EditValue: 
-          AcceptAnyMethod: 1
-        Outputs: []
-        EditableAttributes: []
-        AllowAddInputs: 1
-        FunctionInputSettings:
-          SupportedTypes: []
-          PrefixName: 
-          CanCallMethods: 1
-          AllowVoidMethods: 1
-        AllowAddOutputs: 0
-        FunctionOutputSettings:
-          SupportedTypes: []
-          PrefixName: 
-          CanCallMethods: 0
-          AllowVoidMethods: 0
-    - rid: 4824914975934382153
-      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: 77323559fe9535c4ca2e6e209d190ff7, type: 2}
-        DisplayedInInspector: 0
-    - rid: 4824914975934382154
-      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: 0938dd836cd377f4b89948bbaba1d30c, type: 2}
-        DisplayedInInspector: 0
-    - rid: 4824914975934382156
-      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: 5170cfee000eda949b60fd94f20abf6a, type: 2}
-        DisplayedInInspector: 0
     - rid: 4824914975934382159
       type: {class: Evaluate, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -334,148 +421,12 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793651881821864250
+            rid: 7793651929897238643
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
           EditValue: 
           AcceptAnyMethod: 1
-        - FieldName: A
-          Value:
-            rid: 7793651881821864251
-          SupportedTypes:
-          - m_Name: BoolReference
-            m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ComponentOfGameObjectReference
-            m_AssemblyQualifiedName: VisualFunctions.ComponentOfGameObjectReference,
-              VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: FloatReference
-            m_AssemblyQualifiedName: VisualFunctions.FloatReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: IntReference
-            m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: StringReference
-            m_AssemblyQualifiedName: VisualFunctions.StringReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: AnimationCurveReference
-            m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: BoundsReference
-            m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ColorReference
-            m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: QuaternionReference
-            m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: RectReference
-            m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ScriptableObjectReference
-            m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference,
-              VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Vector2Reference
-            m_AssemblyQualifiedName: VisualFunctions.Vector2Reference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Vector3Reference
-            m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: CustomValue
-            m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Formula
-            m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          AllowRename: 0
-          InEdition: 0
-          EditValue: 
-          AcceptAnyMethod: 0
-        - FieldName: B
-          Value:
-            rid: 7793651881821864252
-          SupportedTypes:
-          - m_Name: BoolReference
-            m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ComponentOfGameObjectReference
-            m_AssemblyQualifiedName: VisualFunctions.ComponentOfGameObjectReference,
-              VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: FloatReference
-            m_AssemblyQualifiedName: VisualFunctions.FloatReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: IntReference
-            m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: StringReference
-            m_AssemblyQualifiedName: VisualFunctions.StringReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: AnimationCurveReference
-            m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: BoundsReference
-            m_AssemblyQualifiedName: VisualFunctions.BoundsReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ColorReference
-            m_AssemblyQualifiedName: VisualFunctions.ColorReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: QuaternionReference
-            m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: RectReference
-            m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: ScriptableObjectReference
-            m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference,
-              VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Vector2Reference
-            m_AssemblyQualifiedName: VisualFunctions.Vector2Reference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Vector3Reference
-            m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: CustomValue
-            m_AssemblyQualifiedName: CustomValue, VisualFunctions, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          - m_Name: Formula
-            m_AssemblyQualifiedName: Formula, VisualFunctions, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          AllowRename: 0
-          InEdition: 0
-          EditValue: 
-          AcceptAnyMethod: 0
         Outputs: []
         EditableAttributes: []
         AllowAddInputs: 1
@@ -490,40 +441,7 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
-    - rid: 7793651881821864250
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: A = 0; B = 5
-    - rid: 7793651881821864251
-      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: 77323559fe9535c4ca2e6e209d190ff7, type: 2}
-        DisplayedInInspector: 0
-    - rid: 7793651881821864252
-      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 0
-        LocalValue: 0
-        Variable: {fileID: 11400000, guid: 0938dd836cd377f4b89948bbaba1d30c, type: 2}
-        DisplayedInInspector: 0
-    - rid: 7793651881821864253
-      type: {class: StringReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: A < MaxNumber
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
-    - rid: 7793651881821864254
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: A -= MaxNumber
-    - rid: 7793651881821864255
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: A += 3 * (A / B) + B
-    - rid: 7936453624402018842
+    - rid: 7793651929897238619
       type: {class: Loop, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FoldoutOpen: 1
@@ -531,7 +449,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651881821864253
+            rid: 7793651929897238644
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -554,8 +472,87 @@ MonoBehaviour:
           AllowVoidMethods: 0
         FunctionsToLoop:
           FunctionsList:
-          - rid: 4824914933113421895
+          - rid: 7793651929897238621
           GlobalVariables: []
           FoldoutOpen: 1
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
+    - rid: 7793651929897238621
+      type: {class: Evaluate, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FoldoutOpen: 1
+        Enabled: 1
+        Inputs:
+        - FieldName: Formula
+          Value:
+            rid: 7793651929897238646
+          SupportedTypes: []
+          AllowRename: 0
+          InEdition: 0
+          EditValue: 
+          AcceptAnyMethod: 1
+        Outputs: []
+        EditableAttributes: []
+        AllowAddInputs: 1
+        FunctionInputSettings:
+          SupportedTypes: []
+          PrefixName: 
+          CanCallMethods: 1
+          AllowVoidMethods: 1
+        AllowAddOutputs: 0
+        FunctionOutputSettings:
+          SupportedTypes: []
+          PrefixName: 
+          CanCallMethods: 0
+          AllowVoidMethods: 0
+    - rid: 7793651929897238628
+      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: b843d27d0151bd348a2646e458d2ebdf, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7793651929897238630
+      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: cc49952ac7b9dbb408231ab8cae3461b, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7793651929897238631
+      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 50
+        Variable: {fileID: 11400000, guid: a8b366a0fd9c4674ea87a9b13cf90a0a, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7793651929897238643
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: a = 0; b = 5
+    - rid: 7793651929897238644
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: A < MaxNumber
+    - rid: 7793651929897238645
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: A -= MaxNumber
+    - rid: 7793651929897238646
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: A += 3 * (A / B) + B
+    - rid: 7793651929897238647
+      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: b843d27d0151bd348a2646e458d2ebdf, type: 2}
+        DisplayedInInspector: 0
+    - rid: 7793651929897238648
+      type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 0
+        LocalValue: 0
+        Variable: {fileID: 11400000, guid: cc49952ac7b9dbb408231ab8cae3461b, type: 2}
+        DisplayedInInspector: 0

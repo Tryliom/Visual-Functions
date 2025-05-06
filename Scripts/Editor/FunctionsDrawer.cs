@@ -983,17 +983,7 @@ namespace VisualFunctions
 
             if (field.Value is not null)
             {
-                var type = field.Value.Type;
-
-                if (type == null)
-                {
-                    row1.Add(new Label("Type not found"));
-
-                    container.Add(row1);
-                    container.Add(row2);
-
-                    return container;
-                }
+                var type = field.Value.Value is IRefType ? field.Value.Value.GetType() : field.Value.Type;
 
                 if (field.SupportedTypes.Count == 0) row1.Add(new Label($"({GetBetterTypeName(type)})"));
 
@@ -1096,12 +1086,19 @@ namespace VisualFunctions
                 {
                     baseList.Add("None");
                 }
-                else
-                {
-                    defaultIndex = field.SupportedTypes.IndexOf(field.Value.GetType());
-                }
+                
+                baseList.AddRange(ExpressionUtility.SupportedTypes.Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")));
 
-                var supportedTypes = baseList.Concat(field.SupportedTypes.Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", ""))).ToList();
+                var supportedTypes = baseList.Concat(field.SupportedTypes
+                    .Where(t => !ExpressionUtility.SupportedTypes.Contains(t))
+                    .Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")))
+                .ToList();
+                
+                if (field.Value is not null)
+                {       
+                    defaultIndex = supportedTypes.IndexOf(ObjectNames.NicifyVariableName(field.Value.GetType().Name).Replace(" Reference", ""));
+                }
+                
                 var popupField = new PopupField<string>(supportedTypes, defaultIndex)
                 {
                     style =
@@ -1118,7 +1115,9 @@ namespace VisualFunctions
 
                     if (field.Value is null) index--;
 
-                    var selectedType = field.SupportedTypes[index];
+                    var selectedType = index < ExpressionUtility.SupportedTypes.Count
+                        ? ExpressionUtility.SupportedTypes[index]
+                        : field.SupportedTypes.Where(t => !ExpressionUtility.SupportedTypes.Contains(t)).ToList()[index - ExpressionUtility.SupportedTypes.Count].SystemType;
                     field.Value = (IValue)Activator.CreateInstance(selectedType);
                     FormulaCache.Clear();
                     Refresh();

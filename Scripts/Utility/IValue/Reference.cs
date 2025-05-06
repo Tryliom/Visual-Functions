@@ -11,7 +11,7 @@ namespace VisualFunctions
      [Serializable]
      public class Reference<TType> : IResettable, IValue<TType>
      {
-         public bool UseLocal = false;
+         public bool UseLocal = true;
          public TType LocalValue;
          public Variable<TType> Variable;
          
@@ -55,6 +55,10 @@ namespace VisualFunctions
                  {
                      Variable = (Variable<TType>) value;
                      UseLocal = false;
+                 }
+                 else if (Value is IRefValue refValue)
+                 {
+                     refValue.RefValue = value;
                  }
                  else
                  {
@@ -232,9 +236,6 @@ namespace VisualFunctions
     public class Vector3Reference : Reference<Vector3> {}
     
     [Serializable]
-    public class ColorReference : Reference<Color> {}
-    
-    [Serializable]
     public class QuaternionReference : Reference<Quaternion> {}
     
     [Serializable]
@@ -244,9 +245,6 @@ namespace VisualFunctions
     public class RectReference : Reference<Rect> {}
     
     [Serializable]
-    public class BoundsReference : Reference<Bounds> {}
-    
-    [Serializable]
     public class ScriptableObjectReference : Reference<ScriptableObject> {}
 
     [Serializable]
@@ -254,4 +252,7 @@ namespace VisualFunctions
     
     [Serializable]
     public class ListOfReference : Reference<ListOf> {}
+    
+    [Serializable]
+    public class AnyTypeReference : Reference<AnyType> {}
 }
