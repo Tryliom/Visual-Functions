@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using log4net.Filter;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace VisualFunctions
 {
@@ -19,6 +22,30 @@ namespace VisualFunctions
 
             Operators = operators.ToCharArray();
         }
+        
+        public static readonly List<Type> PrimitiveTypes = new()
+        {
+            typeof(int), typeof(float), typeof(double), typeof(bool), typeof(string),
+            typeof(long), typeof(short), typeof(byte), typeof(char), typeof(decimal)
+        };
+        
+        private static IEnumerable<Type> SortedTypes => AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(t => 
+                !t.IsNested && !t.IsGenericType && !t.IsAbstract && !t.IsSpecialName && !t.IsPointer && !t.IsInterface &&
+                !t.IsNotPublic && t.GetConstructors().Length > 0 && t.IsSerializable &&
+                (t.IsClass || t.IsEnum || t.IsValueType) &&
+                (t.GetProperties().Length > 0 || t.GetFields().Length > 0 || t.GetMethods().Length > 0) &&
+                !t.IsSubclassOf(typeof(Exception))
+            )
+            .Except(PrimitiveTypes);
+        
+        public static List<Type> UnityTypes => SortedTypes
+            .Where(t => t.IsSubclassOf(typeof(UnityEngine.Object)))
+            .ToList();
+        public static List<Type> OtherTypes => SortedTypes
+            .Where(t => !t.IsSubclassOf(typeof(UnityEngine.Object)))
+            .ToList();
 
         public static string ExtractVariable(string formula, int index)
         {

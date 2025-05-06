@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -61,23 +60,6 @@ namespace VisualFunctions
         private GameObject _targetObject;
         private ListOf _listOf;
         
-        private static readonly List<Type> BasicTypes = new()
-        {
-            typeof(int), typeof(float), typeof(double), typeof(bool), typeof(string),
-            typeof(long), typeof(short), typeof(byte), typeof(char), typeof(decimal)
-        };
-        
-        private static readonly List<Type> UnityTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(t => t.IsSubclassOf(typeof(UnityEngine.Object)))
-            .ToList();
-        private static readonly List<Type> OtherTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(t => !t.IsNested && !t.IsGenericType && !t.IsAbstract && !t.IsSpecialName)
-            .Except(BasicTypes)
-            .Except(UnityTypes)
-            .ToList();
-        
         private void Refresh()
         {
             if (_property == null || _targetObject == null) return;
@@ -101,9 +83,9 @@ namespace VisualFunctions
             {
                 var menu = new GenericMenu();
                 
-                AddItemsToMenu(menu, "Basic", BasicTypes);
-                AddItemsToMenu(menu, "Unity", UnityTypes);
-                AddItemsToMenu(menu, "Other", OtherTypes);
+                AddItemsToMenu(menu, "Primitive", ExpressionUtility.PrimitiveTypes);
+                AddItemsToMenu(menu, "Unity", ExpressionUtility.UnityTypes);
+                AddItemsToMenu(menu, "Other", ExpressionUtility.OtherTypes);
 
                 menu.ShowAsContext();
             }
@@ -121,14 +103,8 @@ namespace VisualFunctions
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var listValue = property.FindPropertyRelative("ListValue");
-            var height = 0f;
-            
-            if (listValue.boxedValue != null) 
-            {
-                height += EditorGUI.GetPropertyHeight(listValue, true);
-            }
 
-            return height;
+            return EditorGUI.GetPropertyHeight(listValue, true);
         }
 
         private void AddItemsToMenu(GenericMenu menu, string prefix, List<Type> types)
@@ -141,7 +117,15 @@ namespace VisualFunctions
             foreach (var type in types)
             {
                 var name = ObjectNames.NicifyVariableName(ExpressionUtility.GetBetterTypeName(type));
-                var startStr = prefix != string.Empty ? $"{prefix}/{name}" : name;
+                var startStr = prefix != string.Empty ? $"{prefix}/" : "";
+                var namespaceParts = type.FullName?.Split(".") ?? Array.Empty<string>();
+
+                for (var i = 0; i < namespaceParts.Length - 1; i++)
+                {
+                    startStr += namespaceParts[i] + "/";
+                }
+                
+                startStr += name;
                 
                 menu.AddItem(new GUIContent(startStr), _listOf.ListValue?.Type == type, () =>
                 {
@@ -158,8 +142,7 @@ namespace VisualFunctions
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var listValue = property.FindPropertyRelative("ListValue");
-            
-            EditorGUI.PropertyField(position, listValue, new GUIContent("List of " + ObjectNames.NicifyVariableName(listValue.arrayElementType)));
+            EditorGUI.PropertyField(position, listValue, new GUIContent("List of " + ObjectNames.NicifyVariableName(listValue.arrayElementType).Replace("P Ptr$", "")));
         }
         
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
