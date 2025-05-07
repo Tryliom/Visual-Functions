@@ -240,7 +240,6 @@ namespace VisualFunctions
                         marginRight = 5,
                         paddingRight = 10,
                         marginBottom = 5,
-                        paddingTop = 5,
                         minHeight = 24,
                         backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
                         borderLeftColor = borderColor,
