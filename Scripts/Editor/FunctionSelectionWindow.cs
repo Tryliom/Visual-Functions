@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Object = System.Object;
 
 namespace VisualFunctions
 {
@@ -40,12 +38,23 @@ namespace VisualFunctions
 
             foreach (var category in Function.Functions.GroupBy(f => f.Value.Category))
             {
-                var centeredStyle = new GUIStyle(EditorStyles.boldLabel)
+                var categoryStyle = new GUIStyle(EditorStyles.boldLabel)
                 {
-                    alignment = TextAnchor.MiddleCenter
+                    alignment = TextAnchor.UpperCenter,
+                    fontSize = 20,
+                    fixedHeight = 30,
+                    margin = new RectOffset(0, 0, 10, 10),
                 };
+                var buttonStyle = new GUIStyle(GUI.skin.button)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = 14,
+                    fixedHeight = 30
+                };
+                var functionStyle = EditorStyles.helpBox;
+                functionStyle.margin = new RectOffset(0, 0, 10, 0);
                 
-                EditorGUILayout.LabelField(ObjectNames.NicifyVariableName(category.Key.ToString()), centeredStyle);
+                EditorGUILayout.LabelField(ObjectNames.NicifyVariableName(category.Key.ToString()), categoryStyle);
                 
                 // Filter functions by search query
                 var categories = category.Where(f =>
@@ -57,14 +66,15 @@ namespace VisualFunctions
                 foreach (var function in categories)
                 {
                     EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                    EditorGUILayout.LabelField(function.Key, EditorStyles.boldLabel);
-                    EditorGUILayout.LabelField(function.Value.Description, EditorStyles.wordWrappedLabel);
-
-                    if (GUILayout.Button("Use", EditorStyles.miniButton))
+                    
+                    if (GUILayout.Button(function.Key, buttonStyle))
                     {
                         _onFunctionSelected?.Invoke(Activator.CreateInstance(function.Value.Type) as Function);
                         Close();
                     }
+                    
+                    EditorGUILayout.LabelField(function.Value.Description, EditorStyles.wordWrappedLabel);
+                    
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.Space(5);
                 }
