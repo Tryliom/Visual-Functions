@@ -159,15 +159,35 @@ namespace VisualFunctions
             
             position.x += name.Length * 8f + 5f;
             position.width -= name.Length * 8f + 5f;
-            
-            EditorGUI.PropertyField(position, value, new GUIContent(""));
+
+			if (value.propertyType == SerializedPropertyType.String)
+            {
+                var textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(value.stringValue), position.width);
+                position.height = textHeight;
+                value.stringValue = EditorGUI.TextArea(position, value.stringValue, EditorStyles.textArea);
+            }
+            else
+            {
+                EditorGUI.PropertyField(position, value, new GUIContent(""));
+            }
         }
         
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var value = property.FindPropertyRelative("TypeValue");
             
-            return value == null ? EditorGUIUtility.singleLineHeight : EditorGUI.GetPropertyHeight(value, true);
+            if (value == null)
+            {
+                return EditorGUIUtility.singleLineHeight;
+            }
+            
+            if (value.propertyType == SerializedPropertyType.String)
+            {
+                var textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(value.stringValue), EditorGUIUtility.currentViewWidth);
+                return textHeight;
+            }
+            
+            return EditorGUI.GetPropertyHeight(value, true);
         }
     }
 #endif
