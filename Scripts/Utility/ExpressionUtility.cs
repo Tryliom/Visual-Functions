@@ -160,10 +160,12 @@ namespace VisualFunctions
                 "byte" => typeof(byte),
                 "char" => typeof(char),
                 "decimal" => typeof(decimal),
+                // Special cases for some types
+                "List" => typeof(List<>),
                 _ => null
             };
 
-            if (type != null) return null;
+            if (type != null) return type;
 
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())

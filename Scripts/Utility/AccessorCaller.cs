@@ -23,7 +23,8 @@ namespace VisualFunctions
     public enum AccessorType
     {
         Property,
-        Method
+        Method,
+        Constructor
     }
 
     public class AccessorCaller
@@ -45,8 +46,7 @@ namespace VisualFunctions
             GenericTypes = new List<Type>();
         }
 
-        public AccessorCaller(IValue instance, string property, List<string> parameters, string leftMethod,
-            List<Type> genericTypes)
+        public AccessorCaller(IValue instance, string property, List<string> parameters, string leftMethod, List<Type> genericTypes)
         {
             Instance = instance;
             Property = property;
@@ -55,12 +55,21 @@ namespace VisualFunctions
             Parameters = parameters;
             GenericTypes = genericTypes ?? new List<Type>();
         }
+        
+        public AccessorCaller(IValue instance, List<string> parameters, string leftMethod, List<Type> genericTypes)
+        {
+            Instance = instance;
+            LeftMethod = leftMethod;
+            AccessorType = AccessorType.Constructor;
+            Parameters = parameters;
+            GenericTypes = genericTypes ?? new List<Type>();
+        }
 
         public IValue Result { get; set; }
 
         public void AssignValue(object value)
         {
-            if (AccessorType == AccessorType.Method) return;
+            if (AccessorType is AccessorType.Method or AccessorType.Constructor) return;
 
             var instanceType = Instance.Type;
             var propertyInfo = instanceType.GetProperty(Property);

@@ -43,14 +43,15 @@ namespace VisualFunctions
         {
             var formulaProperty = property.FindPropertyRelative("FormulaValue");
             var helpIcon = EditorGUIUtility.IconContent("_Help");
-            helpIcon.tooltip = "Support all logical operations (+,-,/,&&,||,...) and variables.\nAssign result to a variable with: varA = A + B. Execute functions also work.\n" +
+            helpIcon.tooltip = "Support all logical operations (+,-,/,&&,||,...) and variables.\nYou can use methods, property and constructors (with 'new' or not.\n" +
                                "Boolean are converted to int when used in +, -, * and / operations\n" +
                                "If ternary (condition ? if true : if false) used inside another need to have ()\n" +
                                "Examples: \n" +
                                "varA = A + B\n" +
                                "A.x *= Random.Range(0, A.y)\n" +
                                "myVar.myMethod()\n" +
-                               "A.x += A.y; A.y += Random.Range(-0.5, 2)";
+                               "A.x += A.y; A.y += Random.Range(-0.5, 2)\n" +
+                               "A = new Vector2(-5, 9)";
 
             var iconRect = new Rect(position.x + position.width - 20, position.y, 20, position.height);
             EditorGUI.LabelField(iconRect, helpIcon);

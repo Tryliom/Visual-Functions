@@ -16,6 +16,7 @@ MonoBehaviour:
     FunctionsList:
     - rid: 4824914975934382182
     - rid: 4824914975934382190
+    - rid: 7793651971668574434
     GlobalVariables:
     - FieldName: Go
       Value:
@@ -425,6 +426,74 @@ MonoBehaviour:
       InEdition: 0
       EditValue: Vec
       AcceptAnyMethod: 0
+    - FieldName: List
+      Value:
+        rid: 7793651971668574432
+      SupportedTypes:
+      - m_Name: AnyTypeReference
+        m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: BoolReference
+        m_AssemblyQualifiedName: VisualFunctions.BoolReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ComponentOfGameObjectReference
+        m_AssemblyQualifiedName: VisualFunctions.ComponentOfGameObjectReference,
+          VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: FloatReference
+        m_AssemblyQualifiedName: VisualFunctions.FloatReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: IntReference
+        m_AssemblyQualifiedName: VisualFunctions.IntReference, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ListOfReference
+        m_AssemblyQualifiedName: VisualFunctions.ListOfReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: StringReference
+        m_AssemblyQualifiedName: VisualFunctions.StringReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: AnimationCurveReference
+        m_AssemblyQualifiedName: VisualFunctions.AnimationCurveReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: QuaternionReference
+        m_AssemblyQualifiedName: VisualFunctions.QuaternionReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: RectReference
+        m_AssemblyQualifiedName: VisualFunctions.RectReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: ScriptableObjectReference
+        m_AssemblyQualifiedName: VisualFunctions.ScriptableObjectReference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Vector2Reference
+        m_AssemblyQualifiedName: VisualFunctions.Vector2Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Vector3Reference
+        m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomValue
+        m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: Formula
+        m_AssemblyQualifiedName: VisualFunctions.Formula, VisualFunctions, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      AllowRename: 0
+      InEdition: 1
+      EditValue: List
+      AcceptAnyMethod: 0
     FoldoutOpen: 1
     GlobalValuesFoldoutOpen: 1
     AllowGlobalVariables: 1
@@ -434,12 +503,12 @@ MonoBehaviour:
     - rid: 4824914975934382182
       type: {class: Expect, ns: VisualFunctions, asm: VisualFunctions}
       data:
-        FoldoutOpen: 1
+        FoldoutOpen: 0
         Enabled: 1
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651926141240306
+            rid: 7793651971668574542
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -467,12 +536,12 @@ MonoBehaviour:
     - rid: 4824914975934382190
       type: {class: Expect, ns: VisualFunctions, asm: VisualFunctions}
       data:
-        FoldoutOpen: 1
+        FoldoutOpen: 0
         Enabled: 1
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651926141240307
+            rid: 7793651971668574543
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -540,8 +609,49 @@ MonoBehaviour:
     - rid: 7793651926141240175
       type: {class: 'AnyType`1[[UnityEngine.Vector2, UnityEngine.CoreModule]]', ns: VisualFunctions, asm: VisualFunctions}
       data:
-        TypeValue: {x: 0, y: 0}
-    - rid: 7793651926141240306
+        TypeValue: {x: 18, y: 55}
+    - rid: 7793651971668574432
+      type: {class: ListOfReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 1
+        LocalValue:
+          ListValue:
+            rid: 7793651971668574433
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0
+    - rid: 7793651971668574433
+      type: {class: 'ListOf`1[[System.Single, mscorlib]]', ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        ListValue: []
+    - rid: 7793651971668574434
+      type: {class: Expect, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FoldoutOpen: 1
+        Enabled: 1
+        Inputs:
+        - FieldName: Condition
+          Value:
+            rid: 7793651971668574544
+          SupportedTypes: []
+          AllowRename: 0
+          InEdition: 0
+          EditValue: 
+          AcceptAnyMethod: 1
+        Outputs: []
+        EditableAttributes: []
+        AllowAddInputs: 1
+        FunctionInputSettings:
+          SupportedTypes: []
+          PrefixName: 
+          CanCallMethods: 1
+          AllowVoidMethods: 0
+        AllowAddOutputs: 0
+        FunctionOutputSettings:
+          SupportedTypes: []
+          PrefixName: 
+          CanCallMethods: 0
+          AllowVoidMethods: 0
+    - rid: 7793651971668574542
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Go.GetComponent<Transform>() == Transf;
@@ -559,7 +669,7 @@ MonoBehaviour:
 
           t.x
           == 3 && t.y == 3 && t.z == 3;'
-    - rid: 7793651926141240307
+    - rid: 7793651971668574543
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Vec.x = 7; Vec.y = -3;
@@ -577,3 +687,32 @@ MonoBehaviour:
 
           Vec.x
           >= -5 && Vec.x <= 10;'
+    - rid: 7793651971668574544
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: 'Vec = Vector2(5, 11);
+
+          Vec.x == 5 && Vec.y == 11;
+
+
+          Vec
+          = new Vector2(6, -11);
+
+          Vec.x == 6 && Vec.y == -11;
+
+
+          Vec
+          *= Vector2(3, -5);
+
+          Vec == Vector2(18, 55);
+
+
+          List.Add(5.5);
+
+          List.Count
+          == 1;
+
+
+          List = new List<float>();
+
+          List.Count == 0;'

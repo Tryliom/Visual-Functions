@@ -254,6 +254,8 @@ namespace VisualFunctions
                 {
                     var variable = ExpressionUtility.ExtractVariable(formula, i);
                     i += variable.Length - 1;
+                    
+                    if (variable == "new") continue;
 
                     if (ExpressionUtility.IsReservedWord(variable))
                     {
@@ -261,19 +263,26 @@ namespace VisualFunctions
                         continue;
                     }
 
-                    if (i < formula.Length - 1 && formula[i + 1] == '.')
+                    if (i < formula.Length - 1 && (formula[i + 1] == '.' || formula[i + 1] == '(' || formula[i + 1] == '<'))
                     {
-                        var propertyName = ExpressionUtility.ExtractVariable(formula, i + 2);
-                        i += propertyName.Length + 1;
+                        var propertyName = "";
+                        var methodType = formula[i + 1] == '(' || formula[i + 1] == '<' ? AccessorType.Constructor : AccessorType.Property;
+                        
+                        if (formula[i + 1] == '.')
+                        {
+                            propertyName = ExpressionUtility.ExtractVariable(formula, i + 2);
+                            i += propertyName.Length + 1;
+                            
+                            methodType = i != formula.Length - 1 && (formula[i + 1] == '(' || formula[i + 1] == '<')
+                                ? AccessorType.Method
+                                : AccessorType.Property;
+                        }
 
                         var leftProperties = "";
                         var parameters = new List<string>();
                         var genericTypes = new List<Type>();
-                        var methodType = i != formula.Length - 1 && (formula[i + 1] == '(' || formula[i + 1] == '<')
-                            ? AccessorType.Method
-                            : AccessorType.Property;
 
-                        if (methodType == AccessorType.Method)
+                        if (methodType is AccessorType.Method or AccessorType.Constructor)
                         {
                             if (formula[i + 1] == '<')
                             {
@@ -332,11 +341,10 @@ namespace VisualFunctions
 
                             loops++;
 
-                            if (loops > 100)
-                            {
-                                Debug.LogError($"Too many loops in formula: {formula}");
-                                return false;
-                            }
+                            if (loops <= 100) continue;
+                            
+                            Debug.LogError($"Too many loops in formula: {formula}");
+                            return false;
                         }
 
                         IValue value;
@@ -358,9 +366,18 @@ namespace VisualFunctions
                             value = new MethodValue(type);
                         }
 
-                        expressions.Add(methodType == AccessorType.Method
-                            ? new AccessorCaller(value, propertyName, parameters, leftProperties, genericTypes)
-                            : new AccessorCaller(value, propertyName, leftProperties));
+                        switch (methodType)
+                        {
+                            case AccessorType.Method:
+                                expressions.Add(new AccessorCaller(value, propertyName, parameters, leftProperties, genericTypes));
+                                break;
+                            case AccessorType.Constructor:
+                                expressions.Add(new AccessorCaller(value, parameters, leftProperties, genericTypes));
+                                break;
+                            case AccessorType.Property:
+                                expressions.Add(new AccessorCaller(value, propertyName, leftProperties));
+                                break;
+                        }
                     }
                     else if (variables.Find(v => v.Name == variable) is { } variableValue)
                     {
@@ -687,6 +704,36 @@ namespace VisualFunctions
                 {
                     caller.Result = new MethodValue(field.GetValue(callerValue));
                 }
+            }
+            else if (caller.AccessorType is AccessorType.Constructor)
+            {
+                var parameters = caller.Parameters
+                    .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
+                    .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
+                    .ToList();
+                
+                if (caller.GenericTypes.Count > 0)
+                {
+                    try
+                    {
+                        callerType = callerType.MakeGenericType(caller.GenericTypes.ToArray());
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"Failed to apply generic types to constructor in '{callerType}': {ex.Message}");
+                        return null;
+                    }
+                }
+
+                var constructor = callerType.GetConstructor(parameters.Select(p => p.GetType()).ToArray());
+
+                if (constructor == null)
+                {
+                    Debug.LogError($"Constructor not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
+                    return null;
+                }
+                
+                caller.Result = new MethodValue(constructor.Invoke(parameters.ToArray()));
             }
             else
             {
