@@ -426,7 +426,7 @@ MonoBehaviour:
       InEdition: 0
       EditValue: Vec
       AcceptAnyMethod: 0
-    - FieldName: List
+    - FieldName: Floats
       Value:
         rid: 7793651971668574432
       SupportedTypes:
@@ -491,8 +491,8 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       AllowRename: 0
-      InEdition: 1
-      EditValue: List
+      InEdition: 0
+      EditValue: Floats
       AcceptAnyMethod: 0
     FoldoutOpen: 1
     GlobalValuesFoldoutOpen: 1
@@ -508,7 +508,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651971668574542
+            rid: 7793651971668574716
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651971668574543
+            rid: 7793651971668574717
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -631,7 +631,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651971668574544
+            rid: 7793651971668574718
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -651,7 +651,7 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
-    - rid: 7793651971668574542
+    - rid: 7793651971668574716
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Go.GetComponent<Transform>() == Transf;
@@ -669,7 +669,7 @@ MonoBehaviour:
 
           t.x
           == 3 && t.y == 3 && t.z == 3;'
-    - rid: 7793651971668574543
+    - rid: 7793651971668574717
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Vec.x = 7; Vec.y = -3;
@@ -687,7 +687,7 @@ MonoBehaviour:
 
           Vec.x
           >= -5 && Vec.x <= 10;'
-    - rid: 7793651971668574544
+    - rid: 7793651971668574718
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'Vec = Vector2(5, 11);
@@ -707,12 +707,13 @@ MonoBehaviour:
           Vec == Vector2(18, 55);
 
 
-          List.Add(5.5);
+          Floats.Add(5.5);
 
-          List.Count
+          Floats.Count
           == 1;
 
 
-          List = new List<float>();
+          Floats = new List<float>();
 
-          List.Count == 0;'
+          Floats.Count ==
+          0;'
