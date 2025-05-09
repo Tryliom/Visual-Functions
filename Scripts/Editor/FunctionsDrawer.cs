@@ -361,11 +361,12 @@ namespace VisualFunctions
                     foreach (var field in functionsInstance.GlobalVariables)
                     {
                         globalFieldsContainer.Add(
-                            GetFunctionField(
+                            CreateField(
                                 globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
                                 field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
                                 functionsInstance.GlobalVariables, 0,
-                                (previousName, newName) => functionsInstance.EditField(previousName, newName)
+                                (previousName, newName) => functionsInstance.EditField(previousName, newName),
+                                Refresh
                             )
                         );
                     }
@@ -485,7 +486,7 @@ namespace VisualFunctions
 
         private VisualElement GetFunction(SerializedProperty property)
         {
-            var container = new VisualElement()
+            var container = new VisualElement
             {
                 style =
                 {
@@ -689,12 +690,13 @@ namespace VisualFunctions
                 foreach (var field in fields)
                 {
                     fieldContainer.Add(
-                        GetFunctionField(
+                        CreateField(
                             property.FindPropertyRelative(name).GetArrayElementAtIndex(fields.IndexOf(field)),
                             field, myFunction.GetType().Name, myFunction.IsFieldEditable(field), 
                             myFunction.Inputs.Contains(field) ? myFunction.FunctionInputSettings : myFunction.FunctionOutputSettings,
                             fields, myFunction.GetMinEditableFieldIndex(field),
-                            (fieldName, fieldValue) => myFunction.EditField(fieldName, fieldValue)
+                            (fieldName, fieldValue) => myFunction.EditField(fieldName, fieldValue),
+                            Refresh
                         )
                     );
                 }
@@ -723,8 +725,9 @@ namespace VisualFunctions
             return container;
         }
         
-        private VisualElement GetFunctionField(SerializedProperty property, Field field, 
-            string functionName, bool isEditable, FunctionSettings settings, List<Field> fields, int minEditableFieldIndex, Action<string, string> editFieldAction)
+        private static VisualElement CreateField(SerializedProperty property, Field field, 
+            string functionName, bool isEditable, FunctionSettings settings, List<Field> fields, int minEditableFieldIndex, Action<string, string> editFieldAction,
+            Action refresh)
         {
             const int borderWidth = 2;
             var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
@@ -791,7 +794,7 @@ namespace VisualFunctions
 
                 textField.RegisterValueChangedCallback(evt =>
                 {
-                    if (evt.newValue.Any(c => !char.IsLetter(c))) return;
+                    if (evt.newValue.Any(c => !char.IsLetter(c) || c == '_')) return;
 
                     field.EditValue = textField.value;
                 });
@@ -807,7 +810,7 @@ namespace VisualFunctions
                     }
 
                     editFieldAction(field.FieldName, field.EditValue);
-                    Refresh();
+                    refresh();
                 });
 
                 row1.Add(textField);
@@ -830,7 +833,7 @@ namespace VisualFunctions
                         }
                         
                         editFieldAction(field.FieldName, field.EditValue);
-                        Refresh();
+                        refresh();
                     })
                     {
                         text = "✓",
@@ -849,7 +852,7 @@ namespace VisualFunctions
                     {
                         field.InEdition = true;
                         field.EditValue = field.FieldName;
-                        Refresh();
+                        refresh();
                     })
                     {
                         text = "✎",
@@ -893,7 +896,7 @@ namespace VisualFunctions
                 var copyButton = new Button(() =>
                 {
                     _copiedField = field.Clone();
-                    Refresh();
+                    refresh();
                 })
                 {
                     text = "📋",
@@ -914,7 +917,7 @@ namespace VisualFunctions
                 {
                     fields.Remove(field);
                     FormulaCache.Clear();
-                    Refresh();
+                    refresh();
                 })
                 {
                     text = "-",
@@ -939,7 +942,7 @@ namespace VisualFunctions
                         // Move the field up in the list
                         fields.Remove(field);
                         fields.Insert(index - 1, field);
-                        Refresh();
+                        refresh();
                     })
                     {
                         text = "↑",
@@ -963,7 +966,7 @@ namespace VisualFunctions
                         // Move the field down in the list
                         fields.Remove(field);
                         fields.Insert(index + 1, field);
-                        Refresh();
+                        refresh();
                     })
                     {
                         text = "↓",
@@ -1042,7 +1045,7 @@ namespace VisualFunctions
 
                         field.Value.Value = ReferenceUtility.CreateVariableAsset(type, assetName, folderPath);
 
-                        Refresh();
+                        refresh();
                     })
                     {
                         text = "+",
@@ -1119,7 +1122,7 @@ namespace VisualFunctions
                         : field.SupportedTypes.Where(t => !ExpressionUtility.SupportedTypes.Contains(t)).ToList()[index - ExpressionUtility.SupportedTypes.Count].SystemType;
                     field.Value = (IValue)Activator.CreateInstance(selectedType);
                     FormulaCache.Clear();
-                    Refresh();
+                    refresh();
                 });
 
                 row1.Add(popupField);

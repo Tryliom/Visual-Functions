@@ -269,10 +269,11 @@ namespace VisualFunctions
         public static bool IsFieldNameValid(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
+            if (ExtractType(name) is not null) return false;
 
             foreach (var c in name)
             {
-                if (!char.IsLetter(c)) return false;
+                if (!char.IsLetter(c) && c != '_') return false;
             }
 
             return !IsReservedWord(name);

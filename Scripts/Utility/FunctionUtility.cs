@@ -46,7 +46,8 @@ namespace VisualFunctions
         private static void InitializeFunctions()
         {
             var functionTypes = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(Function)) && !t.IsAbstract).ToList();
+                .Where(t => t.IsSubclassOf(typeof(Function)) && !t.IsAbstract)
+                .ToList();
 
             foreach (var type in functionTypes)
             {
@@ -55,8 +56,9 @@ namespace VisualFunctions
                 var categoryProperty = type.GetField("Category", BindingFlags.Public | BindingFlags.Static);
 
                 if (descriptionProperty == null || categoryProperty == null || nameProperty == null)
-                    throw new Exception(
-                        $"The function {type.Name} is missing the Name or Description or Category field");
+                {
+                    throw new Exception($"The function {type.Name} is missing the Name or Description or Category field");
+                }
 
                 var name = (string)nameProperty.GetValue(null);
                 var description = (string)descriptionProperty.GetValue(null);
@@ -75,8 +77,9 @@ namespace VisualFunctions
             }
 
             // Reorder the functions by category
-            Function.Functions =
-                Function.Functions.OrderBy(x => x.Value.Category).ToDictionary(x => x.Key, x => x.Value);
+            Function.Functions = Function.Functions
+                .OrderBy(x => x.Value.Category)
+                .ToDictionary(x => x.Key, x => x.Value);
 
             foreach (var function in Functions) function.ValidateFields();
 
