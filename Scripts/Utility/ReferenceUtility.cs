@@ -10,11 +10,7 @@ namespace VisualFunctions
 {
     public static class ReferenceUtility
     {
-        public const string PathToGlobalVariables = "Assets/Resources/ScriptableObjects/GlobalVariables";
-        public const string PathToVariables = "Assets/Resources/ScriptableObjects/Variables";
-
         private static readonly Dictionary<Type, Type> VariableTypes = new();
-        private static readonly Dictionary<Type, Type> ReferenceTypes = new();
         private static readonly Dictionary<Type, Type> ReferenceToVariable = new();
         private static List<Type> _iValueTypes = new();
 
@@ -45,8 +41,7 @@ namespace VisualFunctions
                 _iValueTypes.Add(iValueType);
 
                 if (constantType == null) continue;
-
-                ReferenceTypes[constantType] = iValueType;
+                
                 ReferenceToVariable[iValueType] = VariableTypes[constantType];
             }
 

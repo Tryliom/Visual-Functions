@@ -17,20 +17,20 @@ Here the inputs are stored in a variable called MoveValue, that is a reference t
 And here the player use the MoveValue to move the player very simply.
 ![SimplePlayerMove.png](documentation/images/SimplePlayerMove.png)
 
-More examples can be [here](./documentation/MoreExamples.md).
+More examples can be found [here](./documentation/MoreExamples.md).
 
 ## Pros
 - Easy to use
 - No need to write code
 - No need to compile
-- Powerful logic very scalable
+- Powerful logic is very scalable
 - Editable from the editor and when running
 - Builtin components
 - Can be extended with custom functions (code)
 - Can add more types (code)
 
 ## Cons
-The main cons is that it's way slower than writing code (150-300x slower) and that it can be hard to debug.
+The main cons are that it's way slower than writing code (150-300x slower) and that it can be hard to debug.
 This can also be hard to use for non-developers to run logic beyond the basic operations (+, -, *, /, %, ==, !=, >, <, >=, <=).
 
 ## Features
@@ -51,10 +51,14 @@ For example, we have Vec that is a variable of type Vector3, we can do:
 Loop and For functions can also use the evaluate function to run a code logic.
 
 #### Missing features
-Doesn't support actually (but will be added): 
-- new keyword for class instantiation
+Missing and planned features:
 - Array access with []
-- Ternary (?:) operator inside another ternary without parenthesis
+- Rename variable asset name from the editor
+- Support undo/redo
+- Make a collection of custom functions to be able to use them in the evaluate function
+- Better search of functions
+- Better error handling
+- More basic functions
 
 ## Install
 In Unity, go to `Window` menu -> `Package Manager` -> `+` -> `install package from git url` and put this url:
@@ -69,7 +73,8 @@ Folder needed:
 - `Resources/ScriptableObjects/Variables`: Where the game objects variables are stored
 - `Resources/ScriptableObjects/GlobalVariables`: Where you need to store the global variables to be accessible from anywhere
 
-You can change these folders path [here](./Scripts/Utility/ReferenceUtility.cs).
+You can change these folder paths by creating a scriptable object with the menu `VisualFunctions/Settings` and set the paths in the inspector.
+**It needs to be in a Resources folder to be loaded at runtime.**
 
 ## Usage
 todo

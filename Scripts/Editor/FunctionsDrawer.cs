@@ -305,7 +305,7 @@ namespace VisualFunctions
                 
                 var addValueButton = new Button(() =>
                 {
-                    functionsInstance.GlobalVariables.Add(new Field("" + (char)('a' + functionsInstance.GlobalVariables.Count)));
+                    functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
                     functionsInstance.GlobalValuesFoldoutOpen = true;
                     FormulaCache.Clear();
                     Refresh();
@@ -1009,7 +1009,7 @@ namespace VisualFunctions
 
                 var parentPath = Regex.Replace(AssetDatabase.GetAssetPath(property.serializedObject.targetObject), "/[^/]*$", "");
 
-                if (parentPath == "") parentPath = ReferenceUtility.PathToVariables;
+                if (parentPath == "") parentPath = GlobalSettings.PathToVariables;
 
                 var searchPath = parentPath + "/" + property.serializedObject.targetObject.name;
 
@@ -1020,12 +1020,12 @@ namespace VisualFunctions
                 {
                     // Search all asset files in the parent path and subdirectories with the same type as the field
                     var assets = AssetDatabase.FindAssets($"t:{variableType.Name}",
-                        new[] { searchPath, ReferenceUtility.PathToGlobalVariables, ReferenceUtility.PathToVariables });
+                        new[] { searchPath, GlobalSettings.PathToGlobalVariables, GlobalSettings.PathToVariables });
 
                     // Display a dropdown with all the assets found and an option to create a new one (the first option)
                     var assetPaths = assets.Select(asset => AssetDatabase.GUIDToAssetPath(asset)
-                        .Replace($"{ReferenceUtility.PathToGlobalVariables}/", "")
-                        .Replace($"{ReferenceUtility.PathToVariables}/", "")
+                        .Replace($"{GlobalSettings.PathToGlobalVariables}/", "")
+                        .Replace($"{GlobalSettings.PathToVariables}/", "")
                         .Replace($"{searchPath}/", "")
                     ).ToList();
 
