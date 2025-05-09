@@ -381,7 +381,7 @@ namespace VisualFunctions
                 var functionProperty = functionsProperty.GetArrayElementAtIndex(i);
                 var functionVisual = new VisualElement();
 
-                functionVisual.Add(GetFunction(functionProperty));
+                functionVisual.Add(CreateFunction(functionProperty, Refresh));
 
                 var topRightY = functionVisual.layout.y + 8;
                 var index = i;
@@ -484,7 +484,7 @@ namespace VisualFunctions
             }
         }
 
-        private VisualElement GetFunction(SerializedProperty property)
+        private static VisualElement CreateFunction(SerializedProperty property, Action refresh)
         {
             var container = new VisualElement
             {
@@ -525,7 +525,7 @@ namespace VisualFunctions
                 {
                     foldoutOpen.boolValue = !foldoutOpen.boolValue;
                     property.serializedObject.ApplyModifiedProperties();
-                    Refresh();
+                    refresh();
                 })
                 {
                     text = "=",
@@ -554,7 +554,7 @@ namespace VisualFunctions
             toggle.RegisterValueChangedCallback(evt =>
             {
                 property.FindPropertyRelative("Enabled").boolValue = evt.newValue;
-                Refresh();
+                refresh();
             });
 
             topLeftRow.Add(toggle);
@@ -638,8 +638,7 @@ namespace VisualFunctions
                     {
                         fields.Add(myFunction.CreateNewField(fields == myFunction.Inputs));
                         FormulaCache.Clear();
-
-                        Refresh();
+                        refresh();
                     })
                     {
                         text = "+",
@@ -660,7 +659,7 @@ namespace VisualFunctions
                             fields.Add(_copiedField.Clone());
                             _copiedField = null;
                             FormulaCache.Clear();
-                            Refresh();
+                            refresh();
                         })
                         {
                             text = "📋",
@@ -696,7 +695,7 @@ namespace VisualFunctions
                             myFunction.Inputs.Contains(field) ? myFunction.FunctionInputSettings : myFunction.FunctionOutputSettings,
                             fields, myFunction.GetMinEditableFieldIndex(field),
                             (fieldName, fieldValue) => myFunction.EditField(fieldName, fieldValue),
-                            Refresh
+                            refresh
                         )
                     );
                 }
@@ -987,7 +986,7 @@ namespace VisualFunctions
             {
                 var type = field.Value.Value is IRefType ? field.Value.Value.GetType() : field.Value.Type;
 
-                if (field.SupportedTypes.Count == 0) row1.Add(new Label($"({GetBetterTypeName(type)})"));
+                if (field.SupportedTypes.Count == 0) row1.Add(new Label($"({ExpressionUtility.GetBetterTypeName(type)})"));
 
                 var value = property.FindPropertyRelative("Value");
                 var propertyField = new PropertyField(value)
@@ -1132,16 +1131,6 @@ namespace VisualFunctions
             if (row2.childCount > 0) container.Add(row2);
 
             return container;
-        }
-
-        private static string GetBetterTypeName(Type type)
-        {
-            if (type == typeof(float)) return "Float";
-            if (type == typeof(int)) return "Integer";
-            if (type == typeof(bool)) return "Boolean";
-            if (type == typeof(string)) return "String";
-
-            return type.Name;
         }
     }
 }
