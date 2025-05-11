@@ -352,6 +352,11 @@ namespace VisualFunctions
                         if (variables.Find(v => v.Name == variable) is { } variableValue)
                         {
                             value = variableValue.Value;
+
+                            if (methodType is AccessorType.Constructor && value is CustomFunction)
+                            {
+                                methodType = AccessorType.CustomFunction;
+                            }
                         }
                         else
                         {
@@ -363,7 +368,7 @@ namespace VisualFunctions
                                 return false;
                             }
 
-                            value = new MethodValue(type);
+                            value = new TempIValue(type);
                         }
 
                         switch (methodType)
@@ -376,6 +381,9 @@ namespace VisualFunctions
                                 break;
                             case AccessorType.Property:
                                 expressions.Add(new AccessorCaller(value, propertyName, leftProperties));
+                                break;
+                            case AccessorType.CustomFunction:
+                                expressions.Add(new AccessorCaller(value, parameters, leftProperties));
                                 break;
                         }
                     }
@@ -676,110 +684,130 @@ namespace VisualFunctions
 
         public static object EvaluateAccessor(string uid, AccessorCaller caller, List<ExpressionVariable> variables)
         {
-            var callerValue = caller.Instance.Type == typeof(Type) ? null : ExpressionUtility.ExtractValue(caller.Instance, uid, variables);
-            var callerType = caller.Instance.Type.FullName == "System.RuntimeType"
-                ? (Type)caller.Instance.Value
-                : callerValue.GetType();
-
-            if (caller.AccessorType is AccessorType.Property)
-            {
-                var field = callerType.GetField(caller.Property);
-
-                if (field == null)
-                {
-                    var property = callerType.GetProperty(caller.Property);
-
-                    if (property == null)
-                    {
-                        Debug.LogError($"Property and field '{caller.Property}' not found in '{callerType}'");
-                        return null;
-                    }
-
-                    if (property.CanRead)
-                    {
-                        caller.Result = new MethodValue(property.GetValue(callerValue));
-                    }
-                }
-                else
-                {
-                    caller.Result = new MethodValue(field.GetValue(callerValue));
-                }
-            }
-            else if (caller.AccessorType is AccessorType.Constructor)
+            if (caller.AccessorType is AccessorType.CustomFunction)
             {
                 var parameters = caller.Parameters
                     .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
                     .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
                     .ToList();
-                
-                if (caller.GenericTypes.Count > 0)
-                {
-                    try
-                    {
-                        callerType = callerType.MakeGenericType(caller.GenericTypes.ToArray());
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError($"Failed to apply generic types to constructor in '{callerType}': {ex.Message}");
-                        return null;
-                    }
-                }
 
-                var constructor = callerType.GetConstructor(parameters.Select(p => p.GetType()).ToArray());
-
-                if (constructor == null)
-                {
-                    Debug.LogError($"Constructor not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
-                    return null;
-                }
-                
-                caller.Result = new MethodValue(constructor.Invoke(parameters.ToArray()));
+                caller.Result = ((CustomFunction)caller.Instance).Evaluate(parameters);
             }
             else
             {
-                var parameters = caller.Parameters
-                    .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
-                    .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
-                    .ToList();
+                var callerValue = caller.Instance.Type == typeof(Type) ? null : ExpressionUtility.ExtractValue(caller.Instance, uid, variables);
+                var callerType = caller.Instance.Type.FullName == "System.RuntimeType"
+                    ? (Type)caller.Instance.Value
+                    : callerValue.GetType();
 
-                var method = callerType.GetMethod(caller.Property, parameters.Select(p => p.GetType()).ToArray());
-
-                if (method == null)
+                switch (caller.AccessorType)
                 {
-                    Debug.LogError($"Method '{caller.Property}' not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
-                    return null;
-                }
-
-                if (method.IsGenericMethodDefinition && caller.GenericTypes.Count > 0)
-                {
-                    try
+                    case AccessorType.Property:
                     {
-                        method = method.MakeGenericMethod(caller.GenericTypes.ToArray());
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError($"Failed to apply generic types to method '{caller.Property}' in '{callerType}': {ex.Message}");
-                        return null;
-                    }
-                }
+                        var field = callerType.GetField(caller.Property);
 
-                var methodParameters = method.GetParameters();
-                for (var i = 0; i < methodParameters.Length; i++)
-                {
-                    if (methodParameters[i].ParameterType.IsEnum && parameters[i] is string enumValue)
-                    {
-                        parameters[i] = Enum.Parse(methodParameters[i].ParameterType, enumValue);
+                        if (field == null)
+                        {
+                            var property = callerType.GetProperty(caller.Property);
+
+                            if (property == null)
+                            {
+                                Debug.LogError($"Property and field '{caller.Property}' not found in '{callerType}'");
+                                return null;
+                            }
+
+                            if (property.CanRead)
+                            {
+                                caller.Result = new TempIValue(property.GetValue(callerValue));
+                            }
+                        }
+                        else
+                        {
+                            caller.Result = new TempIValue(field.GetValue(callerValue));
+                        }
+
+                        break;
                     }
-                }
-                
-                if (method.ReturnType == typeof(void))
-                {
-                    method.Invoke(callerValue, parameters.ToArray());
-                    caller.Result = new MethodValue(callerValue);
-                }
-                else
-                {
-                    caller.Result = new MethodValue(method.Invoke(callerValue, parameters.ToArray()));
+                    case AccessorType.Constructor:
+                    {
+                        var parameters = caller.Parameters
+                            .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
+                            .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
+                            .ToList();
+
+                        if (caller.GenericTypes.Count > 0)
+                        {
+                            try
+                            {
+                                callerType = callerType.MakeGenericType(caller.GenericTypes.ToArray());
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogError($"Failed to apply generic types to constructor in '{callerType}': {ex.Message}");
+                                return null;
+                            }
+                        }
+
+                        var constructor = callerType.GetConstructor(parameters.Select(p => p.GetType()).ToArray());
+
+                        if (constructor == null)
+                        {
+                            Debug.LogError($"Constructor not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
+                            return null;
+                        }
+
+                        caller.Result = new TempIValue(constructor.Invoke(parameters.ToArray()));
+                        break;
+                    }
+                    default:
+                    {
+                        var parameters = caller.Parameters
+                            .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
+                            .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
+                            .ToList();
+
+                        var method = callerType.GetMethod(caller.Property, parameters.Select(p => p.GetType()).ToArray());
+
+                        if (method == null)
+                        {
+                            Debug.LogError($"Method '{caller.Property}' not found in '{callerType}' with parameters {string.Join(", ", parameters)}");
+                            return null;
+                        }
+
+                        if (method.IsGenericMethodDefinition && caller.GenericTypes.Count > 0)
+                        {
+                            try
+                            {
+                                method = method.MakeGenericMethod(caller.GenericTypes.ToArray());
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogError($"Failed to apply generic types to method '{caller.Property}' in '{callerType}': {ex.Message}");
+                                return null;
+                            }
+                        }
+
+                        var methodParameters = method.GetParameters();
+                        for (var i = 0; i < methodParameters.Length; i++)
+                        {
+                            if (methodParameters[i].ParameterType.IsEnum && parameters[i] is string enumValue)
+                            {
+                                parameters[i] = Enum.Parse(methodParameters[i].ParameterType, enumValue);
+                            }
+                        }
+
+                        if (method.ReturnType == typeof(void))
+                        {
+                            method.Invoke(callerValue, parameters.ToArray());
+                            caller.Result = new TempIValue(callerValue);
+                        }
+                        else
+                        {
+                            caller.Result = new TempIValue(method.Invoke(callerValue, parameters.ToArray()));
+                        }
+
+                        break;
+                    }
                 }
             }
 

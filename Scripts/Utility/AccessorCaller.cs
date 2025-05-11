@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace VisualFunctions
 {
-    public class MethodValue : IValue
+    public class TempIValue : IValue
     {
-        public MethodValue(object value)
+        public TempIValue(object value)
         {
             Value = value;
         }
@@ -16,7 +16,7 @@ namespace VisualFunctions
         
         public IValue Clone()
         {
-            return new MethodValue(Value);
+            return new TempIValue(Value);
         }
     }
 
@@ -24,7 +24,8 @@ namespace VisualFunctions
     {
         Property,
         Method,
-        Constructor
+        Constructor,
+        CustomFunction
     }
 
     public class AccessorCaller
@@ -64,12 +65,20 @@ namespace VisualFunctions
             Parameters = parameters;
             GenericTypes = genericTypes ?? new List<Type>();
         }
+        
+        public AccessorCaller(IValue instance, List<string> parameters, string leftMethod)
+        {
+            Instance = instance;
+            LeftMethod = leftMethod;
+            AccessorType = AccessorType.CustomFunction;
+            Parameters = parameters;
+        }
 
         public IValue Result { get; set; }
 
         public void AssignValue(object value)
         {
-            if (AccessorType is AccessorType.Method or AccessorType.Constructor) return;
+            if (AccessorType is not AccessorType.Property) return;
 
             var instanceType = Instance.Type;
             var propertyInfo = instanceType.GetProperty(Property);

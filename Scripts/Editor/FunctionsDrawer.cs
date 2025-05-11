@@ -14,11 +14,10 @@ namespace VisualFunctions
     {
         private VisualElement _content;
         private SerializedProperty _property;
-        private string _selectedFunctionIndex;
         private GameObject _targetObject;
         
-        private static Field _copiedField;
-        private static Function _copiedFunction;
+        public static Field CopiedField;
+        public static Function CopiedFunction;
 
         private void Refresh()
         {
@@ -192,16 +191,16 @@ namespace VisualFunctions
 
             topRow.Add(selectFunctionButton);
 
-            if (_copiedFunction != null)
+            if (CopiedFunction != null)
             {
                 var pasteButton = new Button(() =>
                 {
                     functionsProperty.arraySize++;
                     var functionProperty = functionsProperty.GetArrayElementAtIndex(functionsProperty.arraySize - 1);
                     
-                    functionProperty.managedReferenceValue = _copiedFunction.Clone();
+                    functionProperty.managedReferenceValue = CopiedFunction.Clone();
                     
-                    _copiedFunction = null;
+                    CopiedFunction = null;
                     FormulaCache.Clear();
                     Refresh();
                 })
@@ -228,139 +227,27 @@ namespace VisualFunctions
                 
                 var globalValuesFoldout = property.FindPropertyRelative("GlobalValuesFoldoutOpen");
                 var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
-                var hasContent = functionsInstance.GlobalVariables.Count != 0;
-                var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
-                const int radius = 6;
-                var globalValuesContainer = new VisualElement
-                {
-                    style =
-                    {
-                        marginLeft = 5,
-                        paddingLeft = 10,
-                        marginRight = 5,
-                        paddingRight = 10,
-                        marginBottom = 5,
-                        minHeight = 24,
-                        backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
-                        borderLeftColor = borderColor,
-                        borderLeftWidth = 2,
-                        borderRightColor = borderColor,
-                        borderRightWidth = 2,
-                        borderBottomColor = borderColor,
-                        borderBottomWidth = 2,
-                        borderBottomLeftRadius = radius,
-                        borderBottomRightRadius = radius
-                    }
-                };
-                var globalValuesTopRow = new VisualElement
-                {
-                    style =
-                    {
-                        flexDirection = FlexDirection.Row,
-                        justifyContent = Justify.FlexStart,
-                        alignItems = Align.Center,
-                        backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
-                        height = 30,
-                        paddingLeft = 5,
-                        borderTopLeftRadius = radius,
-                        borderTopRightRadius = radius,
-                        borderBottomLeftRadius = radius,
-                        borderBottomRightRadius = radius
-                    }
-                };
                 
-                if (hasContent)
-                {
-                    var globalValueFoldoutButton = new Button(() =>
+                CreateFields(
+                    container, "Global Values", "Global values are available for all functions, use their name in formulas",
+                    functionsInstance.GlobalVariables, globalValuesFoldout,
+                    () =>
                     {
-                        globalValuesFoldout.boolValue = !globalValuesFoldout.boolValue;
-                        property.serializedObject.ApplyModifiedProperties();
-                        Refresh();
-                    })
-                    {
-                        text = "=",
-                        style =
-                        {
-                            width = 20,
-                            height = 20
-                        }
-                    };
-
-                    globalValuesTopRow.Add(globalValueFoldoutButton);
-                }
-                
-                globalValuesTopRow.Add(new Label("Global Values"));
-                
-                var descriptionImage = new Image
-                {
-                    tooltip = "Global values are available for all functions, use their name in formulas",
-                    style =
-                    {
-                        marginTop = 2
-                    },
-                    image = EditorGUIUtility.IconContent("_Help").image
-                };
-
-                globalValuesTopRow.Add(descriptionImage);
-                
-                var addValueButton = new Button(() =>
-                {
-                    functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
-                    functionsInstance.GlobalValuesFoldoutOpen = true;
-                    FormulaCache.Clear();
-                    Refresh();
-                })
-                {
-                    text = "+",
-                    tooltip = "Add a new global value",
-                    style =
-                    {
-                        width = 20,
-                        height = 20
-                    }
-                };
-
-                globalValuesTopRow.Add(addValueButton);
-                
-                if (_copiedField != null)
-                {
-                    var pasteButton = new Button(() =>
-                    {
-                        functionsInstance.GlobalVariables.Add(_copiedField.Clone());
-                        _copiedField = null;
+                        functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
+                        functionsInstance.GlobalValuesFoldoutOpen = true;
                         FormulaCache.Clear();
                         Refresh();
-                    })
+                    },
+                    () =>
                     {
-                        text = "📋",
-                        tooltip = "Paste the field",
-                        style =
-                        {
-                            width = 20,
-                            height = 20
-                        }
-                    };
-                    
-                    globalValuesTopRow.Add(pasteButton);
-                }
-                
-                container.Add(globalValuesTopRow);
-                
-                if (globalValuesFoldout.boolValue && hasContent)
-                {
-                    var globalFieldsContainer = new VisualElement
+                        functionsInstance.GlobalVariables.Add(CopiedField.Clone());
+                        CopiedField = null;
+                        FormulaCache.Clear();
+                        Refresh();
+                    },
+                    (element, field) =>
                     {
-                        style =
-                        {
-                            marginLeft = 15,
-                            marginBottom = 5,
-                            marginTop = 5
-                        }
-                    };
-
-                    foreach (var field in functionsInstance.GlobalVariables)
-                    {
-                        globalFieldsContainer.Add(
+                        element.Add(
                             CreateField(
                                 globalValuesProperty.GetArrayElementAtIndex(functionsInstance.GlobalVariables.IndexOf(field)),
                                 field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
@@ -369,11 +256,9 @@ namespace VisualFunctions
                                 Refresh
                             )
                         );
-                    }
-
-                    globalValuesContainer.Add(globalFieldsContainer);
-                    container.Add(globalValuesContainer);
-                }
+                    },
+                    Refresh
+                );
             }
 
             for (var i = 0; i < functionsProperty.arraySize; i++)
@@ -408,7 +293,7 @@ namespace VisualFunctions
                 
                 var copyButton = new Button(() =>
                 {
-                    _copiedFunction = (functionProperty.managedReferenceValue as Function)?.Clone();
+                    CopiedFunction = (functionProperty.managedReferenceValue as Function)?.Clone();
                     Refresh();
                 })
                 {
@@ -484,7 +369,7 @@ namespace VisualFunctions
             }
         }
 
-        private static VisualElement CreateFunction(SerializedProperty property, Action refresh)
+        public static VisualElement CreateFunction(SerializedProperty property, Action refresh)
         {
             var container = new VisualElement
             {
@@ -610,97 +495,37 @@ namespace VisualFunctions
                                                            (myFunction.AllowAddOutputs && field == myFunction.Outputs)))
             {
                 var name = fields == myFunction.Outputs ? "Outputs" : "Inputs";
-                var topRow = new VisualElement
-                {
-                    style =
-                    {
-                        flexDirection = FlexDirection.Row,
-                        justifyContent = Justify.FlexStart,
-                        alignItems = Align.Center,
-                        marginBottom = 5
-                    }
-                };
                 
-                topRow.Add(
-                    new Label(name)
-                    {
-                        style =
-                        {
-                            width = 40
-                        }
-                    }
-                );
-                
-                if ((fields == myFunction.Inputs && myFunction.AllowAddInputs) ||
-                    (fields == myFunction.Outputs && myFunction.AllowAddOutputs))
-                {
-                    var addButton = new Button(() =>
+                CreateFields(
+                    functionContent, name, "", fields, null,
+                    () =>
                     {
                         fields.Add(myFunction.CreateNewField(fields == myFunction.Inputs));
                         FormulaCache.Clear();
                         refresh();
-                    })
+                    },
+                    () =>
                     {
-                        text = "+",
-                        tooltip = "Add a new field",
-                        style =
-                        {
-                            width = 20,
-                            height = 20
-                        }
-                    };
-
-                    topRow.Add(addButton);
-
-                    if (_copiedField != null)
+                        fields.Add(CopiedField.Clone());
+                        CopiedField = null;
+                        FormulaCache.Clear();
+                        refresh();
+                    },
+                    (element, field) =>
                     {
-                        var pasteButton = new Button(() =>
-                        {
-                            fields.Add(_copiedField.Clone());
-                            _copiedField = null;
-                            FormulaCache.Clear();
-                            refresh();
-                        })
-                        {
-                            text = "📋",
-                            tooltip = "Paste the field",
-                            style =
-                            {
-                                width = 20,
-                                height = 20
-                            }
-                        };
-
-                        topRow.Add(pasteButton);
-                    }
-                }
-
-                functionContent.Add(topRow);
-
-                var fieldContainer = new VisualElement
-                {
-                    style =
-                    {
-                        marginLeft = 15,
-                        marginBottom = 5
-                    }
-                };
-
-                foreach (var field in fields)
-                {
-                    fieldContainer.Add(
-                        CreateField(
-                            property.FindPropertyRelative(name).GetArrayElementAtIndex(fields.IndexOf(field)),
-                            field, myFunction.GetType().Name, myFunction.IsFieldEditable(field), 
-                            myFunction.Inputs.Contains(field) ? myFunction.FunctionInputSettings : myFunction.FunctionOutputSettings,
-                            fields, myFunction.GetMinEditableFieldIndex(field),
-                            (fieldName, fieldValue) => myFunction.EditField(fieldName, fieldValue),
-                            refresh
-                        )
-                    );
-                }
-
-                functionContent.Add(fieldContainer);
+                        element.Add(
+                            CreateField(
+                                property.FindPropertyRelative(name).GetArrayElementAtIndex(fields.IndexOf(field)),
+                                field, myFunction.GetType().Name, myFunction.IsFieldEditable(field), 
+                                myFunction.Inputs.Contains(field) ? myFunction.FunctionInputSettings : myFunction.FunctionOutputSettings,
+                                fields, myFunction.GetMinEditableFieldIndex(field),
+                                (fieldName, fieldValue) => myFunction.EditField(fieldName, fieldValue),
+                                refresh
+                            )
+                        );
+                    },
+                    refresh
+                );
             }
 
             foreach (var exposedProperty in myFunction.EditableAttributes)
@@ -724,7 +549,7 @@ namespace VisualFunctions
             return container;
         }
         
-        private static VisualElement CreateField(SerializedProperty property, Field field, 
+        public static VisualElement CreateField(SerializedProperty property, Field field, 
             string functionName, bool isEditable, FunctionSettings settings, List<Field> fields, int minEditableFieldIndex, Action<string, string> editFieldAction,
             Action refresh)
         {
@@ -770,6 +595,28 @@ namespace VisualFunctions
                     marginLeft = 15
                 }
             };
+            
+            var foldout = property.FindPropertyRelative("Value.FoldoutOpen");
+
+            if (foldout != null)
+            {
+                // Add a foldout button for values that can be expanded
+                var foldoutButton = new Button(() =>
+                {
+                    foldout.boolValue = !foldout.boolValue;
+                    refresh();
+                })
+                {
+                    text = "≡",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
+                
+                row1.Add(foldoutButton);
+            }
 
             if (field.InEdition)
             {
@@ -813,6 +660,41 @@ namespace VisualFunctions
                 });
 
                 row1.Add(textField);
+            }
+            else if (field.Value is CustomFunction customFunction)
+            {
+                var name = "";
+
+                if (customFunction.Outputs.Count > 0 && customFunction.Outputs[0].Value != null)
+                {
+                    name += ExpressionUtility.GetBetterTypeName(customFunction.Outputs[0].Value.Type) + " ";
+                }
+                else
+                {
+                    name += "void ";
+                }
+                
+                name += field.FieldName;
+                
+                if (customFunction.Inputs.Count > 0)
+                {
+                    var inputs = new List<string>();
+                    
+                    foreach (var input in customFunction.Inputs)
+                    {
+                        if (input.Value == null) continue;
+                        
+                        inputs.Add(ExpressionUtility.GetBetterTypeName(input.Value.Type) + " " + input.FieldName);
+                    }
+
+                    name += "(" + string.Join(", ", inputs) + ")";
+                }
+                else
+                {
+                    name += "()";
+                }
+                
+                row1.Add(new Label(name));
             }
             else
             {
@@ -868,7 +750,7 @@ namespace VisualFunctions
 
             var rightValue = 0;
 
-            if (field.Value != null && field.Value.Type != typeof(object) && 
+            if (field.Value != null && field.Value.Type != typeof(object) && field.Value is not CustomFunction &&
                 ((settings.CanCallMethods && isEditable) || field.AcceptAnyMethod))
             {
                 var searchButton = new Button(() =>
@@ -894,7 +776,7 @@ namespace VisualFunctions
                 // Add a button to copy the field
                 var copyButton = new Button(() =>
                 {
-                    _copiedField = field.Clone();
+                    CopiedField = field.Clone();
                     refresh();
                 })
                 {
@@ -981,9 +863,62 @@ namespace VisualFunctions
                     row1.Add(downButton);
                 }
             }
+            
+            if (field.SupportedTypes.Count > 0)
+            {
+                var baseList = new List<string>();
+                var defaultIndex = 0;
+
+                if (field.Value is null)
+                {
+                    baseList.Add("None");
+                }
+                
+                baseList.AddRange(ExpressionUtility.SupportedTypes.Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")));
+
+                var supportedTypes = baseList.Concat(field.SupportedTypes
+                    .Where(t => !ExpressionUtility.SupportedTypes.Contains(t))
+                    .Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")))
+                .ToList();
+                
+                if (field.Value is not null)
+                {       
+                    defaultIndex = supportedTypes.IndexOf(ObjectNames.NicifyVariableName(field.Value.GetType().Name).Replace(" Reference", ""));
+                }
+                
+                var popupField = new PopupField<string>(supportedTypes, defaultIndex)
+                {
+                    style =
+                    {
+                        marginRight = 5
+                    }
+                };
+
+                popupField.RegisterValueChangedCallback(evt =>
+                {
+                    if (field.Value is null && popupField.index == 0) return;
+
+                    var index = popupField.index;
+
+                    if (field.Value is null) index--;
+
+                    var selectedType = index < ExpressionUtility.SupportedTypes.Count
+                        ? ExpressionUtility.SupportedTypes[index]
+                        : field.SupportedTypes.Where(t => !ExpressionUtility.SupportedTypes.Contains(t)).ToList()[index - ExpressionUtility.SupportedTypes.Count].SystemType;
+                    field.Value = (IValue)Activator.CreateInstance(selectedType);
+                    FormulaCache.Clear();
+                    refresh();
+                });
+
+                row1.Add(popupField);
+            }
+
+            container.Add(row1);
 
             if (field.Value is not null)
             {
+                if (foldout is { boolValue: false }) return container;
+                
                 var type = field.Value.Value is IRefType ? field.Value.Value.GetType() : field.Value.Type;
 
                 if (field.SupportedTypes.Count == 0) row1.Add(new Label($"({ExpressionUtility.GetBetterTypeName(type)})"));
@@ -1077,60 +1012,166 @@ namespace VisualFunctions
                     row2.Add(popupField);
                 }
             }
-
-            if (field.SupportedTypes.Count > 0)
-            {
-                var baseList = new List<string>();
-                var defaultIndex = 0;
-
-                if (field.Value is null)
-                {
-                    baseList.Add("None");
-                }
-                
-                baseList.AddRange(ExpressionUtility.SupportedTypes.Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")));
-
-                var supportedTypes = baseList.Concat(field.SupportedTypes
-                    .Where(t => !ExpressionUtility.SupportedTypes.Contains(t))
-                    .Select(type => ObjectNames.NicifyVariableName(type.Name).Replace(" Reference", "")))
-                .ToList();
-                
-                if (field.Value is not null)
-                {       
-                    defaultIndex = supportedTypes.IndexOf(ObjectNames.NicifyVariableName(field.Value.GetType().Name).Replace(" Reference", ""));
-                }
-                
-                var popupField = new PopupField<string>(supportedTypes, defaultIndex)
-                {
-                    style =
-                    {
-                        marginRight = 5
-                    }
-                };
-
-                popupField.RegisterValueChangedCallback(evt =>
-                {
-                    if (field.Value is null && popupField.index == 0) return;
-
-                    var index = popupField.index;
-
-                    if (field.Value is null) index--;
-
-                    var selectedType = index < ExpressionUtility.SupportedTypes.Count
-                        ? ExpressionUtility.SupportedTypes[index]
-                        : field.SupportedTypes.Where(t => !ExpressionUtility.SupportedTypes.Contains(t)).ToList()[index - ExpressionUtility.SupportedTypes.Count].SystemType;
-                    field.Value = (IValue)Activator.CreateInstance(selectedType);
-                    FormulaCache.Clear();
-                    refresh();
-                });
-
-                row1.Add(popupField);
-            }
-
-            container.Add(row1);
+            
             if (row2.childCount > 0) container.Add(row2);
 
             return container;
+        }
+        
+        public static void CreateFields(VisualElement root, string header, string explanations, List<Field> fields, SerializedProperty foldout, 
+            Action addField, Action addCopiedField, Action<VisualElement, Field> createField, Action refresh)
+        {
+            var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+            const int radius = 6;
+            var container = foldout == null ?
+                new VisualElement
+                {
+                    style =
+                    {
+                        marginLeft = 15,
+                        marginBottom = 5
+                    }
+                } : 
+                new VisualElement
+                {
+                    style =
+                    {
+                        marginLeft = 5,
+                        paddingLeft = 10,
+                        marginRight = 5,
+                        paddingRight = 10,
+                        marginBottom = 5,
+                        minHeight = 24,
+                        backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
+                        borderLeftColor = borderColor,
+                        borderLeftWidth = 2,
+                        borderRightColor = borderColor,
+                        borderRightWidth = 2,
+                        borderBottomColor = borderColor,
+                        borderBottomWidth = 2,
+                        borderBottomLeftRadius = radius,
+                        borderBottomRightRadius = radius
+                    }
+                };
+            var topRow = foldout == null ?
+                new VisualElement
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                        justifyContent = Justify.FlexStart,
+                        alignItems = Align.Center,
+                        marginBottom = 5
+                    }
+                } :  
+                new VisualElement
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                        justifyContent = Justify.FlexStart,
+                        alignItems = Align.Center,
+                        backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                        height = 30,
+                        paddingLeft = 5,
+                        borderTopLeftRadius = radius,
+                        borderTopRightRadius = radius,
+                        borderBottomLeftRadius = radius,
+                        borderBottomRightRadius = radius
+                    }
+                };
+
+            if (fields.Count == 0 && foldout != null)
+            {
+                foldout.boolValue = false;
+            }
+            
+            if (fields.Count > 0 && foldout != null)
+            {
+                var foldoutButton = new Button(() =>
+                {
+                    foldout.boolValue = !foldout.boolValue;
+                    refresh();
+                })
+                {
+                    text = "=",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
+
+                topRow.Add(foldoutButton);
+            }
+                
+            topRow.Add(new Label(header));
+
+            if (explanations.Length > 0)
+            {
+                var descriptionImage = new Image
+                {
+                    tooltip = explanations,
+                    style =
+                    {
+                        marginTop = 2
+                    },
+                    image = EditorGUIUtility.IconContent("_Help").image
+                };
+
+                topRow.Add(descriptionImage);
+            }
+            
+            var addValueButton = new Button(addField)
+            {
+                text = "+",
+                tooltip = "Add a new field",
+                style =
+                {
+                    width = 20,
+                    height = 20
+                }
+            };
+
+            topRow.Add(addValueButton);
+            
+            if (CopiedField != null)
+            {
+                var pasteButton = new Button(addCopiedField)
+                {
+                    text = "📋",
+                    tooltip = "Paste the field",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
+                    
+                topRow.Add(pasteButton);
+            }
+                
+            root.Add(topRow);
+
+            if (foldout is { boolValue: false }) return;
+            
+            var fieldsContainer = new VisualElement
+            {
+                style =
+                {
+                    marginLeft = 15,
+                    marginBottom = 5,
+                    marginTop = 5
+                }
+            };
+
+            foreach (var field in fields)
+            {
+                createField(fieldsContainer, field);
+            }
+
+            container.Add(fieldsContainer);
+            root.Add(container);
         }
     }
 }

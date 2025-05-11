@@ -17,6 +17,9 @@ namespace VisualFunctions
         public bool FoldoutOpen = true;
         public bool GlobalValuesFoldoutOpen = true;
         public bool AllowGlobalVariables = true;
+        
+        // Only used in editor to use temporary global variables on a func with disabled global variables
+        public List<Field> TemporaryGlobalVariables = new();
 #endif
         
         private List<Field> _allVariables = new();
@@ -32,10 +35,26 @@ namespace VisualFunctions
         
         public void Invoke()
         {
+#if UNITY_EDITOR
+            if (!AllowGlobalVariables)
+            {
+                GlobalVariables.Clear();
+                GlobalVariables.Capacity = TemporaryGlobalVariables.Count;
+                GlobalVariables.AddRange(TemporaryGlobalVariables);
+            }
+#endif
+            
             foreach (var function in FunctionsList)
             {
                 if (!function.Invoke(GlobalVariables)) return;
             }
+            
+#if UNITY_EDITOR
+            if (!AllowGlobalVariables)
+            {
+                GlobalVariables.Clear();
+            }
+#endif
         }
 
         public void Invoke(List<Field> variables)
@@ -77,6 +96,18 @@ namespace VisualFunctions
                     variable.SupportedTypes.Add(supportedType);
                 }
             }
+        }
+        
+        public Functions Clone()
+        {
+            return new Functions
+            {
+                FunctionsList = FunctionsList.ConvertAll(function => function.Clone()),
+                GlobalVariables = GlobalVariables.ConvertAll(variable => variable.Clone()),
+                AllowGlobalVariables = AllowGlobalVariables,
+                FoldoutOpen = FoldoutOpen,
+                GlobalValuesFoldoutOpen = GlobalValuesFoldoutOpen
+            };
         }
     }
 }
