@@ -233,7 +233,7 @@ namespace VisualFunctions
                     functionsInstance.GlobalVariables, globalValuesFoldout,
                     () =>
                     {
-                        functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
+                        functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.Settings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
                         functionsInstance.GlobalValuesFoldoutOpen = true;
                         FormulaCache.Clear();
                         Refresh();
@@ -944,7 +944,7 @@ namespace VisualFunctions
 
                 var parentPath = Regex.Replace(AssetDatabase.GetAssetPath(property.serializedObject.targetObject), "/[^/]*$", "");
 
-                if (parentPath == "") parentPath = GlobalSettings.PathToVariables;
+                if (parentPath == "") parentPath = GlobalSettings.Settings.PathToVariables;
 
                 var searchPath = parentPath + "/" + property.serializedObject.targetObject.name;
 
@@ -955,12 +955,12 @@ namespace VisualFunctions
                 {
                     // Search all asset files in the parent path and subdirectories with the same type as the field
                     var assets = AssetDatabase.FindAssets($"t:{variableType.Name}",
-                        new[] { searchPath, GlobalSettings.PathToGlobalVariables, GlobalSettings.PathToVariables });
+                        new[] { searchPath, GlobalSettings.Settings.PathToGlobalVariables, GlobalSettings.Settings.PathToVariables });
 
                     // Display a dropdown with all the assets found and an option to create a new one (the first option)
                     var assetPaths = assets.Select(asset => AssetDatabase.GUIDToAssetPath(asset)
-                        .Replace($"{GlobalSettings.PathToGlobalVariables}/", "")
-                        .Replace($"{GlobalSettings.PathToVariables}/", "")
+                        .Replace($"{GlobalSettings.Settings.PathToGlobalVariables}/", "")
+                        .Replace($"{GlobalSettings.Settings.PathToVariables}/", "")
                         .Replace($"{searchPath}/", "")
                     ).ToList();
 

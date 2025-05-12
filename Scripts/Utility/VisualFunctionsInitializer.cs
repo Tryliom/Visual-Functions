@@ -21,9 +21,7 @@ namespace VisualFunctions
                 return;
             }
 
-            GlobalSettings.PathToGlobalVariables = settings.PathToGlobalVariables;
-            GlobalSettings.PathToVariables = settings.PathToVariables;
-            GlobalSettings.GlobalValuesPrefix = settings.GlobalValuesPrefix;
+            GlobalSettings.Settings = settings.Settings;
         }
     }
 }
