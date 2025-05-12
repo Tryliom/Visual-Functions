@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -67,7 +65,7 @@ namespace VisualFunctions
             };
             
             FunctionsDrawer.CreateFields(
-                inputsContainer, "Inputs", "These are the inputs to the function and will be passed to the function when it is invoked.",
+                inputsContainer, "Inputs", "These are the inputs to the function and will be passed to the function when it is invoked.\nIf it's call with less inputs than defined, it will use the default value of inputs.",
                 customFunction.Inputs, inputsFoldoutProperty,
                 () =>
                 {

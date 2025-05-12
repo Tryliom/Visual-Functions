@@ -6,6 +6,5 @@
         public static string PathToVariables = "Assets/Resources/ScriptableObjects/Variables";
 
         public static string GlobalValuesPrefix = "_";
-
     }
 }

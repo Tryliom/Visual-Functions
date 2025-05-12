@@ -3,23 +3,6 @@ using System.Collections.Generic;
 
 namespace VisualFunctions
 {
-    public class TempIValue : IValue
-    {
-        public TempIValue(object value)
-        {
-            Value = value;
-        }
-
-        public object Value { get; set; }
-
-        public Type Type => Value.GetType();
-        
-        public IValue Clone()
-        {
-            return new TempIValue(Value);
-        }
-    }
-
     public enum AccessorType
     {
         Property,

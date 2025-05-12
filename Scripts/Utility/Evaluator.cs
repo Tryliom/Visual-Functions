@@ -6,6 +6,13 @@ using UnityEngine;
 
 namespace VisualFunctions
 {
+    public class TernaryCaller
+    {
+        public readonly List<object> ConditionList = new();
+        public readonly List<object> IfFalse = new();
+        public readonly List<object> IfTrue = new();
+    }
+    
     public enum OperationType
     {
         Add,
@@ -134,6 +141,7 @@ namespace VisualFunctions
             var numberBuilder = new StringBuilder();
             var useAssignment = false;
             var encapsulateNext = false;
+            
             // Ternary operators
             var ternaryCallers = new List<TernaryCaller>();
             var ternaryDepth = -1;
@@ -353,9 +361,17 @@ namespace VisualFunctions
                         {
                             value = variableValue.Value;
 
-                            if (methodType is AccessorType.Constructor && value is CustomFunction)
+                            if (methodType is AccessorType.Constructor)
                             {
-                                methodType = AccessorType.CustomFunction;
+                                if (value is CustomFunction)
+                                {
+                                    methodType = AccessorType.CustomFunction;
+                                }
+                                else
+                                {
+                                    Debug.LogError($"Can't use '{variable}' as a constructor in formula: {formula}");
+                                    return false;
+                                }
                             }
                         }
                         else

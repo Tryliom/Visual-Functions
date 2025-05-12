@@ -14,4 +14,21 @@ namespace VisualFunctions
     {
         public new TType Value { get; set; }
     }
+    
+    public class TempIValue : IValue
+    {
+        public TempIValue(object value)
+        {
+            Value = value;
+        }
+
+        public object Value { get; set; }
+
+        public Type Type => Value.GetType();
+        
+        public IValue Clone()
+        {
+            return new TempIValue(Value);
+        }
+    }
 }

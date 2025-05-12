@@ -18,7 +18,7 @@ namespace VisualFunctions
         public bool GlobalValuesFoldoutOpen = true;
         public bool AllowGlobalVariables = true;
         
-        // Only used in editor to use temporary global variables on a func with disabled global variables
+        // Only used in the editor to use temporary global variables on a func with disabled global variables
         public List<Field> TemporaryGlobalVariables = new();
 #endif
         

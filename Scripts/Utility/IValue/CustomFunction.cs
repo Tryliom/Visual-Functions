@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.UIElements;
-
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
-#endif
 
 namespace VisualFunctions
 {
@@ -29,6 +22,7 @@ namespace VisualFunctions
 #endif
         
         private List<Field> _variables = new ();
+        private List<IValue> _defaultValues = new ();
 
         public object Value { get; set; }
 
@@ -36,10 +30,13 @@ namespace VisualFunctions
         
         public IValue Evaluate(List<object> inputs)
         {
+            _defaultValues.Capacity = Inputs.Count;
+            
             for (var i = 0; i < inputs.Count; i++)
             {
                 if (i < Inputs.Count)
                 {
+                    _defaultValues.Add(Inputs[i].Value);
                     Inputs[i].Value.Value = ExpressionUtility.ConvertTo(inputs[i], Inputs[i].Value.Type);
                 }
             }
@@ -51,6 +48,16 @@ namespace VisualFunctions
             _variables.AddRange(Outputs);
             
             Function.Invoke(_variables);
+
+            for (var i = 0; i < inputs.Count; i++)
+            {
+                if (i < Inputs.Count)
+                {
+                    Inputs[i].Value = _defaultValues[i];
+                }
+            }
+            
+            _defaultValues.Clear();
             
             return Outputs.Count > 0 ? Outputs[0].Value : this;
         }
