@@ -51,7 +51,11 @@ namespace VisualFunctions
         AssignmentOr,
         AssignmentXor,
         AssignmentLeftShift,
-        AssignmentRightShift
+        AssignmentRightShift,
+        
+        // ++ and --
+        Increment,
+        Decrement
     }
 
     public class ExpressionVariable
@@ -102,7 +106,9 @@ namespace VisualFunctions
             { "|=", OperationType.AssignmentOr },
             { "^=", OperationType.AssignmentXor },
             { "<<=", OperationType.AssignmentLeftShift },
-            { ">>=", OperationType.AssignmentRightShift }
+            { ">>=", OperationType.AssignmentRightShift },
+            { "++", OperationType.Increment },
+            { "--", OperationType.Decrement }
         };
 
         public static List<object> Process(string uid, string formula, List<ExpressionVariable> variables)
@@ -657,7 +663,7 @@ namespace VisualFunctions
         {
             switch (operationType)
             {
-                case > OperationType.Assignment:
+                case > OperationType.Assignment and < OperationType.Increment:
                     expressions.Add(OperationType.Assignment);
                     expressions.Add(expressions[0]);
                     expressions.Add(operationType switch
@@ -691,6 +697,13 @@ namespace VisualFunctions
                 case OperationType.Not:
                     expressions.Add(false);
                     expressions.Add(OperationType.Equal);
+                    break;
+                case OperationType.Increment:
+                case OperationType.Decrement:
+                    expressions.Add(OperationType.Assignment);
+                    expressions.Add(expressions[0]);
+                    expressions.Add(operationType == OperationType.Increment ? OperationType.Add : OperationType.Substract);
+                    expressions.Add(1);
                     break;
                 default:
                     expressions.Add(operationType);

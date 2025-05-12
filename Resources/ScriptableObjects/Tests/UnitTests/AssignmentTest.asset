@@ -73,6 +73,10 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomFunction
+        m_AssemblyQualifiedName: VisualFunctions.CustomFunction, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
         m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -141,6 +145,10 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomFunction
+        m_AssemblyQualifiedName: VisualFunctions.CustomFunction, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
         m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -156,6 +164,7 @@ MonoBehaviour:
     FoldoutOpen: 1
     GlobalValuesFoldoutOpen: 1
     AllowGlobalVariables: 1
+    TemporaryGlobalVariables: []
   references:
     version: 2
     RefIds:
@@ -167,7 +176,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651926141240308
+            rid: 7793652064509231630
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -195,7 +204,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651926141240309
+            rid: 7793652064509231631
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -215,49 +224,6 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
-    - rid: 7793651926141240308
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: 'A = 3; A == 3;
-
-          A += 5; A == 8;
-
-          A -=
-          4; A == 4;
-
-          A *= 3; A == 12;
-
-          A /= 2; A == 6;
-
-          A
-          %= 3; A == 0;
-
-
-          A = 5 * 6; A == 30;
-
-          A += -5 - 20;
-          A == 5;
-
-          A -= 7 - 14; A == 12;
-
-          A *= 4 / 2; A == 24;
-
-          A
-          /= 1 + 3; A == 6;
-
-          A %= 4; A == 2;'
-    - rid: 7793651926141240309
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: 'B.x = 5;  B.x == 5;
-
-          B.y = 2;  B.y == 2;
-
-
-          B.x
-          += B.y - A; B.x == 5;
-
-          B.y *= -A - B.x; B.y == -14;'
     - rid: 7793651926141240310
       type: {class: AnyTypeReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -283,4 +249,63 @@ MonoBehaviour:
     - rid: 7793651926141240314
       type: {class: 'AnyType`1[[UnityEngine.Vector2, UnityEngine.CoreModule]]', ns: VisualFunctions, asm: VisualFunctions}
       data:
-        TypeValue: {x: 0, y: 0}
+        TypeValue: {x: 6, y: -13}
+    - rid: 7793652064509231630
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: 'A = 3; A == 3;
+
+          A += 5; A == 8;
+
+          A -=
+          4; A == 4;
+
+          A *= 3; A == 12;
+
+          A /= 2; A == 6;
+
+          A
+          %= 3; A == 0;
+
+          A++; A == 1;
+
+          A--; A == 0;
+
+
+          A
+          = 5 * 6; A == 30;
+
+          A += -5 - 20; A == 5;
+
+          A -= 7 -
+          14; A == 12;
+
+          A *= 4 / 2; A == 24;
+
+          A /= 1 + 3; A ==
+          6;
+
+          A %= 4; A == 2;'
+    - rid: 7793652064509231631
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: 'B.x = 5;  B.x == 5;
+
+          B.y = 2;  B.y == 2;
+
+
+          B.x
+          += B.y - A; B.x == 5;
+
+          B.y *= -A - B.x; B.y == -14;
+
+
+          B.x++;
+          B.x == 6;
+
+          B.y++; B.y == -13;
+
+          B.x--; B.x == 5;
+
+          B.y--;
+          B.y == -14;'

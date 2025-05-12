@@ -631,8 +631,7 @@ namespace VisualFunctions
 
                 textField.RegisterCallback<InputEvent>(evt =>
                 {
-                    var newValue = evt.newData;
-                    if (newValue.Any(c => !char.IsLetter(c)))
+                    if (evt.newData.Any(c => !char.IsLetter(c) && c != '_'))
                     {
                         textField.value = new string(textField.value.Where(char.IsLetter).ToArray());
                     }
@@ -640,7 +639,7 @@ namespace VisualFunctions
 
                 textField.RegisterValueChangedCallback(evt =>
                 {
-                    if (evt.newValue.Any(c => !char.IsLetter(c) || c == '_')) return;
+                    if (evt.newValue.Any(c => !char.IsLetter(c) && c != '_')) return;
 
                     field.EditValue = textField.value;
                 });
