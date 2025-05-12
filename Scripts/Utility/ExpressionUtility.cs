@@ -33,7 +33,7 @@ namespace VisualFunctions
         public static readonly List<Type> SupportedTypes = new()
         {
             typeof(AnyTypeReference), typeof(ListOfReference), typeof(ComponentOfGameObjectReference),
-            typeof(CustomValue), typeof(Formula), typeof(ScriptableObjectReference)
+            typeof(CustomValue), typeof(CustomFunction), typeof(Formula), typeof(ScriptableObjectReference)
         };
         
         private static IEnumerable<Type> SortedTypes => AppDomain.CurrentDomain.GetAssemblies()
