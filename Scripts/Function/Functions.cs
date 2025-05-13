@@ -22,7 +22,7 @@ namespace VisualFunctions
         public List<Field> TemporaryGlobalVariables = new();
 #endif
         
-        private List<Field> _allVariables = new();
+        private List<IVariable> _allVariables = new();
 
         /**
          * Disable the use of global variables in the functions.
@@ -44,9 +44,13 @@ namespace VisualFunctions
             }
 #endif
             
+            _allVariables.Clear();
+            _allVariables.Capacity = GlobalVariables.Count;
+            _allVariables.AddRange(GlobalVariables);
+            
             foreach (var function in FunctionsList)
             {
-                if (!function.Invoke(GlobalVariables)) return;
+                if (!function.Invoke(_allVariables)) return;
             }
             
 #if UNITY_EDITOR
@@ -57,7 +61,7 @@ namespace VisualFunctions
 #endif
         }
 
-        public void Invoke(List<Field> variables)
+        public void Invoke(List<IVariable> variables)
         {
             _allVariables.Clear();
             _allVariables.Capacity = variables.Count + GlobalVariables.Count;

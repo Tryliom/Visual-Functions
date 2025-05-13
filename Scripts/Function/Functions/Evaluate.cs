@@ -10,7 +10,7 @@ namespace VisualFunctions
         public static readonly string Description = "Perform evaluations on a formula string";
         public static readonly FunctionCategory Category = FunctionCategory.Logic;
         
-        private List<ExpressionVariable> _variables = new();
+        private List<IVariable> _variables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
@@ -21,36 +21,15 @@ namespace VisualFunctions
         }
 #endif
 
-        protected override bool Process(List<Field> variables)
+        protected override bool Process(List<IVariable> variables)
         {
-            if (_variables.Count != variables.Count + Inputs.Count)
-            {
-                _variables.Clear();
-                _variables.Capacity = variables.Count + Inputs.Count;
+            _variables.Clear();
+            _variables.Capacity = variables.Count + Inputs.Count;
+            _variables.AddRange(variables);
                 
-                foreach (var field in variables)
-                {
-                    _variables.Add(new ExpressionVariable(field.FieldName, field.Value));
-                }
-                
-                foreach (var field in Inputs)
-                {
-                    _variables.Add(new ExpressionVariable(field.FieldName, field.Value));
-                }
-            }
-            else
+            foreach (var field in Inputs)
             {
-                for (var i = 0; i < variables.Count; i++)
-                {
-                    _variables[i].Name = variables[i].FieldName;
-                    _variables[i].Value = variables[i].Value;
-                }
-
-                for (var i = variables.Count; i < Inputs.Count; i++)
-                {
-                    _variables[i].Name = Inputs[i].FieldName;
-                    _variables[i].Value = Inputs[i].Value;
-                }
+                _variables.Add(field);
             }
             
             var formula = (string) Inputs[0].Value.Value;

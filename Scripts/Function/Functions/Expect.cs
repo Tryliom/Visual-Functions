@@ -13,7 +13,7 @@ namespace VisualFunctions
                                                     "If there is multiple lines (;), it will check the ones that are a boolean.";
         public static readonly FunctionCategory Category = FunctionCategory.Debug;
         
-        private List<Field> _globalVariables = new();
+        private List<IVariable> _globalVariables = new();
 
 #if UNITY_EDITOR
         public override void GenerateFields()
@@ -23,7 +23,7 @@ namespace VisualFunctions
         }
 #endif
 
-        protected override bool Process(List<Field> variables)
+        protected override bool Process(List<IVariable> variables)
         {
             _globalVariables.Clear();
             _globalVariables.Capacity = variables.Count + Inputs.Count;
@@ -41,12 +41,11 @@ namespace VisualFunctions
         private bool CheckCondition()
         {
             var formula = GetInput<string>("Condition").Value;
-            var variables = _globalVariables.Select(x => new ExpressionVariable(x.FieldName, x.Value)).ToList();
-            var results = Evaluator.Process(Uid, formula, variables);
+            var results = Evaluator.Process(Uid, formula, _globalVariables);
 
             foreach (var result in results)
             {
-                if (ExpressionUtility.ExtractValue(result, Uid, variables) is not bool res) continue;
+                if (ExpressionUtility.ExtractValue(result, Uid, _globalVariables) is not bool res) continue;
                 if (res) continue;
                 
                 Debug.Log($"Condition failed for formula {formula.Split(";")[results.IndexOf(result)].Replace("\n", "")}");

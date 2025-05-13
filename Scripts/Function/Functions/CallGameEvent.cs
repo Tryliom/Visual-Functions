@@ -19,7 +19,7 @@ namespace VisualFunctions
         }
 #endif
 
-        protected override bool Process(List<Field> variables)
+        protected override bool Process(List<IVariable> variables)
         {
             GameEventData.Invoke();
 

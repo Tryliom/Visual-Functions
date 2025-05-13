@@ -38,7 +38,7 @@ namespace VisualFunctions
         /**
          * Set the value from the formula.
          */
-        public void Evaluate(string uid, List<ExpressionVariable> variables)
+        public void Evaluate(string uid, List<IVariable> variables)
         {
             if (_lastEvaluatedFormula != Formula)
             {

@@ -17,7 +17,7 @@ namespace VisualFunctions
         }
 #endif
 
-        protected override bool Process(List<Field> variables)
+        protected override bool Process(List<IVariable> variables)
         {
             foreach (var input in Inputs)
             {

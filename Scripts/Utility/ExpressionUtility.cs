@@ -204,7 +204,7 @@ namespace VisualFunctions
             };
         }
 
-        public static object ExtractValue(object from, string uid, List<ExpressionVariable> variables)
+        public static object ExtractValue(object from, string uid, List<IVariable> variables)
         {
             var loops = 0;
             
@@ -214,7 +214,7 @@ namespace VisualFunctions
                 
                 if (loops > 100)
                 {
-                    Debug.LogError($"Infinite loop detected in {nameof(ExtractValue)}. Returning null.");
+                    Debug.LogError($"Infinite loop detected in {nameof(ExtractValue)} from {from}");
                     return null;
                 }
                 

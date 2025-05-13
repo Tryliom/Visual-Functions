@@ -10,7 +10,7 @@ namespace VisualFunctions
         public static readonly string Description = "Will stop the execution of the function or loop";
         public static readonly FunctionCategory Category = FunctionCategory.Utility;
 
-        protected override bool Process(List<Field> variables)
+        protected override bool Process(List<IVariable> variables)
         {
             return false;
         }

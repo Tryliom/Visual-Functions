@@ -57,11 +57,20 @@ namespace VisualFunctions
         Increment,
         Decrement
     }
+    
+    public interface IVariable
+    {
+        public string VariableName { get; }
+        public IValue VariableValue { get; }
+    }
 
-    public class ExpressionVariable
+    public class ExpressionVariable : IVariable
     {
         public string Name;
         public IValue Value;
+        
+        public string VariableName => Name;
+        public IValue VariableValue => Value;
 
         public ExpressionVariable(string name, IValue value)
         {
@@ -111,7 +120,7 @@ namespace VisualFunctions
             { "--", OperationType.Decrement }
         };
 
-        public static List<object> Process(string uid, string formula, List<ExpressionVariable> variables)
+        public static List<object> Process(string uid, string formula, List<IVariable> variables)
         {
             // Separate the formula into other formulas if it contains a ;
             var formulas = formula.Split(';');
@@ -136,7 +145,7 @@ namespace VisualFunctions
             return results;
         }
 
-        private static object ProcessFormula(string uid, string formula, List<ExpressionVariable> variables)
+        private static object ProcessFormula(string uid, string formula, List<IVariable> variables)
         {
             if (FormulaCache.Get(uid, formula) is { } cachedResult)
             {
@@ -363,9 +372,9 @@ namespace VisualFunctions
 
                         IValue value;
 
-                        if (variables.Find(v => v.Name == variable) is { } variableValue)
+                        if (variables.Find(v => v.VariableName == variable) is { } variableValue)
                         {
-                            value = variableValue.Value;
+                            value = variableValue.VariableValue;
 
                             if (methodType is AccessorType.Constructor)
                             {
@@ -409,9 +418,9 @@ namespace VisualFunctions
                                 break;
                         }
                     }
-                    else if (variables.Find(v => v.Name == variable) is { } variableValue)
+                    else if (variables.Find(v => v.VariableName == variable) is { } variableValue)
                     {
-                        expressions.Add(variableValue.Value);
+                        expressions.Add(variableValue.VariableValue);
                     }
                     else
                     {
@@ -483,7 +492,7 @@ namespace VisualFunctions
             return EvaluateExpression(uid, expressions, variables);
         }
 
-        private static object EvaluateExpression(string uid, List<object> expression, List<ExpressionVariable> variables)
+        private static object EvaluateExpression(string uid, List<object> expression, List<IVariable> variables)
         {
             var stack = new Stack<object>(expression.Count);
             var output = new List<object>(expression.Count);
@@ -579,7 +588,7 @@ namespace VisualFunctions
             };
         }
 
-        private static object EvaluatePostfix(string uid, List<object> postfix, List<ExpressionVariable> variables)
+        private static object EvaluatePostfix(string uid, List<object> postfix, List<IVariable> variables)
         {
             var stack = new Stack<object>(postfix.Count);
 
@@ -711,7 +720,7 @@ namespace VisualFunctions
             }
         }
 
-        public static object EvaluateAccessor(string uid, AccessorCaller caller, List<ExpressionVariable> variables)
+        public static object EvaluateAccessor(string uid, AccessorCaller caller, List<IVariable> variables)
         {
             if (caller.AccessorType is AccessorType.CustomFunction)
             {
@@ -720,7 +729,7 @@ namespace VisualFunctions
                     .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
                     .ToList();
 
-                caller.Result = ((CustomFunction)caller.Instance).Evaluate(parameters);
+                caller.Result = ((CustomFunction)caller.Instance).Evaluate(parameters, variables);
             }
             else
             {
@@ -842,8 +851,8 @@ namespace VisualFunctions
 
             if (caller.LeftMethod.Length <= 0) return caller;
 
-            var variableName = variables[^2].Name + variables.Count;
-            var newList = new List<ExpressionVariable>(variables) { new(variableName, caller.Result) };
+            var variableName = variables[^2].VariableName + variables.Count;
+            var newList = new List<IVariable>(variables) { new ExpressionVariable(variableName, caller.Result) };
 
             return Process(uid, variableName + "." + caller.LeftMethod, newList).FirstOrDefault();
         }

@@ -22,18 +22,14 @@ namespace VisualFunctions
         }
 #endif
 
-        protected override bool Process(List<Field> variables)
+        protected override bool Process(List<IVariable> variables)
         {
-            var allVariables = new List<Field>(variables);
-            
-            allVariables.AddRange(FunctionsToLoop.GlobalVariables);
-            
             var loops = (IntReference) Inputs[0].Value;
             var index = (IntReference) Inputs[1].Value;
 
             for (index.Value = 0; index.Value < loops.Value; index.Value++)
             {
-                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke(allVariables))) break;
+                if (FunctionsToLoop.FunctionsList.Any(function => !function.Invoke(variables))) break;
             }
 
             return true;

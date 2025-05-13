@@ -21,14 +21,16 @@ namespace VisualFunctions
         public bool OutputFoldoutOpen = true;
 #endif
         
-        private List<Field> _variables = new ();
-        private List<IValue> _defaultValues = new ();
+        private List<IVariable> _variables = new ();
+        private List<object> _defaultValues = new ();
 
         public object Value { get; set; }
 
         public Type Type => typeof(CustomFunction);
         
-        public IValue Evaluate(List<object> inputs)
+        private IValue _defaultReturnValue;
+        
+        public IValue Evaluate(List<object> inputs, List<IVariable> variables)
         {
             _defaultValues.Capacity = Inputs.Count;
             
@@ -36,16 +38,17 @@ namespace VisualFunctions
             {
                 if (i < Inputs.Count)
                 {
-                    _defaultValues.Add(Inputs[i].Value);
+                    _defaultValues.Add(Inputs[i].Value.Value);
                     Inputs[i].Value.Value = ExpressionUtility.ConvertTo(inputs[i], Inputs[i].Value.Type);
                 }
             }
             
             _variables.Clear();
-            _variables.Capacity = Inputs.Count + Outputs.Count;
+            _variables.Capacity = Inputs.Count + Outputs.Count + variables.Count;
             
             _variables.AddRange(Inputs);
             _variables.AddRange(Outputs);
+            _variables.AddRange(variables);
             
             Function.Invoke(_variables);
 
@@ -53,13 +56,13 @@ namespace VisualFunctions
             {
                 if (i < Inputs.Count)
                 {
-                    Inputs[i].Value = _defaultValues[i];
+                    Inputs[i].Value.Value = _defaultValues[i];
                 }
             }
             
             _defaultValues.Clear();
             
-            return Outputs.Count > 0 ? Outputs[0].Value : this;
+            return Outputs.Count > 0 ? Outputs[0].Value : _defaultReturnValue ??= new TempIValue(true);
         }
 
         public IValue Clone()

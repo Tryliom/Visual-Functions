@@ -6,7 +6,7 @@ using UnityEngine;
 namespace VisualFunctions
 {
     [Serializable]
-    public class Field
+    public class Field : IVariable
     {
         public string FieldName;
         [SerializeReference] public IValue Value;
@@ -21,6 +21,9 @@ namespace VisualFunctions
 
 #if UNITY_EDITOR
         public bool AcceptAnyMethod;
+        
+        public string VariableName => FieldName;
+        public IValue VariableValue => Value;
 
         /**
          * Use this constructor if you want to support a specific type
@@ -118,7 +121,7 @@ namespace VisualFunctions
                         newFormula += formula[i] + str + formula[i];
                         i += str.Length + 1;
                     }
-                    else if (char.IsLetter(currentChar))
+                    else if (char.IsLetter(currentChar) || currentChar == '_')
                     {
                         var variable = ExpressionUtility.ExtractVariable(formula, i);
                         i += variable.Length - 1;

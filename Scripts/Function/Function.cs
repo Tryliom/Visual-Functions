@@ -93,7 +93,7 @@ namespace VisualFunctions
             Uid = Guid.NewGuid().ToString();
         }
 
-        public bool Invoke(List<Field> variables)
+        public bool Invoke(List<IVariable> variables)
         {
             return !Enabled || Process(variables);
         }
@@ -117,7 +117,7 @@ namespace VisualFunctions
         }
 #endif
 
-        protected abstract bool Process(List<Field> variables);
+        protected abstract bool Process(List<IVariable> variables);
 
         public void EditField(string previousName, string newName)
         {

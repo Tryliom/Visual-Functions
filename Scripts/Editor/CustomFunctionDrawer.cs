@@ -65,7 +65,9 @@ namespace VisualFunctions
             };
             
             FunctionsDrawer.CreateFields(
-                inputsContainer, "Inputs", "These are the inputs to the function and will be passed to the function when it is invoked.\nIf it's call with less inputs than defined, it will use the default value of inputs.",
+                inputsContainer, "Inputs", "These are the inputs to the function and will be passed to the function when it is invoked.\n" +
+                                           "If it's call with less inputs than defined, it will use the default value of inputs.\n" +
+                                           "The inputs cannot be modified in the function.",
                 customFunction.Inputs, inputsFoldoutProperty,
                 () =>
                 {
