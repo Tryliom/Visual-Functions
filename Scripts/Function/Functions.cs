@@ -4,6 +4,18 @@ using UnityEngine;
 
 namespace VisualFunctions
 {
+    [Serializable]
+    public class ImportedFields
+    {
+        public ExportableFields Value;
+        public bool FoldoutOpen = true;
+
+        public ImportedFields(ExportableFields value)
+        {
+            Value = value;
+        }
+    }
+    
     /**
      * This class is used to store a list of functions that can be invoked.
      */
@@ -21,6 +33,9 @@ namespace VisualFunctions
         // Only used in the editor to use temporary global variables on a func with disabled global variables
         public List<Field> TemporaryGlobalVariables = new();
 #endif
+        
+        public List<ImportedFields> ImportedFields = new();
+        public bool ImportedFieldsFoldoutOpen = true;
         
         private List<IVariable> _allVariables = new();
 
@@ -48,6 +63,11 @@ namespace VisualFunctions
             _allVariables.Capacity = GlobalVariables.Count;
             _allVariables.AddRange(GlobalVariables);
             
+            foreach (var importedFields in ImportedFields)
+            {
+                _allVariables.AddRange(importedFields.Value.Fields);
+            }
+            
             foreach (var function in FunctionsList)
             {
                 if (!function.Invoke(_allVariables)) return;
@@ -67,6 +87,11 @@ namespace VisualFunctions
             _allVariables.Capacity = variables.Count + GlobalVariables.Count;
             _allVariables.AddRange(variables);
             _allVariables.AddRange(GlobalVariables);
+            
+            foreach (var importedFields in ImportedFields)
+            {
+                _allVariables.AddRange(importedFields.Value.Fields);
+            }
             
             foreach (var function in FunctionsList)
             {

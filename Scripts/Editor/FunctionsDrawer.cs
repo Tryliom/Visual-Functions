@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace VisualFunctions
 {
@@ -95,7 +96,7 @@ namespace VisualFunctions
                 Refresh();
             })
             {
-                text = "=",
+                text = "≡",
                 style =
                 {
                     width = 20,
@@ -220,6 +221,207 @@ namespace VisualFunctions
             container.Add(topRow);
             
             if (!foldoutOpen.boolValue) return;
+            
+            var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+            const int radius = 6;
+            var importedFieldsBox = new VisualElement
+            {
+                style =
+                {
+                    marginLeft = 5,
+                    paddingLeft = 10,
+                    marginRight = 5,
+                    paddingRight = 10,
+                    marginBottom = 5,
+                    minHeight = 24,
+                    backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
+                    borderLeftColor = borderColor,
+                    borderLeftWidth = 2,
+                    borderRightColor = borderColor,
+                    borderRightWidth = 2,
+                    borderBottomColor = borderColor,
+                    borderBottomWidth = 2,
+                    borderBottomLeftRadius = radius,
+                    borderBottomRightRadius = radius
+                }
+            };
+            var importTopRow = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    justifyContent = Justify.FlexStart,
+                    alignItems = Align.Center,
+                    backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                    height = 30,
+                    paddingLeft = 5,
+                    marginBottom = 5,
+                    borderTopLeftRadius = radius,
+                    borderTopRightRadius = radius,
+                    borderBottomLeftRadius = radius,
+                    borderBottomRightRadius = radius
+                }
+            };
+
+            if (functionsInstance.ImportedFields.Count == 0)
+            {
+                functionsInstance.ImportedFieldsFoldoutOpen = false;
+            }
+            
+            var foldoutImportButton = new Button(() =>
+            {
+                functionsInstance.ImportedFieldsFoldoutOpen = !functionsInstance.ImportedFieldsFoldoutOpen;
+                Refresh();
+            })
+            {
+                text = "≡",
+                style =
+                {
+                    width = 20,
+                    height = 20
+                }
+            };
+            
+            importTopRow.Add(foldoutImportButton);
+            importTopRow.Add(new Label("Imported Fields"));
+            
+            var descriptionImage = new Image
+            {
+                tooltip = "Imported fields are available for all functions, use their name in formulas",
+                style =
+                {
+                    marginTop = 2
+                },
+                image = EditorGUIUtility.IconContent("_Help").image
+            };
+
+            importTopRow.Add(descriptionImage);
+            
+            var importButton = new Button(() =>
+            {
+                ExpressionUtility.DisplayAssetPathMenuForType(
+                    typeof(ExportableFields),
+                    property.serializedObject.targetObject,
+                    asset =>
+                    {
+                        functionsInstance.ImportedFields.Add(new ImportedFields(asset as ExportableFields));
+                        functionsInstance.ImportedFieldsFoldoutOpen = true;
+                        Refresh();
+                    },
+                    functionsInstance.ImportedFields.Select(x => x.Value as Object).ToList()
+                );
+            })
+            {
+                text = "Import..",
+                tooltip = "Import exportable fields from another object",
+                style =
+                {
+                    marginTop = 5,
+                    marginBottom = 5
+                }
+            };
+            
+            importTopRow.Add(importButton);
+            container.Add(importTopRow);
+
+            if (functionsInstance.ImportedFieldsFoldoutOpen)
+            {
+                foreach (var importedFields in functionsInstance.ImportedFields)
+                {
+                    var row = new VisualElement
+                    {
+                        style =
+                        {
+                            flexDirection = FlexDirection.Row,
+                            justifyContent = Justify.FlexStart,
+                            alignItems = Align.Center,
+                            backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                            height = 30,
+                            paddingLeft = 5,
+                            marginTop = 10,
+                            marginBottom = 10,
+                            borderTopLeftRadius = radius,
+                            borderTopRightRadius = radius,
+                            borderBottomLeftRadius = radius,
+                            borderBottomRightRadius = radius
+                        }
+                    };
+                    
+                    var importFoldoutOpenButton = new Button(() =>
+                    {
+                        importedFields.FoldoutOpen = !importedFields.FoldoutOpen;
+                        Refresh();
+                    })
+                    {
+                        text = "≡",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
+                    
+                    row.Add(importFoldoutOpenButton);
+                    row.Add(new Label(ObjectNames.NicifyVariableName(importedFields.Value.name)));
+                    row.Add(new Button(() =>
+                    {
+                        functionsInstance.ImportedFields.Remove(importedFields);
+                        FormulaCache.Clear();
+                        Refresh();
+                    })
+                    {
+                        text = "-",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    });
+
+                    importedFieldsBox.Add(row);
+                    
+                    var listContent = new VisualElement
+                    {
+                        style =
+                        {
+                            marginLeft = 10,
+                            marginTop = 5,
+                            marginBottom = 5,
+                        }
+                    };
+
+                    var fieldsContent = new VisualElement
+                    {
+                        style =
+                        {
+                            marginLeft = 10,
+                            marginTop = 5,
+                            marginBottom = 5,
+                        }
+                    };
+
+                    foreach (var field in importedFields.Value.Fields)
+                    {
+                        if (field.Value is CustomFunction customFunction)
+                        {
+                            fieldsContent.Add(new Label(ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
+                        }
+                        else
+                        {
+                            fieldsContent.Add(new Label(field.FieldName + " (" + ExpressionUtility.GetBetterTypeName(field.Value.Type) + ")"));
+                        }
+                    }
+                    
+                    if (importedFields.FoldoutOpen)
+                    {
+                        listContent.Add(new Label(importedFields.Value.DeveloperDescription));
+                        listContent.Add(fieldsContent);
+                        importedFieldsBox.Add(listContent);
+                    }
+                }
+                
+                container.Add(importedFieldsBox);
+            }
             
             if (functionsInstance.AllowGlobalVariables)
             {
@@ -413,7 +615,7 @@ namespace VisualFunctions
                     refresh();
                 })
                 {
-                    text = "=",
+                    text = "≡",
                     style =
                     {
                         width = 20,
@@ -662,38 +864,7 @@ namespace VisualFunctions
             }
             else if (field.Value is CustomFunction customFunction)
             {
-                var name = "";
-
-                if (customFunction.Outputs.Count > 0 && customFunction.Outputs[0].Value != null)
-                {
-                    name += ExpressionUtility.GetBetterTypeName(customFunction.Outputs[0].Value.Type) + " ";
-                }
-                else
-                {
-                    name += "void ";
-                }
-                
-                name += field.FieldName;
-                
-                if (customFunction.Inputs.Count > 0)
-                {
-                    var inputs = new List<string>();
-                    
-                    foreach (var input in customFunction.Inputs)
-                    {
-                        if (input.Value == null) continue;
-                        
-                        inputs.Add(ExpressionUtility.GetBetterTypeName(input.Value.Type) + " " + input.FieldName);
-                    }
-
-                    name += "(" + string.Join(", ", inputs) + ")";
-                }
-                else
-                {
-                    name += "()";
-                }
-                
-                row1.Add(new Label(name));
+                row1.Add(new Label(ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
             }
             else
             {
@@ -941,38 +1112,25 @@ namespace VisualFunctions
                 propertyField.Bind(property.serializedObject);
                 row2.Add(propertyField);
 
-                var parentPath = Regex.Replace(AssetDatabase.GetAssetPath(property.serializedObject.targetObject), "/[^/]*$", "");
-
-                if (parentPath == "") parentPath = GlobalSettings.Settings.PathToVariables;
-
-                var searchPath = parentPath + "/" + property.serializedObject.targetObject.name;
-
                 // Get the variable type of the field (Reference type)
                 var variableType = ReferenceUtility.GetVariableFromReference(field.Value.GetType());
 
                 if (variableType != null)
                 {
-                    // Search all asset files in the parent path and subdirectories with the same type as the field
-                    var assets = AssetDatabase.FindAssets($"t:{variableType.Name}",
-                        new[] { searchPath, GlobalSettings.Settings.PathToGlobalVariables, GlobalSettings.Settings.PathToVariables });
-
-                    // Display a dropdown with all the assets found and an option to create a new one (the first option)
-                    var assetPaths = assets.Select(asset => AssetDatabase.GUIDToAssetPath(asset)
-                        .Replace($"{GlobalSettings.Settings.PathToGlobalVariables}/", "")
-                        .Replace($"{GlobalSettings.Settings.PathToVariables}/", "")
-                        .Replace($"{searchPath}/", "")
-                    ).ToList();
-
-                    assetPaths.Insert(0, "Asset..");
-
                     var buttonCreate = new Button(() =>
                     {
+                        var parentPath = Regex.Replace(AssetDatabase.GetAssetPath(property.serializedObject.targetObject), "/[^/]*$", "");
+
+                        if (parentPath == "") parentPath = GlobalSettings.Settings.PathToVariables;
+                        
                         // Asset creation
                         // Create a folder of the function name if it doesn't exist
                         var folderPath = $"{parentPath}/{property.serializedObject.targetObject.name}";
 
                         if (!AssetDatabase.IsValidFolder(folderPath))
+                        {
                             AssetDatabase.CreateFolder(parentPath, property.serializedObject.targetObject.name);
+                        }
 
                         var assetName = $"{functionName}-{field.FieldName}";
 
@@ -989,8 +1147,16 @@ namespace VisualFunctions
                         }
                     };
 
-                    var popupField = new PopupField<string>(assetPaths, 0)
+                    var assetButton = new Button(() =>
                     {
+                        ExpressionUtility.DisplayAssetPathMenuForType(variableType, property.serializedObject.targetObject, asset =>
+                        {
+                            field.Value.Value = asset;
+                        },
+                        new List<Object>{field.Value.Value as Object});
+                    })
+                    {
+                        text = "Asset..",
                         style =
                         {
                             marginRight = 5
@@ -998,17 +1164,8 @@ namespace VisualFunctions
                         tooltip = "Select an asset"
                     };
 
-                    popupField.RegisterValueChangedCallback(_ =>
-                    {
-                        if (popupField.index == 0) return;
-
-                        field.Value.Value = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assets[popupField.index - 1]), variableType);
-
-                        popupField.index = 0;
-                    });
-
                     row2.Add(buttonCreate);
-                    row2.Add(popupField);
+                    row2.Add(assetButton);
                 }
             }
             
@@ -1093,7 +1250,7 @@ namespace VisualFunctions
                     refresh();
                 })
                 {
-                    text = "=",
+                    text = "≡",
                     style =
                     {
                         width = 20,

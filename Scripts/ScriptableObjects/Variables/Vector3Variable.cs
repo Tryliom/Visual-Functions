@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Vector3")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/Vector3")]
     public class Vector3Variable : Variable<Vector3>
     {
     }

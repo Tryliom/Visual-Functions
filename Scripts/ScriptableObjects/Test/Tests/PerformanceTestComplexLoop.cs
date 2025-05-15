@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestComplexLoop", menuName = "VisualFunctions/Test/PerfTests/TestComplexLoop")]
+    [CreateAssetMenu(fileName = "TestComplexLoop", menuName = "Visual Functions/Test/PerfTests/TestComplexLoop")]
     public class PerformanceTestComplexLoop : PerformanceTest
     {
         public FloatReference MaxNumberCondition;

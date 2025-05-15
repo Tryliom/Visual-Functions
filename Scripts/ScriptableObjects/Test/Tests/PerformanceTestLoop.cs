@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestLoop", menuName = "VisualFunctions/Test/PerfTests/TestLoop")]
+    [CreateAssetMenu(fileName = "TestLoop", menuName = "Visual Functions/Test/PerfTests/TestLoop")]
     public class PerformanceTestLoop : PerformanceTest
     {
         public IntReference Loops;

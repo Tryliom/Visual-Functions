@@ -55,8 +55,6 @@ Missing and planned features:
 - Array access with []
 - Rename variable asset name from the editor
 - Support undo/redo
-- Make a collection of custom functions to be able to use them in the evaluate function
-- Better search of functions
 - Better error handling
 - More basic functions
 
@@ -80,6 +78,9 @@ You can change these folder paths by creating a scriptable object with the menu 
 todo
 
 ## Coding
+### Add a IValue
+todo
+
 ### Add a reference
 todo
 

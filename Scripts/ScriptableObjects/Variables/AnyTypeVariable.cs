@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/AnyType")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/AnyType")]
     public class AnyTypeVariable : Variable<AnyType>
     {
     }

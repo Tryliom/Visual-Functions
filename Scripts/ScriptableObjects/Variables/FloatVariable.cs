@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Float")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/Float")]
     public class FloatVariable : Variable<float>
     {
     }

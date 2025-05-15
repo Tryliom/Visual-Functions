@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestsRunner", menuName = "VisualFunctions/Test/TestsRunner")]
+    [CreateAssetMenu(fileName = "TestsRunner", menuName = "Visual Functions/Test/TestsRunner")]
     public class TestsRunner : ScriptableObject
     {
         [SerializeField] private int _testCount = 10000;

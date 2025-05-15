@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Quaternion")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/Quaternion")]
     public class QuaternionVariable : Variable<Quaternion>
     {
     }

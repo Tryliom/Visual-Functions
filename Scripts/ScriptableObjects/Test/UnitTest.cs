@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "UnitTest", menuName = "VisualFunctions/Test/UnitTest")]
+    [CreateAssetMenu(fileName = "UnitTest", menuName = "Visual Functions/Test/UnitTest")]
     public class UnitTest : ScriptableObject
     {
         public Functions Tests;

@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/Rect")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/Rect")]
     public class RectVariable : Variable<Rect>
     {
     }

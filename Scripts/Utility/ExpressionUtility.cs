@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace VisualFunctions
 {
@@ -308,6 +311,102 @@ namespace VisualFunctions
             }
 
             return type.Name;
+        }
+
+        public static string FormatCustomFunction(string fieldName, CustomFunction customFunction)
+        {
+            var name = "";
+
+            if (customFunction.Outputs.Count > 0 && customFunction.Outputs[0].Value != null)
+            {
+                name += GetBetterTypeName(customFunction.Outputs[0].Value.Type) + " ";
+            }
+            else
+            {
+                name += "void ";
+            }
+                
+            name += fieldName;
+                
+            if (customFunction.Inputs.Count > 0)
+            {
+                var inputs = new List<string>();
+                    
+                foreach (var input in customFunction.Inputs)
+                {
+                    if (input.Value == null) continue;
+                        
+                    inputs.Add(GetBetterTypeName(input.Value.Type) + " " + input.FieldName);
+                }
+
+                name += "(" + string.Join(", ", inputs) + ")";
+            }
+            else
+            {
+                name += "()";
+            }
+
+            return name;
+        }
+
+        /**
+         * Creates a menu to select an asset path for a specific type.
+         * The callback is called when the user selects an asset.
+         */
+        public static void DisplayAssetPathMenuForType(Type assetType, Object targetObject, Action<Object> callback, List<Object> ignoredObjects)
+        {
+            var searchPaths = new List<string>();
+            var targetPath = "";
+
+            if (targetObject)
+            {
+                targetPath = Regex.Replace(AssetDatabase.GetAssetPath(targetObject), "/[^/]*$", "");
+
+                if (!string.IsNullOrEmpty(targetPath))
+                {
+                    searchPaths.Add(targetPath);
+                }
+            }
+            
+            if (assetType.BaseType is { FullName: not null } && assetType.BaseType.FullName.StartsWith(typeof(Variable<>).FullName))
+            {
+                searchPaths.Add(GlobalSettings.Settings.PathToGlobalVariables);
+                searchPaths.Add(GlobalSettings.Settings.PathToVariables);
+            }
+            else
+            {
+                searchPaths.Add(GlobalSettings.Settings.PathToGlobalObjects);
+            }
+            
+            var files = AssetDatabase.FindAssets($"t:{assetType.Name}", searchPaths.ToArray())
+                .Where(guid => ignoredObjects.All(obj => AssetDatabase.GUIDToAssetPath(guid) != AssetDatabase.GetAssetPath(obj)))
+                .ToArray();
+            var genericMenu = new GenericMenu();
+
+            foreach (var file in files)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(file);
+                var name = path.Replace(GlobalSettings.Settings.PathToGlobalVariables + "/", "Global Variables/")
+                    .Replace(GlobalSettings.Settings.PathToVariables + "/", "Variables/")
+                    .Replace(GlobalSettings.Settings.PathToGlobalObjects + "/", "Global Objects/")
+                    .Replace(targetPath + "/", "");
+                
+                genericMenu.AddItem(new GUIContent(name), false, () =>
+                {
+                    var asset = AssetDatabase.LoadAssetAtPath(path, assetType);
+                    
+                    if (!asset) return;
+                    
+                    callback(asset);
+                });
+            }
+            
+            if (files.Length == 0)
+            {
+                genericMenu.AddDisabledItem(new GUIContent("No assets found"));
+            }
+            
+            genericMenu.ShowAsContext();
         }
     }
 }

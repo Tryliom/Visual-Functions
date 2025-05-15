@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestMethodEvaluator", menuName = "VisualFunctions/Test/PerfTests/TestMethodEvaluator")]
+    [CreateAssetMenu(fileName = "TestMethodEvaluator", menuName = "Visual Functions/Test/PerfTests/TestMethodEvaluator")]
     public class PerformanceTestMethodEvaluator : PerformanceTest
     {
         public ComponentOfGameObjectVariable Input;

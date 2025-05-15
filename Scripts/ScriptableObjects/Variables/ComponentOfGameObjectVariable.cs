@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/ComponentOfGameObject")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/ComponentOfGameObject")]
     public class ComponentOfGameObjectVariable : Variable<ComponentOfGameObject>
     {
     }

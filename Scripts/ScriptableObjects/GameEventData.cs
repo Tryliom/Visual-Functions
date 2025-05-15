@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "GameEventData", menuName = "VisualFunctions/GameEventData", order = 0)]
+    [CreateAssetMenu(fileName = "GameEventData", menuName = "Visual Functions/GameEventData", order = 0)]
     public class GameEventData : ScriptableObject
     {
         private readonly List<Action> _functions = new ();

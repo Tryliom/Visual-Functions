@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -8,53 +9,65 @@ namespace VisualFunctions
     [CustomPropertyDrawer(typeof(CustomFunction))]
     public class CustomFunctionDrawer : PropertyDrawer
     {
-        private VisualElement _content;
-        private SerializedProperty _property;
-        private GameObject _targetObject;
+        private static readonly Dictionary<SerializedProperty, Data> PropertyData = new();
+
+        private class Data
+        {
+            public VisualElement Content;
+            public SerializedProperty Property;
+            public GameObject TargetObject;
+        }
         
-        private void Refresh()
+        private void Refresh(Data data)
         {
             PropertyDrawerUtility.SaveAndRefresh(
-                _property,
-                _targetObject,
-                () => CreateGUI(_property, _content)
+                data.Property,
+                data.TargetObject,
+                () => CreateGUI(data)
             );
         }
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            _targetObject = Selection.activeObject as GameObject;
-            _property = property;
+            if (!PropertyData.TryGetValue(property, out var data))
+            {
+                data = new Data
+                {
+                    Property = property,
+                    TargetObject = Selection.activeObject as GameObject,
+                    Content = new VisualElement()
+                };
+                PropertyData[property] = data;
+            }
 
-            var container = new VisualElement()
+            var container = new VisualElement
             {
                 style =
                 {
                     marginTop = 5
                 }
             };
-            _content = new VisualElement();
 
-            CreateGUI(_property, _content);
+            CreateGUI(data);
 
-            container.Add(_content);
+            container.Add(data.Content);
 
             return container;
         }
 
-        private void CreateGUI(SerializedProperty property, VisualElement container)
+        private void CreateGUI(Data data)
         {
-            container.Clear();
+            data.Content.Clear();
             
-            if (PropertyDrawerUtility.RetrieveTargetObject(_property) is not CustomFunction customFunction)
+            if (PropertyDrawerUtility.RetrieveTargetObject(data.Property) is not CustomFunction customFunction)
             {
                 Debug.LogError("Failed to cast the resolved object to 'CustomFunction'");
                 return;
             }
             
             // First, display the inputs
-            var inputsProperty = property.FindPropertyRelative("Inputs");
-            var inputsFoldoutProperty = property.FindPropertyRelative("InputFoldoutOpen");
+            var inputsProperty = data.Property.FindPropertyRelative("Inputs");
+            var inputsFoldoutProperty = data.Property.FindPropertyRelative("InputFoldoutOpen");
             var inputsContainer = new VisualElement()
             {
                 style =
@@ -74,14 +87,14 @@ namespace VisualFunctions
                     customFunction.Inputs.Add(new Field("" + (char)('A' + customFunction.Inputs.Count)));
                     customFunction.InputFoldoutOpen = true;
                     FormulaCache.Clear();
-                    Refresh();
+                    Refresh(data);
                 },
                 () =>
                 {
                     customFunction.Inputs.Add(FunctionsDrawer.CopiedField.Clone());
                     FunctionsDrawer.CopiedField = null;
                     FormulaCache.Clear();
-                    Refresh();
+                    Refresh(data);
                 },
                 (element, field) =>
                 {
@@ -95,18 +108,18 @@ namespace VisualFunctions
                                 customFunction.Function.EditField(previousName, newName);
                                 customFunction.Inputs.ForEach(input => input.OnEditField(previousName, newName));
                             },
-                            Refresh
+                            () => Refresh(data)
                         )
                     );
                 },
-                Refresh
+                () => Refresh(data)
             );
             
-            container.Add(inputsContainer);
+            data.Content.Add(inputsContainer);
             
             // Then, display the outputs
-            var outputsProperty = property.FindPropertyRelative("Outputs");
-            var outputsFoldoutProperty = property.FindPropertyRelative("OutputFoldoutOpen");
+            var outputsProperty = data.Property.FindPropertyRelative("Outputs");
+            var outputsFoldoutProperty = data.Property.FindPropertyRelative("OutputFoldoutOpen");
             var outputsContainer = new VisualElement()
             {
                 style =
@@ -124,14 +137,14 @@ namespace VisualFunctions
                     customFunction.Outputs.Add(new Field("" + (char)('a' + customFunction.Outputs.Count)));
                     customFunction.OutputFoldoutOpen = true;
                     FormulaCache.Clear();
-                    Refresh();
+                    Refresh(data);
                 },
                 () =>
                 {
                     customFunction.Outputs.Add(FunctionsDrawer.CopiedField.Clone());
                     FunctionsDrawer.CopiedField = null;
                     FormulaCache.Clear();
-                    Refresh();
+                    Refresh(data);
                 },
                 (element, field) =>
                 {
@@ -145,14 +158,14 @@ namespace VisualFunctions
                                 customFunction.Function.EditField(previousName, newName);
                                 customFunction.Outputs.ForEach(output => output.OnEditField(previousName, newName));
                             },
-                            Refresh
+                            () => Refresh(data)
                         )
                     );
                 },
-                Refresh
+                () => Refresh(data)
             );
             
-            container.Add(outputsContainer);
+            data.Content.Add(outputsContainer);
             
             // Clear and set the temporary global variables for function testing
             customFunction.Function.TemporaryGlobalVariables.Clear();
@@ -161,11 +174,11 @@ namespace VisualFunctions
             customFunction.Function.TemporaryGlobalVariables.AddRange(customFunction.Outputs);
             
             // Finally, display the function
-            var functionProperty = property.FindPropertyRelative("Function");
+            var functionProperty = data.Property.FindPropertyRelative("Function");
             var function = new PropertyField(functionProperty);
             
-            function.BindProperty(property.serializedObject);
-            container.Add(function);
+            function.BindProperty(data.Property.serializedObject);
+            data.Content.Add(function);
         }
     }
 }

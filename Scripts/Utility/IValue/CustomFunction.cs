@@ -62,7 +62,7 @@ namespace VisualFunctions
             
             _defaultValues.Clear();
             
-            return Outputs.Count > 0 ? Outputs[0].Value : _defaultReturnValue ??= new TempIValue(true);
+            return Outputs.Count > 0 ? Outputs[0].Value.Clone() : _defaultReturnValue ??= new TempIValue(true);
         }
 
         public IValue Clone()

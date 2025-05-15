@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/AnimationCurve")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/AnimationCurve")]
     public class AnimationCurveVariable : Variable<AnimationCurve>
     {
     }

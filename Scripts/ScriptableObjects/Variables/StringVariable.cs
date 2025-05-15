@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/String")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/String")]
     public class StringVariable : Variable<string>
     {
     }

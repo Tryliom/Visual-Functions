@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestReset", menuName = "VisualFunctions/Test/PerfTests/TestReset")]
+    [CreateAssetMenu(fileName = "TestReset", menuName = "Visual Functions/Test/PerfTests/TestReset")]
     public class PerformanceTestReset : PerformanceTest
     {
         public IntReference input;

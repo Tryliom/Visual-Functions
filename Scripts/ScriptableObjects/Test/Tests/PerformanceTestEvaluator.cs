@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(fileName = "TestEvaluator", menuName = "VisualFunctions/Test/PerfTests/TestEvaluator")]
+    [CreateAssetMenu(fileName = "TestEvaluator", menuName = "Visual Functions/Test/PerfTests/TestEvaluator")]
     public class PerformanceTestEvaluator : PerformanceTest
     {
         public IntReference Input;

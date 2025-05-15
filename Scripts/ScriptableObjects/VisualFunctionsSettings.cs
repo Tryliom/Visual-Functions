@@ -8,15 +8,32 @@ using UnityEditor;
 namespace VisualFunctions
 {
     [Serializable]
+    public class AssetPath
+    {
+        public string Path;
+        
+        public AssetPath(string path)
+        {
+            Path = path;
+        }
+        
+        public static implicit operator string(AssetPath assetPath)
+        {
+            return assetPath.Path;
+        }
+    }
+    
+    [Serializable]
     public class Settings
     {
-        public string PathToGlobalVariables = "Assets/Resources/ScriptableObjects/GlobalVariables";
-        public string PathToVariables = "Assets/Resources/ScriptableObjects/Variables";
+        public AssetPath PathToGlobalVariables = new ("Assets/Resources/ScriptableObjects/GlobalVariables");
+        public AssetPath PathToVariables = new ("Assets/Resources/ScriptableObjects/Variables");
+        public AssetPath PathToGlobalObjects = new ("Assets/Resources/ScriptableObjects/GlobalObjects");
 
         public string GlobalValuesPrefix = "_";
     }
     
-    [CreateAssetMenu(fileName = "VisualFunctionsSettings", menuName = "VisualFunctions/Settings")]
+    [CreateAssetMenu(fileName = "VisualFunctionsSettings", menuName = "Visual Functions/Settings")]
     public class VisualFunctionsSettings : ScriptableObject
     {
         public Settings Settings = new();
@@ -28,8 +45,8 @@ namespace VisualFunctions
     }
     
 #if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(Settings))]
-    public class SettingsDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AssetPath))]
+    public class AssetPathDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -38,41 +55,24 @@ namespace VisualFunctions
             var fieldWidth = position.width - 25;
             const int buttonWidth = 20;
             
-            var globalPathProperty = property.FindPropertyRelative("PathToGlobalVariables");
-            var globalPathRect = new Rect(position.x, position.y, fieldWidth, EditorGUIUtility.singleLineHeight);
+            var pathProperty = property.FindPropertyRelative("Path");
+            var pathRect = new Rect(position.x, position.y, fieldWidth, EditorGUIUtility.singleLineHeight);
             
-            globalPathProperty.stringValue = EditorGUI.TextField(globalPathRect, "Path To Global Variables", globalPathProperty.stringValue);
+            pathProperty.stringValue = EditorGUI.TextField(pathRect, label.text, pathProperty.stringValue);
             
-            var globalButtonRect = new Rect(position.x + fieldWidth + 5, position.y, buttonWidth, EditorGUIUtility.singleLineHeight);
+            var buttonRect = new Rect(position.x + fieldWidth + 5, position.y, buttonWidth, EditorGUIUtility.singleLineHeight);
             
-            if (GUI.Button(globalButtonRect, "..."))
+            if (GUI.Button(buttonRect, "..."))
             {
-                ShowFolderPicker(globalPathProperty, "Select Global Variables Folder");
+                ShowFolderPicker(pathProperty, "Select Path");
             }
             
-            var variablesPathProperty = property.FindPropertyRelative("PathToVariables");
-            var variablesPathRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, fieldWidth, EditorGUIUtility.singleLineHeight);
-            
-            variablesPathProperty.stringValue = EditorGUI.TextField(variablesPathRect, "Path To Variables", variablesPathProperty.stringValue);
-            
-            var variablesButtonRect = new Rect(position.x + fieldWidth + 5, position.y + EditorGUIUtility.singleLineHeight + 2, buttonWidth, EditorGUIUtility.singleLineHeight);
-            
-            if (GUI.Button(variablesButtonRect, "..."))
-            {
-                ShowFolderPicker(variablesPathProperty, "Select Variables Folder");
-            }
-            
-            var prefixProperty = property.FindPropertyRelative("GlobalValuesPrefix");
-            var prefixRect = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2) * 2, fieldWidth, EditorGUIUtility.singleLineHeight);
-            
-            prefixProperty.stringValue = EditorGUI.TextField(prefixRect, "Global Values Prefix", prefixProperty.stringValue);
-
             EditorGUI.EndProperty();
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUIUtility.singleLineHeight * 3 + 4;
+            return EditorGUIUtility.singleLineHeight;
         }
         
         private static void ShowFolderPicker(SerializedProperty property, string title)

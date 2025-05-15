@@ -2,7 +2,7 @@
 
 namespace VisualFunctions
 {
-    [CreateAssetMenu(menuName = "VisualFunctions/Variables/ListOf")]
+    [CreateAssetMenu(menuName = "Visual Functions/Variables/ListOf")]
     public class ListOfVariable : Variable<ListOf>
     {
     }
