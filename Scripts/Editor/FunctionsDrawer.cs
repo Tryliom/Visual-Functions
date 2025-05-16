@@ -545,7 +545,8 @@ namespace VisualFunctions
                             )
                         );
                     },
-                    () => Refresh(data)
+                    () => Refresh(data),
+                    true
                 );
             }
 
@@ -812,7 +813,8 @@ namespace VisualFunctions
                             )
                         );
                     },
-                    refresh
+                    refresh,
+                    myFunction.Inputs == fields ? myFunction.AllowAddInputs : myFunction.AllowAddOutputs
                 );
             }
 
@@ -1262,7 +1264,7 @@ namespace VisualFunctions
         }
         
         public static void CreateFields(VisualElement root, string header, string explanations, List<Field> fields, SerializedProperty foldout, 
-            Action addField, Action addCopiedField, Action<VisualElement, Field> createField, Action refresh)
+            Action addField, Action addCopiedField, Action<VisualElement, Field> createField, Action refresh, bool canAddField)
         {
             var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
             const int radius = 6;
@@ -1365,33 +1367,36 @@ namespace VisualFunctions
                 topRow.Add(descriptionImage);
             }
             
-            var addValueButton = new Button(addField)
+            if (canAddField)
             {
-                text = "+",
-                tooltip = "Add a new field",
-                style =
+                var addValueButton = new Button(addField)
                 {
-                    width = 20,
-                    height = 20
-                }
-            };
-
-            topRow.Add(addValueButton);
-            
-            if (CopiedField != null)
-            {
-                var pasteButton = new Button(addCopiedField)
-                {
-                    text = "📋",
-                    tooltip = "Paste the field",
+                    text = "+",
+                    tooltip = "Add a new field",
                     style =
                     {
                         width = 20,
                         height = 20
                     }
                 };
-                    
-                topRow.Add(pasteButton);
+
+                topRow.Add(addValueButton);
+
+                if (CopiedField != null)
+                {
+                    var pasteButton = new Button(addCopiedField)
+                    {
+                        text = "📋",
+                        tooltip = "Paste the field",
+                        style =
+                        {
+                            width = 20,
+                            height = 20
+                        }
+                    };
+
+                    topRow.Add(pasteButton);
+                }
             }
                 
             root.Add(topRow);

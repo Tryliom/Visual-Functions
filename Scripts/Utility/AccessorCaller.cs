@@ -82,7 +82,12 @@ namespace VisualFunctions
                 }
                 else
                 {
-                    propertyInfo.SetValue(Instance.Value is AccessorCaller caller ? caller.Result.Value : Instance.Value, value);
+                    propertyInfo.SetValue(Instance.Value switch
+                    {
+                        AccessorCaller caller => caller.Result.Value,
+                        IRefValue refValue => refValue.RefValue,
+                        _ => Instance.Value
+                    }, value);
                 }
             }
             else if (fieldInfo != null)
@@ -100,7 +105,12 @@ namespace VisualFunctions
                 }
                 else
                 {
-                    fieldInfo.SetValue(Instance.Value is AccessorCaller caller ? caller.Result.Value : Instance.Value, value);
+                    fieldInfo.SetValue(Instance.Value switch
+                    {
+                        AccessorCaller caller => caller.Result.Value,
+                        IRefValue refValue => refValue.RefValue,
+                        _ => Instance.Value
+                    }, value);
                 }
             }
             else

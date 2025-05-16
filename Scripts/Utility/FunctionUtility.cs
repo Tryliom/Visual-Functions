@@ -29,7 +29,10 @@ namespace VisualFunctions
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             if (state is PlayModeStateChange.EnteredEditMode or PlayModeStateChange.ExitingPlayMode)
+            {
+                Function.Functions.Clear();
                 InitializeFunctions();
+            }
         }
 
         public static void RegisterFunction(Function function)
@@ -69,11 +72,10 @@ namespace VisualFunctions
                 Function.Functions.Add(name, new Function.FunctionInfo
                 {
                     Type = type, Description = description, Category = category,
-                    Instance = Activator.CreateInstance(type)
+                    Instance = Activator.CreateInstance(type) as Function
                 });
 
-                Function.Functions[name].Instance.GetType().GetMethod("GenerateFields")
-                    ?.Invoke(Function.Functions[name].Instance, null);
+                Function.Functions[name].Instance.GenerateFields();
             }
 
             // Reorder the functions by category

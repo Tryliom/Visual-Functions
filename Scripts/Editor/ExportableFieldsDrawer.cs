@@ -134,7 +134,8 @@ namespace VisualFunctions
                         )
                     );
                 },
-                Refresh
+                Refresh,
+                true
             );
             
             container.Add(inputsContainer);

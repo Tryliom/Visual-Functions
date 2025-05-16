@@ -185,14 +185,14 @@ namespace VisualFunctions
         {
             public FunctionCategory Category;
             public string Description;
-            public object Instance;
+            public Function Instance;
             public Type Type;
         }
 
 #if UNITY_EDITOR
         public bool IsFieldEditable(Field field)
         {
-            if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not { } instance)
             {
                 throw new Exception("The function is not instantiated");
             }
@@ -213,7 +213,7 @@ namespace VisualFunctions
 
         public int GetMinEditableFieldIndex(Field field)
         {
-            if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not { } instance)
             {
                 throw new Exception("The function is not instantiated");
             }
@@ -278,7 +278,7 @@ namespace VisualFunctions
             Inputs = new List<Field>();
             Outputs = new List<Field>();
 
-            if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not Function instance)
+            if (Functions[GetType().GetField("Name").GetValue(this).ToString()].Instance is not { } instance)
             {
                 throw new Exception("The function is not instantiated");
             }
@@ -307,6 +307,11 @@ namespace VisualFunctions
                     {
                         localFields.Add(instanceField.Clone());
                     }
+                }
+
+                if (instanceFields.Count == 0)
+                {
+                    Debug.LogError("Problem");
                 }
 
                 if (!allowAdd) return;

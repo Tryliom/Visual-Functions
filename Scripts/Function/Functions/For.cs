@@ -11,7 +11,7 @@ namespace VisualFunctions
         public static readonly string Description = "It will execute the functions inside the loop a number of times.\nIndex is the current loop index, it's reset to 0 at the start of the loop.";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
         
-        public Functions FunctionsToLoop = new Functions().DisableGlobalVariables().DisableGlobalVariables();
+        public Functions FunctionsToLoop = new Functions().DisableGlobalVariables().DisableImport();
 
 #if UNITY_EDITOR
         public override void GenerateFields()

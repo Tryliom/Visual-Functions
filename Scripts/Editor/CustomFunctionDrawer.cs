@@ -112,7 +112,8 @@ namespace VisualFunctions
                         )
                     );
                 },
-                () => Refresh(data)
+                () => Refresh(data),
+                true
             );
             
             data.Content.Add(inputsContainer);
@@ -162,7 +163,8 @@ namespace VisualFunctions
                         )
                     );
                 },
-                () => Refresh(data)
+                () => Refresh(data),
+                true
             );
             
             data.Content.Add(outputsContainer);
