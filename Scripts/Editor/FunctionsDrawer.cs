@@ -446,7 +446,15 @@ namespace VisualFunctions
                         {
                             if (field.Value is CustomFunction customFunction)
                             {
-                                fieldsContent.Add(new Label(ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
+                                fieldsContent.Add(new Label(ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction))
+                                {
+                                    style =
+                                    {
+                                        height = 20,
+                                        marginTop = 2,
+                                        marginBottom = 2,
+                                    }
+                                });
                             }
                             else
                             {
@@ -456,11 +464,14 @@ namespace VisualFunctions
                                     {
                                         flexDirection = FlexDirection.Row,
                                         justifyContent = Justify.FlexStart,
-                                        alignItems = Align.Center
+                                        alignItems = Align.Center,
+                                        height = 20,
+                                        marginTop = 2,
+                                        marginBottom = 5
                                     }
                                 };
                                 
-                                fieldContent.Add(new Label(field.FieldName + " (" + ExpressionUtility.GetBetterTypeName(field.Value.Type) + ")"));
+                                fieldContent.Add(new Label($"{ExpressionUtility.GetBetterTypeName(field.Value.Type)} {field.FieldName}"));
                                 
                                 if (field.Value != null && field.Value.Type != typeof(object))
                                 {
