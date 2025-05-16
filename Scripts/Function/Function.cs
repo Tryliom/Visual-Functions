@@ -309,11 +309,6 @@ namespace VisualFunctions
                     }
                 }
 
-                if (instanceFields.Count == 0)
-                {
-                    Debug.LogError("Problem");
-                }
-
                 if (!allowAdd) return;
 
                 // Add the missing fields that have been customized, with allowAdd
