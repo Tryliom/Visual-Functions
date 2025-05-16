@@ -762,7 +762,8 @@ namespace VisualFunctions
             Action refresh)
         {
             const int borderWidth = 2;
-            var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+            const float grey = 0.4f;
+            var borderColor = new Color(grey, grey, grey, 1f);
             var container = new Box
             {
                 style =
