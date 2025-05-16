@@ -252,6 +252,27 @@ namespace VisualFunctions
                     RenameTypes(info.FieldType.Name)
                 ));
             }
+            
+            var constructors = type.GetConstructors();
+            
+            foreach (var constructor in constructors)
+            {
+                if (constructor.IsPrivate) continue;
+                if (constructor.IsStatic) continue;
+                if (constructor.Name.Contains("`1")) continue;
+
+                var description = constructor.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                    .Cast<DescriptionAttribute>()
+                    .FirstOrDefault()?.Description ?? "";
+                var name = "new " + RenameTypes(type.Name);
+                
+                self._methods.Add(new MethodInfos(
+                    name,
+                    description,
+                    RenameTypes(type.Name),
+                    constructor.GetParameters().Select(p => RenameTypes(p.ParameterType.Name) + " " + p.Name).ToArray()
+                ));
+            }
         }
 
         private static string RenameTypes(string str)
