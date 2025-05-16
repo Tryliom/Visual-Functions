@@ -386,7 +386,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 797582805872148608
+    - rid: 797582805872148752
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: 'a = 5; b = 10.1;
@@ -407,11 +407,11 @@ MonoBehaviour:
           Incr(); c == 7;
 
           Incr(-7); c == 0;'
-    - rid: 797582805872148609
+    - rid: 797582805872148753
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: res = A * B;
-    - rid: 797582805872148610
+    - rid: 797582805872148754
       type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
       data:
         FormulaValue: c += HowMany;
@@ -922,7 +922,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 797582805872148609
+            rid: 797582805872148753
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -950,7 +950,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 797582805872148608
+            rid: 797582805872148752
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -1181,7 +1181,7 @@ MonoBehaviour:
             AcceptAnyMethod: 0
           ImportedFields: []
           ImportedFieldsFoldoutOpen: 0
-        FoldoutOpen: 1
+        FoldoutOpen: 0
         InputFoldoutOpen: 1
         OutputFoldoutOpen: 1
     - rid: 7793652064509231826
@@ -1192,7 +1192,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 797582805872148610
+            rid: 797582805872148754
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0

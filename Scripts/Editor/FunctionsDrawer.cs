@@ -406,14 +406,43 @@ namespace VisualFunctions
                         {
                             if (field.Value is CustomFunction customFunction)
                             {
-                                fieldsContent.Add(new Label(
-                                    ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
+                                fieldsContent.Add(new Label(ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
                             }
                             else
                             {
-                                fieldsContent.Add(new Label(field.FieldName + " (" +
-                                                            ExpressionUtility.GetBetterTypeName(field.Value.Type) +
-                                                            ")"));
+                                var fieldContent = new VisualElement
+                                {
+                                    style =
+                                    {
+                                        flexDirection = FlexDirection.Row,
+                                        justifyContent = Justify.FlexStart,
+                                        alignItems = Align.Center
+                                    }
+                                };
+                                
+                                fieldContent.Add(new Label(field.FieldName + " (" + ExpressionUtility.GetBetterTypeName(field.Value.Type) + ")"));
+                                
+                                if (field.Value != null && field.Value.Type != typeof(object))
+                                {
+                                    var searchButton = new Button(() =>
+                                    {
+                                        if (field.AcceptAnyMethod) MethodSearchWindow.ShowWindow(true);
+                                        else MethodSearchWindow.ShowWindow(field.Value.Type, true);
+                                    })
+                                    {
+                                        text = "🔍",
+                                        tooltip = "Search methods and fields available for this",
+                                        style =
+                                        {
+                                            width = 20,
+                                            height = 20
+                                        }
+                                    };
+
+                                    fieldContent.Add(searchButton);
+                                }
+                                
+                                fieldsContent.Add(fieldContent);
                             }
                         }
 
