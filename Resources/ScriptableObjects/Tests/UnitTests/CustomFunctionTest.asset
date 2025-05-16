@@ -379,10 +379,42 @@ MonoBehaviour:
     FoldoutOpen: 1
     GlobalValuesFoldoutOpen: 1
     AllowGlobalVariables: 1
+    AllowImport: 1
     TemporaryGlobalVariables: []
+    ImportedFields: []
+    ImportedFieldsFoldoutOpen: 0
   references:
     version: 2
     RefIds:
+    - rid: 797582805872148608
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: 'a = 5; b = 10.1;
+
+          Mult(a, 2) == 10;
+
+          Mult(a,
+          b) == 50.5;
+
+
+          c = 0;
+
+          Incr(); c == 1;
+
+          Incr(5);
+          c == 6;
+
+          Incr(); c == 7;
+
+          Incr(-7); c == 0;'
+    - rid: 797582805872148609
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: res = A * B;
+    - rid: 797582805872148610
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: c += HowMany;
     - rid: 7793652064509231450
       type: {class: CustomFunction, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -611,6 +643,7 @@ MonoBehaviour:
           FoldoutOpen: 1
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
+          AllowImport: 1
           TemporaryGlobalVariables:
           - FieldName: A
             Value:
@@ -876,6 +909,8 @@ MonoBehaviour:
             InEdition: 0
             EditValue: res
             AcceptAnyMethod: 0
+          ImportedFields: []
+          ImportedFieldsFoldoutOpen: 1
         FoldoutOpen: 0
         InputFoldoutOpen: 1
         OutputFoldoutOpen: 1
@@ -887,7 +922,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793652108983010277
+            rid: 797582805872148609
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -895,7 +930,6 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         Outputs: []
         EditableAttributes: []
-        ImportedFields: []
         AllowAddInputs: 1
         FunctionInputSettings:
           SupportedTypes: []
@@ -916,7 +950,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793652108983010276
+            rid: 797582805872148608
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -924,7 +958,6 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         Outputs: []
         EditableAttributes: []
-        ImportedFields: []
         AllowAddInputs: 1
         FunctionInputSettings:
           SupportedTypes: []
@@ -1056,6 +1089,7 @@ MonoBehaviour:
           FoldoutOpen: 1
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
+          AllowImport: 1
           TemporaryGlobalVariables:
           - FieldName: HowMany
             Value:
@@ -1145,6 +1179,8 @@ MonoBehaviour:
             InEdition: 0
             EditValue: HowMany
             AcceptAnyMethod: 0
+          ImportedFields: []
+          ImportedFieldsFoldoutOpen: 0
         FoldoutOpen: 1
         InputFoldoutOpen: 1
         OutputFoldoutOpen: 1
@@ -1156,7 +1192,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793652108983010278
+            rid: 797582805872148610
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -1164,7 +1200,6 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         Outputs: []
         EditableAttributes: []
-        ImportedFields: []
         AllowAddInputs: 1
         FunctionInputSettings:
           SupportedTypes: []
@@ -1191,32 +1226,3 @@ MonoBehaviour:
         LocalValue: 1
         Variable: {fileID: 0}
         DisplayedInInspector: 0
-    - rid: 7793652108983010276
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: 'a = 5; b = 10.1;
-
-          Mult(a, 2) == 10;
-
-          Mult(a,
-          b) == 50.5;
-
-
-          c = 0;
-
-          Incr(); c == 1;
-
-          Incr(5);
-          c == 6;
-
-          Incr(); c == 7;
-
-          Incr(-7); c == 0;'
-    - rid: 7793652108983010277
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: res = A * B;
-    - rid: 7793652108983010278
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: c += HowMany;

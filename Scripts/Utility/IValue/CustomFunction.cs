@@ -13,7 +13,7 @@ namespace VisualFunctions
         public List<Field> Inputs = new ();
         // Limited to 1 output, if not defined, it's considered a void function
         public List<Field> Outputs = new ();
-        public Functions Function = new Functions().DisableGlobalVariables();
+        public Functions Function = new Functions().DisableGlobalVariables().DisableGlobalVariables();
         
 #if UNITY_EDITOR
         public bool FoldoutOpen = true;

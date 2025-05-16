@@ -13,7 +13,7 @@ namespace VisualFunctions
                                                     "If there is multiple lines (;), it will check the ones that are a boolean.";
         public static readonly FunctionCategory Category = FunctionCategory.Executor;
 
-        public Functions FunctionsToLoop = new Functions().DisableGlobalVariables();
+        public Functions FunctionsToLoop = new Functions().DisableGlobalVariables().DisableGlobalVariables();
         
         private List<IVariable> _globalVariables = new();
 

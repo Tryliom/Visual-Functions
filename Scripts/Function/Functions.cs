@@ -29,6 +29,7 @@ namespace VisualFunctions
         public bool FoldoutOpen = true;
         public bool GlobalValuesFoldoutOpen = true;
         public bool AllowGlobalVariables = true;
+        public bool AllowImport = true;
         
         // Only used in the editor to use temporary global variables on a func with disabled global variables
         public List<Field> TemporaryGlobalVariables = new();
@@ -45,6 +46,12 @@ namespace VisualFunctions
         public Functions DisableGlobalVariables()
         {
             AllowGlobalVariables = false;
+            return this;
+        }
+
+        public Functions DisableImport()
+        {
+            AllowImport = false;
             return this;
         }
         

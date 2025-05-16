@@ -222,205 +222,211 @@ namespace VisualFunctions
             
             if (!foldoutOpen.boolValue) return;
             
-            var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
-            const int radius = 6;
-            var importedFieldsBox = new VisualElement
+            if (functionsInstance.AllowImport)
             {
-                style =
+                var borderColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+                const int radius = 6;
+                var importedFieldsBox = new VisualElement
                 {
-                    marginLeft = 5,
-                    paddingLeft = 10,
-                    marginRight = 5,
-                    paddingRight = 10,
-                    marginBottom = 5,
-                    minHeight = 24,
-                    backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
-                    borderLeftColor = borderColor,
-                    borderLeftWidth = 2,
-                    borderRightColor = borderColor,
-                    borderRightWidth = 2,
-                    borderBottomColor = borderColor,
-                    borderBottomWidth = 2,
-                    borderBottomLeftRadius = radius,
-                    borderBottomRightRadius = radius
-                }
-            };
-            var importTopRow = new VisualElement
-            {
-                style =
-                {
-                    flexDirection = FlexDirection.Row,
-                    justifyContent = Justify.FlexStart,
-                    alignItems = Align.Center,
-                    backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
-                    height = 30,
-                    paddingLeft = 5,
-                    marginBottom = 5,
-                    borderTopLeftRadius = radius,
-                    borderTopRightRadius = radius,
-                    borderBottomLeftRadius = radius,
-                    borderBottomRightRadius = radius
-                }
-            };
-
-            if (functionsInstance.ImportedFields.Count == 0)
-            {
-                functionsInstance.ImportedFieldsFoldoutOpen = false;
-            }
-            
-            var foldoutImportButton = new Button(() =>
-            {
-                functionsInstance.ImportedFieldsFoldoutOpen = !functionsInstance.ImportedFieldsFoldoutOpen;
-                Refresh();
-            })
-            {
-                text = "≡",
-                style =
-                {
-                    width = 20,
-                    height = 20
-                }
-            };
-            
-            importTopRow.Add(foldoutImportButton);
-            importTopRow.Add(new Label("Imported Fields"));
-            
-            var descriptionImage = new Image
-            {
-                tooltip = "Imported fields are available for all functions, use their name in formulas",
-                style =
-                {
-                    marginTop = 2
-                },
-                image = EditorGUIUtility.IconContent("_Help").image
-            };
-
-            importTopRow.Add(descriptionImage);
-            
-            var importButton = new Button(() =>
-            {
-                ExpressionUtility.DisplayAssetPathMenuForType(
-                    typeof(ExportableFields),
-                    property.serializedObject.targetObject,
-                    asset =>
+                    style =
                     {
-                        functionsInstance.ImportedFields.Add(new ImportedFields(asset as ExportableFields));
-                        functionsInstance.ImportedFieldsFoldoutOpen = true;
-                        Refresh();
+                        marginLeft = 5,
+                        paddingLeft = 10,
+                        marginRight = 5,
+                        paddingRight = 10,
+                        marginBottom = 5,
+                        minHeight = 24,
+                        backgroundColor = new Color(0.25f, 0.25f, 0.25f, 1f),
+                        borderLeftColor = borderColor,
+                        borderLeftWidth = 2,
+                        borderRightColor = borderColor,
+                        borderRightWidth = 2,
+                        borderBottomColor = borderColor,
+                        borderBottomWidth = 2,
+                        borderBottomLeftRadius = radius,
+                        borderBottomRightRadius = radius
+                    }
+                };
+                var importTopRow = new VisualElement
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                        justifyContent = Justify.FlexStart,
+                        alignItems = Align.Center,
+                        backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                        height = 30,
+                        paddingLeft = 5,
+                        marginBottom = 5,
+                        borderTopLeftRadius = radius,
+                        borderTopRightRadius = radius,
+                        borderBottomLeftRadius = radius,
+                        borderBottomRightRadius = radius
+                    }
+                };
+
+                if (functionsInstance.ImportedFields.Count == 0)
+                {
+                    functionsInstance.ImportedFieldsFoldoutOpen = false;
+                }
+
+                var foldoutImportButton = new Button(() =>
+                {
+                    functionsInstance.ImportedFieldsFoldoutOpen = !functionsInstance.ImportedFieldsFoldoutOpen;
+                    Refresh();
+                })
+                {
+                    text = "≡",
+                    style =
+                    {
+                        width = 20,
+                        height = 20
+                    }
+                };
+
+                importTopRow.Add(foldoutImportButton);
+                importTopRow.Add(new Label("Imported Fields"));
+
+                var descriptionImage = new Image
+                {
+                    tooltip = "Imported fields are available for all functions, use their name in formulas",
+                    style =
+                    {
+                        marginTop = 2
                     },
-                    functionsInstance.ImportedFields.Select(x => x.Value as Object).ToList()
-                );
-            })
-            {
-                text = "Import..",
-                tooltip = "Import exportable fields from another object",
-                style =
+                    image = EditorGUIUtility.IconContent("_Help").image
+                };
+
+                importTopRow.Add(descriptionImage);
+
+                var importButton = new Button(() =>
                 {
-                    marginTop = 5,
-                    marginBottom = 5
-                }
-            };
-            
-            importTopRow.Add(importButton);
-            container.Add(importTopRow);
-
-            if (functionsInstance.ImportedFieldsFoldoutOpen)
-            {
-                foreach (var importedFields in functionsInstance.ImportedFields)
+                    ExpressionUtility.DisplayAssetPathMenuForType(
+                        typeof(ExportableFields),
+                        property.serializedObject.targetObject,
+                        asset =>
+                        {
+                            functionsInstance.ImportedFields.Add(new ImportedFields(asset as ExportableFields));
+                            functionsInstance.ImportedFieldsFoldoutOpen = true;
+                            Refresh();
+                        },
+                        functionsInstance.ImportedFields.Select(x => x.Value as Object).ToList()
+                    );
+                })
                 {
-                    var row = new VisualElement
+                    text = "Import..",
+                    tooltip = "Import exportable fields from another object",
+                    style =
                     {
-                        style =
-                        {
-                            flexDirection = FlexDirection.Row,
-                            justifyContent = Justify.FlexStart,
-                            alignItems = Align.Center,
-                            backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
-                            height = 30,
-                            paddingLeft = 5,
-                            marginTop = 10,
-                            marginBottom = 10,
-                            borderTopLeftRadius = radius,
-                            borderTopRightRadius = radius,
-                            borderBottomLeftRadius = radius,
-                            borderBottomRightRadius = radius
-                        }
-                    };
-                    
-                    var importFoldoutOpenButton = new Button(() =>
-                    {
-                        importedFields.FoldoutOpen = !importedFields.FoldoutOpen;
-                        Refresh();
-                    })
-                    {
-                        text = "≡",
-                        style =
-                        {
-                            width = 20,
-                            height = 20
-                        }
-                    };
-                    
-                    row.Add(importFoldoutOpenButton);
-                    row.Add(new Label(ObjectNames.NicifyVariableName(importedFields.Value.name)));
-                    row.Add(new Button(() =>
-                    {
-                        functionsInstance.ImportedFields.Remove(importedFields);
-                        FormulaCache.Clear();
-                        Refresh();
-                    })
-                    {
-                        text = "-",
-                        style =
-                        {
-                            width = 20,
-                            height = 20
-                        }
-                    });
+                        marginTop = 5,
+                        marginBottom = 5
+                    }
+                };
 
-                    importedFieldsBox.Add(row);
-                    
-                    var listContent = new VisualElement
-                    {
-                        style =
-                        {
-                            marginLeft = 10,
-                            marginTop = 5,
-                            marginBottom = 5,
-                        }
-                    };
+                importTopRow.Add(importButton);
+                container.Add(importTopRow);
 
-                    var fieldsContent = new VisualElement
+                if (functionsInstance.ImportedFieldsFoldoutOpen)
+                {
+                    foreach (var importedFields in functionsInstance.ImportedFields)
                     {
-                        style =
+                        var row = new VisualElement
                         {
-                            marginLeft = 10,
-                            marginTop = 5,
-                            marginBottom = 5,
-                        }
-                    };
+                            style =
+                            {
+                                flexDirection = FlexDirection.Row,
+                                justifyContent = Justify.FlexStart,
+                                alignItems = Align.Center,
+                                backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f),
+                                height = 30,
+                                paddingLeft = 5,
+                                marginTop = 10,
+                                marginBottom = 10,
+                                borderTopLeftRadius = radius,
+                                borderTopRightRadius = radius,
+                                borderBottomLeftRadius = radius,
+                                borderBottomRightRadius = radius
+                            }
+                        };
 
-                    foreach (var field in importedFields.Value.Fields)
-                    {
-                        if (field.Value is CustomFunction customFunction)
+                        var importFoldoutOpenButton = new Button(() =>
                         {
-                            fieldsContent.Add(new Label(ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
+                            importedFields.FoldoutOpen = !importedFields.FoldoutOpen;
+                            Refresh();
+                        })
+                        {
+                            text = "≡",
+                            style =
+                            {
+                                width = 20,
+                                height = 20
+                            }
+                        };
+
+                        row.Add(importFoldoutOpenButton);
+                        row.Add(new Label(ObjectNames.NicifyVariableName(importedFields.Value.name)));
+                        row.Add(new Button(() =>
+                        {
+                            functionsInstance.ImportedFields.Remove(importedFields);
+                            FormulaCache.Clear();
+                            Refresh();
+                        })
+                        {
+                            text = "-",
+                            style =
+                            {
+                                width = 20,
+                                height = 20
+                            }
+                        });
+
+                        importedFieldsBox.Add(row);
+
+                        var listContent = new VisualElement
+                        {
+                            style =
+                            {
+                                marginLeft = 10,
+                                marginTop = 5,
+                                marginBottom = 5,
+                            }
+                        };
+
+                        var fieldsContent = new VisualElement
+                        {
+                            style =
+                            {
+                                marginLeft = 10,
+                                marginTop = 5,
+                                marginBottom = 5,
+                            }
+                        };
+
+                        foreach (var field in importedFields.Value.Fields)
+                        {
+                            if (field.Value is CustomFunction customFunction)
+                            {
+                                fieldsContent.Add(new Label(
+                                    ExpressionUtility.FormatCustomFunction(field.FieldName, customFunction)));
+                            }
+                            else
+                            {
+                                fieldsContent.Add(new Label(field.FieldName + " (" +
+                                                            ExpressionUtility.GetBetterTypeName(field.Value.Type) +
+                                                            ")"));
+                            }
                         }
-                        else
+
+                        if (importedFields.FoldoutOpen)
                         {
-                            fieldsContent.Add(new Label(field.FieldName + " (" + ExpressionUtility.GetBetterTypeName(field.Value.Type) + ")"));
+                            listContent.Add(new Label(importedFields.Value.DeveloperDescription));
+                            listContent.Add(fieldsContent);
+                            importedFieldsBox.Add(listContent);
                         }
                     }
-                    
-                    if (importedFields.FoldoutOpen)
-                    {
-                        listContent.Add(new Label(importedFields.Value.DeveloperDescription));
-                        listContent.Add(fieldsContent);
-                        importedFieldsBox.Add(listContent);
-                    }
+
+                    container.Add(importedFieldsBox);
                 }
-                
-                container.Add(importedFieldsBox);
             }
             
             if (functionsInstance.AllowGlobalVariables)
