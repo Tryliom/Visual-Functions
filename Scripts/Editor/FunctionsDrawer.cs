@@ -306,7 +306,24 @@ namespace VisualFunctions
                         property.serializedObject.targetObject,
                         asset =>
                         {
-                            functionsInstance.ImportedFields.Add(new ImportedFields(asset as ExportableFields));
+                            var exportedFields = asset as ExportableFields;
+                            
+                            if (exportedFields == null) return;
+
+                            exportedFields.ExportedOnFunctions.RemoveAll(ef => string.IsNullOrEmpty(ef.FunctionsPropertyPath));
+                            exportedFields.ExportedOnFunctions.Add(new ExportedFunctions(
+                                property.serializedObject.targetObject,
+                                property.propertyPath
+                            ));
+                            
+                            // Save the changes to the asset
+                            EditorUtility.SetDirty(exportedFields);
+                            
+                            var serializedObject = new SerializedObject(exportedFields);
+                            serializedObject.ApplyModifiedProperties();
+                            serializedObject.Update();
+                            
+                            functionsInstance.ImportedFields.Add(new ImportedFields(exportedFields));
                             functionsInstance.ImportedFieldsFoldoutOpen = true;
                             Refresh();
                         },
@@ -367,6 +384,17 @@ namespace VisualFunctions
                         row.Add(new Label(ObjectNames.NicifyVariableName(importedFields.Value.name)));
                         row.Add(new Button(() =>
                         {
+                            if (importedFields.Value == null) return;
+
+                            importedFields.Value.ExportedOnFunctions.RemoveAll(functions => functions.FunctionsPropertyPath == property.propertyPath);
+                            
+                            // Save the changes to the asset
+                            EditorUtility.SetDirty(importedFields.Value);
+                            
+                            var serializedObject = new SerializedObject(importedFields.Value);
+                            serializedObject.ApplyModifiedProperties();
+                            serializedObject.Update();
+                            
                             functionsInstance.ImportedFields.Remove(importedFields);
                             FormulaCache.Clear();
                             Refresh();

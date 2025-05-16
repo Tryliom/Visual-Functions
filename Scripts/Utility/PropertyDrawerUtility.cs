@@ -14,6 +14,12 @@ public static class PropertyDrawerUtility
             PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject);
         }
 
+        // Used to save the changes made directly to the target object instead of using the property
+        if (targetObject)
+        {
+            EditorUtility.SetDirty(targetObject);
+        }
+
         if (property.serializedObject != null)
         {
             // The order is important

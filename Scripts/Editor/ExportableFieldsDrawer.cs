@@ -9,29 +9,30 @@ namespace VisualFunctions
     {
         private VisualElement _content;
         private ExportableFields _targetObject;
+        private SerializedObject _serializedObject;
 
         private void Refresh()
         {
-            if (_targetObject && PrefabUtility.IsPartOfPrefabInstance(_targetObject))
+            if (PrefabUtility.IsPartOfPrefabInstance(_targetObject))
             {
                 PrefabUtility.RecordPrefabInstancePropertyModifications(_targetObject);
             }
+            
+            EditorUtility.SetDirty(_targetObject);
 
             // The order is important
-            serializedObject.ApplyModifiedProperties();
-            serializedObject.Update();
+            _serializedObject.ApplyModifiedProperties();
+            _serializedObject.Update();
 
             CreateGUI(_content);
             
-            if (!_targetObject || !PrefabUtility.IsPartOfPrefabInstance(_targetObject))
-            {
-                AssetDatabase.SaveAssets();
-            }
+            AssetDatabase.SaveAssets();
         }
 
         public override VisualElement CreateInspectorGUI()
         {
-            _targetObject = serializedObject.targetObject as ExportableFields;
+            _serializedObject = serializedObject;
+            _targetObject = _serializedObject.targetObject as ExportableFields;
 
             var container = new VisualElement()
             {
@@ -59,7 +60,7 @@ namespace VisualFunctions
                 return;
             }
             
-            var descriptionProperty = serializedObject.FindProperty("DeveloperDescription");
+            var descriptionProperty = _serializedObject.FindProperty("DeveloperDescription");
             var descriptionField = new TextField("Description")
             {
                 value = descriptionProperty.stringValue,
@@ -84,13 +85,13 @@ namespace VisualFunctions
             
             container.Add(descriptionField);
             
-            var inputsProperty = serializedObject.FindProperty("Fields");
+            var inputsProperty = _serializedObject.FindProperty("Fields");
             var inputsContainer = new VisualElement()
             {
                 style =
                 {
                     marginTop = 5,
-                    marginBottom = 5,
+                    marginBottom = 5
                 }
             };
             
@@ -120,6 +121,20 @@ namespace VisualFunctions
                             (previousName, newName) =>
                             {
                                 _targetObject.Fields.ForEach(input => input.OnEditField(previousName, newName));
+                                _targetObject.ExportedOnFunctions.ForEach(functions =>
+                                {
+                                    functions.GetFunctions().EditField(previousName, newName);
+                                    
+                                    EditorUtility.SetDirty(functions.Asset);
+
+                                    // The order is important
+                                    /*var serializedFunctions = new SerializedObject(functions.Asset);
+                                    serializedFunctions.ApplyModifiedProperties();
+                                    serializedFunctions.Update();*/
+                                    
+                                    AssetDatabase.SaveAssets();
+                                });
+                                FormulaCache.Clear();
                             },
                             Refresh
                         )

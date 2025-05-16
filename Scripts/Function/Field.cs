@@ -98,6 +98,12 @@ namespace VisualFunctions
         {
             if (string.IsNullOrEmpty(newName)) return;
 
+            if (Value is CustomFunction customFunction)
+            {
+                customFunction.Function.EditField(previousName, newName);
+                return;
+            }
+
             var formula = Value switch
             {
                 CustomValue customValue => customValue.Formula,

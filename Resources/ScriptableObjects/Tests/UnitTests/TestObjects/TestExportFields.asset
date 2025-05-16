@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: TestExportFields
   m_EditorClassIdentifier: 
   DeveloperDescription: Used to be tested
+  ExportedOnFunctions:
+  - Asset: {fileID: 11400000, guid: 89444a82e5c31ab44b0feb0d00ab29d0, type: 2}
+    FunctionsPropertyPath: Tests
   Fields:
   - FieldName: NumberToGuess
     Value:
-      rid: 7793652108983009631
+      rid: 797582808174559369
     SupportedTypes:
     - m_Name: AnyTypeReference
       m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
@@ -233,6 +236,21 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 797582808174559369
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 1
+        LocalValue: 0
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0
+    - rid: 797582808174560203
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: NumberToGuess = Random.Range(0, 100);
+    - rid: 797582808174560204
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: isFound = Guess == NumberToGuess;
     - rid: 7793652108983009628
       type: {class: CustomFunction, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -389,6 +407,7 @@ MonoBehaviour:
           FoldoutOpen: 1
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
+          AllowImport: 1
           TemporaryGlobalVariables:
           - FieldName: Guess
             Value:
@@ -566,6 +585,8 @@ MonoBehaviour:
             InEdition: 0
             EditValue: isFound
             AcceptAnyMethod: 0
+          ImportedFields: []
+          ImportedFieldsFoldoutOpen: 0
         FoldoutOpen: 1
         InputFoldoutOpen: 1
         OutputFoldoutOpen: 1
@@ -583,13 +604,6 @@ MonoBehaviour:
         LocalValue: 0
         Variable: {fileID: 0}
         DisplayedInInspector: 0
-    - rid: 7793652108983009631
-      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: 0
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
     - rid: 7793652108983009632
       type: {class: CustomFunction, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -602,7 +616,10 @@ MonoBehaviour:
           FoldoutOpen: 1
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
+          AllowImport: 1
           TemporaryGlobalVariables: []
+          ImportedFields: []
+          ImportedFieldsFoldoutOpen: 0
         FoldoutOpen: 1
         InputFoldoutOpen: 1
         OutputFoldoutOpen: 1
@@ -614,7 +631,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793652108983009975
+            rid: 797582808174560203
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -622,7 +639,6 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         Outputs: []
         EditableAttributes: []
-        ImportedFields: []
         AllowAddInputs: 1
         FunctionInputSettings:
           SupportedTypes: []
@@ -643,7 +659,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793652108983009976
+            rid: 797582808174560204
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -651,7 +667,6 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         Outputs: []
         EditableAttributes: []
-        ImportedFields: []
         AllowAddInputs: 1
         FunctionInputSettings:
           SupportedTypes: []
@@ -664,11 +679,3 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
-    - rid: 7793652108983009975
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: NumberToGuess = Random.Range(0, 100);
-    - rid: 7793652108983009976
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: isFound = Guess == NumberToGuess;
