@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Component = UnityEngine.Component;
 
 namespace VisualFunctions
@@ -42,84 +43,113 @@ namespace VisualFunctions
     {
         private List<MethodInfos> _methods;
         private List<PropertyInfos> _properties;
-        private Vector2 _scrollPosition;
         private string _searchText = "";
-
-        private void OnGUI()
+        private float _searchTimer;
+        private ScrollView _resultsContainer;
+        
+        private void CreateGUI()
         {
-            GUI.SetNextControlName("SearchTextField");
-            _searchText = EditorGUILayout.TextField("Search", _searchText);
-            EditorGUI.FocusTextInControl("SearchTextField");
-
-            if (_methods == null || _properties == null || (_methods.Count == 0 && _properties.Count == 0))
+            var root = rootVisualElement;
+            var searchField = new TextField("Search");
+            
+            searchField.RegisterValueChangedCallback(evt =>
             {
-                EditorGUILayout.LabelField("No methods or properties found.");
-                return;
-            }
+                _searchText = evt.newValue;
+                StartSearchTimer();
+            });
+            
+            root.Add(searchField);
+            
+            _resultsContainer = new ScrollView()
+            {
+                style =
+                {
+                    marginTop = 5
+                }
+            };
+            
+            _resultsContainer.Add(new Label("Loading... This can take a while if you have a lot of types.."));
+            
+            root.Add(_resultsContainer);
+        }
+        
+        private void StartSearchTimer()
+        {
+            EditorApplication.update -= OnSearchTimerElapsed;
+            _searchTimer = Time.realtimeSinceStartup;
+            EditorApplication.update += OnSearchTimerElapsed;
+        }
+            
+        private void OnSearchTimerElapsed()
+        {
+            if (Time.realtimeSinceStartup - _searchTimer < 0.5f) return;
+            
+            EditorApplication.update -= OnSearchTimerElapsed;
+            UpdateResults();
+        }
 
-            var filteredMethods = _methods
-                .Where(m => m.Name.ToLower().Contains(_searchText.ToLower()) ||
-                            m.Description.ToLower().Contains(_searchText.ToLower()))
-                .ToList();
-            var filteredProperties = _properties
-                .Where(p => p.Name.ToLower().Contains(_searchText.ToLower()) ||
-                            p.Description.ToLower().Contains(_searchText.ToLower()))
-                .ToList();
+        private void UpdateResults()
+        {
+            var container = new VisualElement();
+            var searchLower = _searchText.ToLower();
+            var filteredMethods = _methods;
+            var filteredProperties = _properties;
+            
+            _resultsContainer.Clear();
+
+            if (!string.IsNullOrEmpty(_searchText))
+            {
+                filteredMethods = _methods
+                    .Where(m => m.Name.ToLower().Contains(searchLower) ||
+                                m.Description.ToLower().Contains(searchLower))
+                    .ToList();
+                filteredProperties = _properties
+                    .Where(p => p.Name.ToLower().Contains(searchLower) ||
+                                p.Description.ToLower().Contains(searchLower))
+                    .ToList();
+            }
 
             if (filteredMethods.Count == 0 && filteredProperties.Count == 0)
             {
-                EditorGUILayout.LabelField("No methods or properties found.");
+                container.Add(new Label("No methods or properties found."));
+                return;
             }
-            else
+
+            foreach (var method in filteredMethods)
             {
-                _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+                var methodRow = new VisualElement { style = { flexDirection = FlexDirection.Row } };
+                methodRow.Add(new Label($"{method.Name}({string.Join(", ", method.Parameters)})") { style = { flexGrow = 1 } });
+                methodRow.Add(new Label(method.ReturnType) { style = { width = 100 } });
 
-                foreach (var method in filteredMethods)
+                var copyButton = new Button(() => EditorGUIUtility.systemCopyBuffer = method.Name) { text = "Copy" };
+                methodRow.Add(copyButton);
+
+                container.Add(methodRow);
+
+                if (!string.IsNullOrEmpty(method.Description))
                 {
-                    EditorGUILayout.BeginHorizontal();
-
-                    EditorGUILayout.LabelField($"{method.Name}({string.Join(", ", method.Parameters)})", EditorStyles.boldLabel);
-                    EditorGUILayout.LabelField(method.ReturnType, EditorStyles.boldLabel, GUILayout.Width(100));
-
-                    if (GUILayout.Button(EditorGUIUtility.IconContent("Clipboard"), GUILayout.Width(60)))
-                    {
-                        EditorGUIUtility.systemCopyBuffer = method.Name;
-                    }
-
-                    EditorGUILayout.EndHorizontal();
-
-                    if (method.Description != string.Empty)
-                    {
-                        EditorGUILayout.LabelField(method.Description, EditorStyles.miniLabel);
-                    }
-
-                    EditorGUILayout.Space();
+                    container.Add(new Label(method.Description) { style = { unityFontStyleAndWeight = FontStyle.Italic } });
                 }
-
-                foreach (var property in filteredProperties)
-                {
-                    EditorGUILayout.BeginHorizontal();
-
-                    EditorGUILayout.LabelField(property.Name, EditorStyles.boldLabel);
-                    EditorGUILayout.LabelField(property.Type, EditorStyles.boldLabel, GUILayout.Width(100));
-
-                    if (GUILayout.Button(EditorGUIUtility.IconContent("Clipboard"), GUILayout.Width(60)))
-                    {
-                        EditorGUIUtility.systemCopyBuffer = property.Name;
-                    }
-
-                    EditorGUILayout.EndHorizontal();
-
-                    if (property.Description != string.Empty)
-                    {
-                        EditorGUILayout.LabelField(property.Description, EditorStyles.miniLabel);
-                    }
-
-                    EditorGUILayout.Space();
-                }
-
-                EditorGUILayout.EndScrollView();
             }
+
+            foreach (var property in filteredProperties)
+            {
+                var propertyRow = new VisualElement { style = { flexDirection = FlexDirection.Row } };
+                propertyRow.Add(new Label(property.Name) { style = { flexGrow = 1 } });
+                propertyRow.Add(new Label(property.Type) { style = { width = 100 } });
+
+                var copyButton = new Button(() => EditorGUIUtility.systemCopyBuffer = property.Name) { text = "Copy" };
+                propertyRow.Add(copyButton);
+
+                container.Add(propertyRow);
+
+                if (!string.IsNullOrEmpty(property.Description))
+                {
+                    container.Add(new Label(property.Description) { style = { unityFontStyleAndWeight = FontStyle.Italic } });
+                }
+            }
+            
+            _resultsContainer.Add(container);
         }
 
         /**
@@ -144,7 +174,7 @@ namespace VisualFunctions
 
             allTypes.ForEach(type => Fill(window, type, displayVoid));
 
-            window.Show();
+            window.UpdateResults();
         }
 
         /**
@@ -167,8 +197,8 @@ namespace VisualFunctions
                 .OrderBy(p => p.Name)
                 .ThenBy(p => p.Type)
                 .ToList();
-
-            window.Show();
+            
+            window.UpdateResults();
         }
 
         private static void Fill(MethodSearchWindow self, Type type, bool displayVoid)
