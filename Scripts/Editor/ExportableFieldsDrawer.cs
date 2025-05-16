@@ -126,12 +126,6 @@ namespace VisualFunctions
                                     functions.GetFunctions().EditField(previousName, newName);
                                     
                                     EditorUtility.SetDirty(functions.Asset);
-
-                                    // The order is important
-                                    /*var serializedFunctions = new SerializedObject(functions.Asset);
-                                    serializedFunctions.ApplyModifiedProperties();
-                                    serializedFunctions.Update();*/
-                                    
                                     AssetDatabase.SaveAssets();
                                 });
                                 FormulaCache.Clear();
