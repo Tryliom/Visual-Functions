@@ -13,26 +13,39 @@ namespace VisualFunctions
     [CustomPropertyDrawer(typeof(Functions))]
     public class FunctionsDrawer : PropertyDrawer
     {
-        private VisualElement _content;
-        private SerializedProperty _property;
-        private GameObject _targetObject;
-        
         public static Field CopiedField;
         public static Function CopiedFunction;
 
-        private void Refresh()
+        private static readonly Dictionary<SerializedProperty, Data> PropertyData = new();
+
+        private class Data
+        {
+            public VisualElement Content;
+            public SerializedProperty Property;
+            public GameObject TargetObject;
+        }
+        
+        private void Refresh(Data data)
         {
             PropertyDrawerUtility.SaveAndRefresh(
-                _property,
-                _targetObject,
-                () => CreateGUI(_property, _content)
+                data.Property,
+                data.TargetObject,
+                () => CreateGUI(data)
             );
         }
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            _targetObject = Selection.activeObject as GameObject;
-            _property = property;
+            if (!PropertyData.TryGetValue(property, out var data))
+            {
+                data = new Data
+                {
+                    Property = property,
+                    TargetObject = Selection.activeObject as GameObject,
+                    Content = new VisualElement()
+                };
+                PropertyData[property] = data;
+            }
 
             var container = new VisualElement()
             {
@@ -41,23 +54,22 @@ namespace VisualFunctions
                     marginTop = 5
                 }
             };
-            _content = new VisualElement();
 
-            CreateGUI(_property, _content);
+            CreateGUI(data);
 
-            container.Add(_content);
+            container.Add(data.Content);
 
             return container;
         }
 
-        private void CreateGUI(SerializedProperty property, VisualElement container)
+        private void CreateGUI(Data data)
         {
-            container.Clear();
+            data.Content.Clear();
 
             // Put an alert if play mode is active and on a game object
             if (Application.isPlaying)
             {
-                container.Add(new Label("⚠️ [Play Mode] " + (_targetObject
+                data.Content.Add(new Label("⚠️ [Play Mode] " + (data.TargetObject
                     ? "The changes will not be saved"
                     : "The changes will be saved in the scriptable object") + " ⚠️")
                 {
@@ -69,7 +81,7 @@ namespace VisualFunctions
                 });
             }
 
-            var foldoutOpen = property.FindPropertyRelative("FoldoutOpen");
+            var foldoutOpen = data.Property.FindPropertyRelative("FoldoutOpen");
             var isFoldoutOpen = foldoutOpen is { boolValue: true };
             var topRow = new VisualElement
             {
@@ -88,12 +100,12 @@ namespace VisualFunctions
                 }
             };
             
-            var currentIndex = container.Children().Count() + 1;
+            var currentIndex = data.Content.Children().Count() + 1;
             var foldoutButton = new Button(() =>
             {
                 foldoutOpen.boolValue = !foldoutOpen.boolValue;
-                property.serializedObject.ApplyModifiedProperties();
-                Refresh();
+                data.Property.serializedObject.ApplyModifiedProperties();
+                Refresh(data);
             })
             {
                 text = "≡",
@@ -105,11 +117,11 @@ namespace VisualFunctions
             };
             
             topRow.Add(foldoutButton);
-            topRow.Add(new Label(property.displayName));
+            topRow.Add(new Label(data.Property.displayName));
 
             if (Function.Functions.Count == 0)
             {
-                container.Add(new Label("Code has changed, hit the Reload button to update the functions list")
+                data.Content.Add(new Label("Code has changed, hit the Reload button to update the functions list")
                 {
                     style =
                     {
@@ -118,7 +130,7 @@ namespace VisualFunctions
                     }
                 });
 
-                var reloadButton = new Button(Refresh)
+                var reloadButton = new Button(() => Refresh(data))
                 {
                     text = "Reload",
                     style =
@@ -128,19 +140,19 @@ namespace VisualFunctions
                     }
                 };
 
-                container.Add(topRow);
-                container.Add(reloadButton);
+                data.Content.Add(topRow);
+                data.Content.Add(reloadButton);
 
                 return;
             }
 
-            if (PropertyDrawerUtility.RetrieveTargetObject(_property) is not Functions functionsInstance)
+            if (PropertyDrawerUtility.RetrieveTargetObject(data.Property) is not Functions functionsInstance)
             {
                 Debug.LogError("Failed to cast the resolved object to 'Functions'");
                 return;
             }
             
-            var functionsProperty = property.FindPropertyRelative("FunctionsList");
+            var functionsProperty = data.Property.FindPropertyRelative("FunctionsList");
             var play = EditorGUIUtility.IconContent("d_PlayButton").image;
             var launchButton = new Button(() =>
             {
@@ -182,7 +194,7 @@ namespace VisualFunctions
                     functionProperty.managedReferenceValue = selectedFunction;
                     foldoutOpen.boolValue = true;
 
-                    Refresh();
+                    Refresh(data);
                 });
             })
             {
@@ -203,7 +215,7 @@ namespace VisualFunctions
                     
                     CopiedFunction = null;
                     FormulaCache.Clear();
-                    Refresh();
+                    Refresh(data);
                 })
                 {
                     text = "📋",
@@ -218,7 +230,7 @@ namespace VisualFunctions
                 topRow.Add(pasteButton);
             }
 
-            container.Add(topRow);
+            data.Content.Add(topRow);
             
             if (!foldoutOpen.boolValue) return;
             
@@ -273,7 +285,7 @@ namespace VisualFunctions
                 var foldoutImportButton = new Button(() =>
                 {
                     functionsInstance.ImportedFieldsFoldoutOpen = !functionsInstance.ImportedFieldsFoldoutOpen;
-                    Refresh();
+                    Refresh(data);
                 })
                 {
                     text = "≡",
@@ -303,7 +315,7 @@ namespace VisualFunctions
                 {
                     ExpressionUtility.DisplayAssetPathMenuForType(
                         typeof(ExportableFields),
-                        property.serializedObject.targetObject,
+                        data.Property.serializedObject.targetObject,
                         asset =>
                         {
                             var exportedFields = asset as ExportableFields;
@@ -312,8 +324,8 @@ namespace VisualFunctions
 
                             exportedFields.ExportedOnFunctions.RemoveAll(ef => string.IsNullOrEmpty(ef.FunctionsPropertyPath));
                             exportedFields.ExportedOnFunctions.Add(new ExportedFunctions(
-                                property.serializedObject.targetObject,
-                                property.propertyPath
+                                data.Property.serializedObject.targetObject,
+                                data.Property.propertyPath
                             ));
                             
                             // Save the changes to the asset
@@ -325,7 +337,7 @@ namespace VisualFunctions
                             
                             functionsInstance.ImportedFields.Add(new ImportedFields(exportedFields));
                             functionsInstance.ImportedFieldsFoldoutOpen = true;
-                            Refresh();
+                            Refresh(data);
                         },
                         functionsInstance.ImportedFields.Select(x => x.Value as Object).ToList()
                     );
@@ -341,7 +353,7 @@ namespace VisualFunctions
                 };
 
                 importTopRow.Add(importButton);
-                container.Add(importTopRow);
+                data.Content.Add(importTopRow);
 
                 if (functionsInstance.ImportedFieldsFoldoutOpen)
                 {
@@ -369,7 +381,7 @@ namespace VisualFunctions
                         var importFoldoutOpenButton = new Button(() =>
                         {
                             importedFields.FoldoutOpen = !importedFields.FoldoutOpen;
-                            Refresh();
+                            Refresh(data);
                         })
                         {
                             text = "≡",
@@ -386,7 +398,7 @@ namespace VisualFunctions
                         {
                             if (importedFields.Value == null) return;
 
-                            importedFields.Value.ExportedOnFunctions.RemoveAll(functions => functions.FunctionsPropertyPath == property.propertyPath);
+                            importedFields.Value.ExportedOnFunctions.RemoveAll(functions => functions.FunctionsPropertyPath == data.Property.propertyPath);
                             
                             // Save the changes to the asset
                             EditorUtility.SetDirty(importedFields.Value);
@@ -397,7 +409,7 @@ namespace VisualFunctions
                             
                             functionsInstance.ImportedFields.Remove(importedFields);
                             FormulaCache.Clear();
-                            Refresh();
+                            Refresh(data);
                         })
                         {
                             text = "-",
@@ -482,7 +494,7 @@ namespace VisualFunctions
                         }
                     }
 
-                    container.Add(importedFieldsBox);
+                    data.Content.Add(importedFieldsBox);
                 }
             }
             
@@ -490,25 +502,25 @@ namespace VisualFunctions
             {
                 functionsInstance.ValidateGlobalVariables();
                 
-                var globalValuesFoldout = property.FindPropertyRelative("GlobalValuesFoldoutOpen");
-                var globalValuesProperty = property.FindPropertyRelative("GlobalVariables");
+                var globalValuesFoldout = data.Property.FindPropertyRelative("GlobalValuesFoldoutOpen");
+                var globalValuesProperty = data.Property.FindPropertyRelative("GlobalVariables");
                 
                 CreateFields(
-                    container, "Global Values", "Global values are available for all functions, use their name in formulas",
+                    data.Content, "Global Values", "Global values are available for all functions, use their name in formulas",
                     functionsInstance.GlobalVariables, globalValuesFoldout,
                     () =>
                     {
                         functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.Settings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
                         functionsInstance.GlobalValuesFoldoutOpen = true;
                         FormulaCache.Clear();
-                        Refresh();
+                        Refresh(data);
                     },
                     () =>
                     {
                         functionsInstance.GlobalVariables.Add(CopiedField.Clone());
                         CopiedField = null;
                         FormulaCache.Clear();
-                        Refresh();
+                        Refresh(data);
                     },
                     (element, field) =>
                     {
@@ -518,11 +530,11 @@ namespace VisualFunctions
                                 field, functionsInstance.GetType().Name, true, new FunctionSettings().AllowMethods(true),
                                 functionsInstance.GlobalVariables, 0,
                                 (previousName, newName) => functionsInstance.EditField(previousName, newName),
-                                Refresh
+                                () => Refresh(data)
                             )
                         );
                     },
-                    Refresh
+                    () => Refresh(data)
                 );
             }
 
@@ -531,14 +543,14 @@ namespace VisualFunctions
                 var functionProperty = functionsProperty.GetArrayElementAtIndex(i);
                 var functionVisual = new VisualElement();
 
-                functionVisual.Add(CreateFunction(functionProperty, Refresh));
+                functionVisual.Add(CreateFunction(functionProperty, () => Refresh(data)));
 
                 var topRightY = functionVisual.layout.y + 8;
                 var index = i;
                 var removeButton = new Button(() =>
                 {
                     functionsProperty.DeleteArrayElementAtIndex(index);
-                    Refresh();
+                    Refresh(data);
                 })
                 {
                     text = "-",
@@ -559,7 +571,7 @@ namespace VisualFunctions
                 var copyButton = new Button(() =>
                 {
                     CopiedFunction = (functionProperty.managedReferenceValue as Function)?.Clone();
-                    Refresh();
+                    Refresh(data);
                 })
                 {
                     text = "📋",
@@ -583,7 +595,7 @@ namespace VisualFunctions
                     var upButton = new Button(() =>
                     {
                         functionsProperty.MoveArrayElement(index, index - 1);
-                        Refresh();
+                        Refresh(data);
                     })
                     {
                         text = "↑",
@@ -606,7 +618,7 @@ namespace VisualFunctions
                     var downButton = new Button(() =>
                     {
                         functionsProperty.MoveArrayElement(index, index + 1);
-                        Refresh();
+                        Refresh(data);
                     })
                     {
                         text = "↓",
@@ -623,14 +635,14 @@ namespace VisualFunctions
                     functionVisual.Add(downButton);
                 }
 
-                container.Add(functionVisual);
+                data.Content.Add(functionVisual);
             }
 
             if (isFoldoutOpen) return;
 
-            for (var i = currentIndex; i < container.Children().Count(); i++)
+            for (var i = currentIndex; i < data.Content.Children().Count(); i++)
             {
-                container.Children().ElementAt(i).style.display = DisplayStyle.None;
+                data.Content.Children().ElementAt(i).style.display = DisplayStyle.None;
             }
         }
 

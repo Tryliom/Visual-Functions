@@ -15,9 +15,13 @@ MonoBehaviour:
   OnStart:
     FunctionsList: []
     GlobalVariables: []
-    FoldoutOpen: 1
+    FoldoutOpen: 0
     GlobalValuesFoldoutOpen: 1
     AllowGlobalVariables: 1
+    AllowImport: 1
+    TemporaryGlobalVariables: []
+    ImportedFields: []
+    ImportedFieldsFoldoutOpen: 0
   FunctionsToTest:
     FunctionsList:
     - rid: 7936453624402018862
@@ -25,6 +29,10 @@ MonoBehaviour:
     FoldoutOpen: 1
     GlobalValuesFoldoutOpen: 1
     AllowGlobalVariables: 1
+    AllowImport: 1
+    TemporaryGlobalVariables: []
+    ImportedFields: []
+    ImportedFieldsFoldoutOpen: 0
   Loops:
     UseLocal: 0
     LocalValue: 0
@@ -38,14 +46,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 7793651929897238652
+    - rid: 797582811369308215
       type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
         UseLocal: 0
         LocalValue: 0
         Variable: {fileID: 11400000, guid: f16d8717e3b865c47919ccb432a708c7, type: 2}
         DisplayedInInspector: 0
-    - rid: 7793651929897238653
+    - rid: 797582811369308216
       type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
         UseLocal: 0
@@ -60,7 +68,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Loops
           Value:
-            rid: 7793651929897238652
+            rid: 797582811369308215
           SupportedTypes: []
           AllowRename: 1
           InEdition: 0
@@ -68,7 +76,7 @@ MonoBehaviour:
           AcceptAnyMethod: 0
         - FieldName: Index
           Value:
-            rid: 7793651929897238653
+            rid: 797582811369308216
           SupportedTypes: []
           AllowRename: 1
           InEdition: 0
@@ -92,6 +100,10 @@ MonoBehaviour:
         FunctionsToLoop:
           FunctionsList: []
           GlobalVariables: []
-          FoldoutOpen: 1
+          FoldoutOpen: 0
           GlobalValuesFoldoutOpen: 1
           AllowGlobalVariables: 0
+          AllowImport: 1
+          TemporaryGlobalVariables: []
+          ImportedFields: []
+          ImportedFieldsFoldoutOpen: 0
