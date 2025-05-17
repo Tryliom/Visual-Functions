@@ -47,7 +47,7 @@ namespace VisualFunctions
             
             if (currentTime.Value < maxTime.Value) return true;
 
-            currentTime.Value = 0;
+            currentTime.Value -= maxTime.Value;
             
             return OnFinish.FunctionsList.All(function => function.Invoke(_globalVariables));
         }
