@@ -43,7 +43,7 @@ namespace VisualFunctions
             var maxTime = (FloatReference) Inputs[0].Value;
             var currentTime = (FloatReference) Inputs[1].Value;
 
-            currentTime.Value += Time.deltaTime;
+            currentTime.Value += TimeType == TimeType.Scaled ? Time.deltaTime : Time.unscaledDeltaTime;
             
             if (currentTime.Value < maxTime.Value) return true;
 
