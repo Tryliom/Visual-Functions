@@ -84,6 +84,7 @@ namespace VisualFunctions
                 customFunction.Inputs, inputsFoldoutProperty,
                 () =>
                 {
+                    Undo.RecordObject(data.Property.serializedObject.targetObject, "Add Input Field");
                     customFunction.Inputs.Add(new Field("" + (char)('A' + customFunction.Inputs.Count)));
                     customFunction.InputFoldoutOpen = true;
                     FormulaCache.Clear();
@@ -91,6 +92,7 @@ namespace VisualFunctions
                 },
                 () =>
                 {
+                    Undo.RecordObject(data.Property.serializedObject.targetObject, "Add Copied Input Field");
                     customFunction.Inputs.Add(FunctionsDrawer.CopiedField.Clone());
                     FunctionsDrawer.CopiedField = null;
                     FormulaCache.Clear();
@@ -135,6 +137,7 @@ namespace VisualFunctions
                 customFunction.Outputs, outputsFoldoutProperty,
                 () =>
                 {
+                    Undo.RecordObject(data.Property.serializedObject.targetObject, "Add Output Field");
                     customFunction.Outputs.Add(new Field("" + (char)('a' + customFunction.Outputs.Count)));
                     customFunction.OutputFoldoutOpen = true;
                     FormulaCache.Clear();
@@ -142,6 +145,7 @@ namespace VisualFunctions
                 },
                 () =>
                 {
+                    Undo.RecordObject(data.Property.serializedObject.targetObject, "Add Copied Output Field");
                     customFunction.Outputs.Add(FunctionsDrawer.CopiedField.Clone());
                     FunctionsDrawer.CopiedField = null;
                     FormulaCache.Clear();

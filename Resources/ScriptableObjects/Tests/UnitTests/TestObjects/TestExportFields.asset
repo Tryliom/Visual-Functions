@@ -243,21 +243,13 @@ MonoBehaviour:
         LocalValue: 0
         Variable: {fileID: 0}
         DisplayedInInspector: 0
-    - rid: 797582808174560203
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: NumberToGuess = Random.Range(0, 100);
-    - rid: 797582808174560204
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: isFound = Guess == NumberToGuess;
     - rid: 7793652108983009628
       type: {class: CustomFunction, ns: VisualFunctions, asm: VisualFunctions}
       data:
         Inputs:
         - FieldName: Guess
           Value:
-            rid: 7793652108983009629
+            rid: 7793652173715276417
           SupportedTypes:
           - m_Name: AnyTypeReference
             m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
@@ -411,7 +403,7 @@ MonoBehaviour:
           TemporaryGlobalVariables:
           - FieldName: Guess
             Value:
-              rid: 7793652108983009629
+              rid: 7793652173715276417
             SupportedTypes:
             - m_Name: AnyTypeReference
               m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
@@ -590,13 +582,6 @@ MonoBehaviour:
         FoldoutOpen: 1
         InputFoldoutOpen: 1
         OutputFoldoutOpen: 1
-    - rid: 7793652108983009629
-      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: 0
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
     - rid: 7793652108983009630
       type: {class: BoolReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -621,8 +606,8 @@ MonoBehaviour:
           ImportedFields: []
           ImportedFieldsFoldoutOpen: 0
         FoldoutOpen: 1
-        InputFoldoutOpen: 1
-        OutputFoldoutOpen: 1
+        InputFoldoutOpen: 0
+        OutputFoldoutOpen: 0
     - rid: 7793652108983009633
       type: {class: Evaluate, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -631,7 +616,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 797582808174560203
+            rid: 7793652176372105870
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -659,7 +644,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 797582808174560204
+            rid: 7793652176372105871
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -679,3 +664,18 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
+    - rid: 7793652173715276417
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 1
+        LocalValue: 0
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0
+    - rid: 7793652176372105870
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: NumberToGuess = Random.Range(0, 100);
+    - rid: 7793652176372105871
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: isFound = Guess == NumberToGuess;

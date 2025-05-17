@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -27,6 +28,16 @@ namespace VisualFunctions
             CreateGUI(_content);
             
             AssetDatabase.SaveAssets();
+        }
+        
+        private void OnEnable()
+        {
+            Undo.undoRedoPerformed += Refresh;
+        }
+
+        private void OnDisable()
+        {
+            Undo.undoRedoPerformed -= Refresh;
         }
 
         public override VisualElement CreateInspectorGUI()
@@ -74,7 +85,7 @@ namespace VisualFunctions
             
             descriptionField.RegisterValueChangedCallback(evt =>
             {
-                descriptionProperty.stringValue = evt.newValue;
+                descriptionField.value = evt.newValue;
             });
 
             descriptionField.RegisterCallback<FocusOutEvent>(evt =>

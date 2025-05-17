@@ -23,36 +23,11 @@ MonoBehaviour:
     TemporaryGlobalVariables: []
     ImportedFields:
     - Value: {fileID: 11400000, guid: 37e688669c02ca34789e834844f246e0, type: 2}
-      FoldoutOpen: 1
+      FoldoutOpen: 0
     ImportedFieldsFoldoutOpen: 1
   references:
     version: 2
     RefIds:
-    - rid: 797582808174560208
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: 'InitGuess();
-
-
-          !GuessNumber(NumberToGuess - 34);
-
-          !GuessNumber(NumberToGuess
-          + 55);
-
-          GuessNumber(NumberToGuess);
-
-
-          A = Random.Range(0,
-          100);
-
-          GuessNumber(A) == (A == NumberToGuess);'
-    - rid: 797582808174560209
-      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        UseLocal: 1
-        LocalValue: 88
-        Variable: {fileID: 0}
-        DisplayedInInspector: 0
     - rid: 7793652132948738055
       type: {class: Expect, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -61,7 +36,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 797582808174560208
+            rid: 7793652180844282009
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -69,7 +44,7 @@ MonoBehaviour:
           AcceptAnyMethod: 1
         - FieldName: A
           Value:
-            rid: 797582808174560209
+            rid: 7793652180844282010
           SupportedTypes:
           - m_Name: AnyTypeReference
             m_AssemblyQualifiedName: VisualFunctions.AnyTypeReference, VisualFunctions,
@@ -153,3 +128,28 @@ MonoBehaviour:
           PrefixName: 
           CanCallMethods: 0
           AllowVoidMethods: 0
+    - rid: 7793652180844282009
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: 'InitGuess();
+
+
+          !GuessNumber(NumberToGuess - 34);
+
+          !GuessNumber(NumberToGuess
+          + 55);
+
+          GuessNumber(NumberToGuess);
+
+
+          A = Random.Range(0,
+          100);
+
+          GuessNumber(A) == (A == NumberToGuess);'
+    - rid: 7793652180844282010
+      type: {class: IntReference, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        UseLocal: 1
+        LocalValue: 88
+        Variable: {fileID: 0}
+        DisplayedInInspector: 0

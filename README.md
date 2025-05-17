@@ -42,6 +42,7 @@ Contains basic functions used to run code logic:
 - Log: Log a list of inputs in the console
 - Reset: Reset a variable to its default value
 - Evaluate: Interpret a string as a code and run it
+- Timer: Run a function after a delay
 
 ### Evaluate
 Currently, the evaluate function supports all mathematical, logical and object methods operations.
@@ -54,9 +55,11 @@ Loop and For functions can also use the evaluate function to run a code logic.
 Missing and planned features:
 - Array access with []
 - Rename variable asset name from the editor
-- Support undo/redo
 - Better error handling
 - More basic functions
+
+#### Known Issues
+- Editing a field will not save the asset, so you need to save it manually (control + S)
 
 ## Install
 In Unity, go to `Window` menu -> `Package Manager` -> `+` -> `install package from git url` and put this url:

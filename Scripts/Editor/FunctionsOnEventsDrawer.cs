@@ -15,7 +15,9 @@ namespace VisualFunctions
         private void Refresh()
         {
             if (_targetObject && PrefabUtility.IsPartOfPrefabInstance(_targetObject))
+            {
                 PrefabUtility.RecordPrefabInstancePropertyModifications(_targetObject);
+            }
 
             if (_property.serializedObject != null)
             {

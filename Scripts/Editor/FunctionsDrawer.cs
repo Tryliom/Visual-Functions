@@ -54,7 +54,7 @@ namespace VisualFunctions
                     marginTop = 5
                 }
             };
-
+            
             CreateGUI(data);
 
             container.Add(data.Content);
@@ -104,7 +104,6 @@ namespace VisualFunctions
             var foldoutButton = new Button(() =>
             {
                 foldoutOpen.boolValue = !foldoutOpen.boolValue;
-                data.Property.serializedObject.ApplyModifiedProperties();
                 Refresh(data);
             })
             {
@@ -284,6 +283,7 @@ namespace VisualFunctions
 
                 var foldoutImportButton = new Button(() =>
                 {
+                    Undo.RecordObject(data.Property.serializedObject.targetObject, "Toggle Imported Fields Foldout");
                     functionsInstance.ImportedFieldsFoldoutOpen = !functionsInstance.ImportedFieldsFoldoutOpen;
                     Refresh(data);
                 })
@@ -320,8 +320,14 @@ namespace VisualFunctions
                         {
                             var exportedFields = asset as ExportableFields;
                             
-                            if (exportedFields == null) return;
-
+                            if (!exportedFields) return;
+                            
+                            Undo.RecordObjects(new List<Object>
+                            {
+                                data.Property.serializedObject.targetObject,
+                                exportedFields
+                            }.ToArray(), "Import Exportable Fields");
+                            
                             exportedFields.ExportedOnFunctions.RemoveAll(ef => string.IsNullOrEmpty(ef.FunctionsPropertyPath));
                             exportedFields.ExportedOnFunctions.Add(new ExportedFunctions(
                                 data.Property.serializedObject.targetObject,
@@ -380,6 +386,7 @@ namespace VisualFunctions
 
                         var importFoldoutOpenButton = new Button(() =>
                         {
+                            Undo.RecordObject(data.Property.serializedObject.targetObject, "Toggle Imported Fields Foldout");
                             importedFields.FoldoutOpen = !importedFields.FoldoutOpen;
                             Refresh(data);
                         })
@@ -396,8 +403,14 @@ namespace VisualFunctions
                         row.Add(new Label(ObjectNames.NicifyVariableName(importedFields.Value.name)));
                         row.Add(new Button(() =>
                         {
-                            if (importedFields.Value == null) return;
+                            if (!importedFields.Value) return;
 
+                            Undo.RecordObjects(new List<Object>
+                            {
+                                data.Property.serializedObject.targetObject,
+                                importedFields.Value
+                            }.ToArray(), "Remove Imported Fields");
+                            
                             importedFields.Value.ExportedOnFunctions.RemoveAll(functions => functions.FunctionsPropertyPath == data.Property.propertyPath);
                             
                             // Save the changes to the asset
@@ -521,6 +534,7 @@ namespace VisualFunctions
                     functionsInstance.GlobalVariables, globalValuesFoldout,
                     () =>
                     {
+                        Undo.RecordObject(data.Property.serializedObject.targetObject, "Add Global Value");
                         functionsInstance.GlobalVariables.Add(new Field(GlobalSettings.Settings.GlobalValuesPrefix + (char)('a' + functionsInstance.GlobalVariables.Count)));
                         functionsInstance.GlobalValuesFoldoutOpen = true;
                         FormulaCache.Clear();
@@ -528,6 +542,7 @@ namespace VisualFunctions
                     },
                     () =>
                     {
+                        Undo.RecordObject(data.Property.serializedObject.targetObject, "Paste Global Value");
                         functionsInstance.GlobalVariables.Add(CopiedField.Clone());
                         CopiedField = null;
                         FormulaCache.Clear();
@@ -698,7 +713,6 @@ namespace VisualFunctions
                 var foldoutButton = new Button(() =>
                 {
                     foldoutOpen.boolValue = !foldoutOpen.boolValue;
-                    property.serializedObject.ApplyModifiedProperties();
                     refresh();
                 })
                 {
@@ -789,12 +803,14 @@ namespace VisualFunctions
                     functionContent, name, "", fields, null,
                     () =>
                     {
+                        Undo.RecordObject(property.serializedObject.targetObject, "Add Field");
                         fields.Add(myFunction.CreateNewField(fields == myFunction.Inputs));
                         FormulaCache.Clear();
                         refresh();
                     },
                     () =>
                     {
+                        Undo.RecordObject(property.serializedObject.targetObject, "Paste Field");
                         fields.Add(CopiedField.Clone());
                         CopiedField = null;
                         FormulaCache.Clear();
@@ -945,6 +961,7 @@ namespace VisualFunctions
                         return;
                     }
 
+                    Undo.RecordObject(property.serializedObject.targetObject, "Edit Field");
                     editFieldAction(field.FieldName, field.EditValue);
                     refresh();
                 });
@@ -972,6 +989,7 @@ namespace VisualFunctions
                             return;
                         }
                         
+                        Undo.RecordObject(property.serializedObject.targetObject, "Edit Field");
                         editFieldAction(field.FieldName, field.EditValue);
                         refresh();
                     })
@@ -990,6 +1008,7 @@ namespace VisualFunctions
                 {
                     var editButton = new Button(() =>
                     {
+                        Undo.RecordObject(property.serializedObject.targetObject, "Edit Field");
                         field.InEdition = true;
                         field.EditValue = field.FieldName;
                         refresh();
@@ -1055,6 +1074,7 @@ namespace VisualFunctions
             {
                 var removeButton = new Button(() =>
                 {
+                    Undo.RecordObject(property.serializedObject.targetObject, "Remove Field");
                     fields.Remove(field);
                     FormulaCache.Clear();
                     refresh();
@@ -1079,7 +1099,7 @@ namespace VisualFunctions
                 {
                     var upButton = new Button(() =>
                     {
-                        // Move the field up in the list
+                        Undo.RecordObject(property.serializedObject.targetObject, "Move Field Up");
                         fields.Remove(field);
                         fields.Insert(index - 1, field);
                         refresh();
@@ -1103,7 +1123,7 @@ namespace VisualFunctions
                 {
                     var downButton = new Button(() =>
                     {
-                        // Move the field down in the list
+                        Undo.RecordObject(property.serializedObject.targetObject, "Move Field Down");
                         fields.Remove(field);
                         fields.Insert(index + 1, field);
                         refresh();
@@ -1153,7 +1173,7 @@ namespace VisualFunctions
                     }
                 };
 
-                popupField.RegisterValueChangedCallback(evt =>
+                popupField.RegisterValueChangedCallback(_ =>
                 {
                     if (field.Value is null && popupField.index == 0) return;
 
@@ -1161,6 +1181,7 @@ namespace VisualFunctions
 
                     if (field.Value is null) index--;
 
+                    Undo.RecordObject(property.serializedObject.targetObject, "Change Field Type");
                     var selectedType = index < ExpressionUtility.SupportedTypes.Count
                         ? ExpressionUtility.SupportedTypes[index]
                         : field.SupportedTypes.Where(t => !ExpressionUtility.SupportedTypes.Contains(t)).ToList()[index - ExpressionUtility.SupportedTypes.Count].SystemType;
@@ -1223,6 +1244,7 @@ namespace VisualFunctions
 
                         var assetName = $"{functionName}-{field.FieldName}";
 
+                        Undo.RecordObject(property.serializedObject.targetObject, "Create Variable Asset");
                         field.Value.Value = ReferenceUtility.CreateVariableAsset(type, assetName, folderPath);
 
                         refresh();
@@ -1240,6 +1262,7 @@ namespace VisualFunctions
                     {
                         ExpressionUtility.DisplayAssetPathMenuForType(variableType, property.serializedObject.targetObject, asset =>
                         {
+                            Undo.RecordObject(property.serializedObject.targetObject, "Select Variable Asset");
                             field.Value.Value = asset;
                         },
                         new List<Object>{field.Value.Value as Object});
