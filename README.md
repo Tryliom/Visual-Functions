@@ -5,16 +5,15 @@ Designed to be more used by developers since most of the functions are using a c
 Use these tools to make your life easier:
 - Variable: A scriptable object that contains a type
 - Reference: A field that can accept a Variable or a local type
-  
-⚠️ This package is in development and can still change a lot, so be careful when using it in production ⚠️
 
 ## Example 
 A system to move the player based on inputs WASD.
 
-Here the inputs are stored in a variable called MoveValue, that is a reference to a Vector3 variable, that can be used everywhere.
+Here the inputs are stored in a variable called `MoveValue`,
+that is a reference to a Vector3 variable, that can be used everywhere.
 ![SimpleInputManager.png](documentation/images/SimpleInputManager.png)
 
-And here the player use the MoveValue to move the player very simply.
+And here the player uses the `MoveValue` to move the player very simply.
 ![SimplePlayerMove.png](documentation/images/SimplePlayerMove.png)
 
 More examples can be found [here](./documentation/MoreExamples.md).
@@ -51,15 +50,13 @@ For example, we have Vec that is a variable of type Vector3, we can do:
 
 Loop and For functions can also use the evaluate function to run a code logic.
 
-#### Missing features
-Missing and planned features:
-- Array access with []
+#### Missing and planned features
 - Rename variable asset name from the editor
 - Better error handling
-- More basic functions
 
 #### Known Issues
 - Editing a field will not save the asset, so you need to save it manually (control + S)
+- Undo is supported, but on some operations, it will not update the view
 
 ## Install
 In Unity, go to `Window` menu -> `Package Manager` -> `+` -> `install package from git url` and put this url:
@@ -73,6 +70,7 @@ In Unity, you need to set the API compatibility level to `.NET Standard` in `Edi
 Folder needed:
 - `Resources/ScriptableObjects/Variables`: Where the game objects variables are stored
 - `Resources/ScriptableObjects/GlobalVariables`: Where you need to store the global variables to be accessible from anywhere
+- `Resources/ScriptableObjects/GlobalObjects`: Where you need to store other objects to be accessible from anywhere (like ExportableFields)
 
 You can change these folder paths by creating a scriptable object with the menu `VisualFunctions/Settings` and set the paths in the inspector.
 **It needs to be in a Resources folder to be loaded at runtime.**
