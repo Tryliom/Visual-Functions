@@ -96,5 +96,5 @@ namespace VisualFunctions
             return name;
         }
     }
-#endif
 }
+#endif

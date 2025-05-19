@@ -26,7 +26,7 @@ namespace VisualFunctions
         public List<Field> GlobalVariables = new();
         
 #if UNITY_EDITOR
-        public bool FoldoutOpen = true;
+        public bool FoldoutOpen;
         public bool GlobalValuesFoldoutOpen = true;
         public bool AllowGlobalVariables = true;
         public bool AllowImport = true;
