@@ -273,7 +273,7 @@ namespace VisualFunctions
                     i += str.Length + 1;
                     expressions.Add(str);
                 }
-                else if (char.IsLetter(currentChar))
+                else if (char.IsLetter(currentChar) || currentChar == '_')
                 {
                     var variable = ExpressionUtility.ExtractVariable(formula, i);
                     i += variable.Length - 1;
@@ -286,19 +286,28 @@ namespace VisualFunctions
                         continue;
                     }
 
-                    if (i < formula.Length - 1 && (formula[i + 1] == '.' || formula[i + 1] == '(' || formula[i + 1] == '<'))
+                    if (i < formula.Length - 1 && (formula[i + 1] == '.' || formula[i + 1] == '(' || formula[i + 1] == '<' || formula[i + 1] == '['))
                     {
                         var propertyName = "";
-                        var methodType = formula[i + 1] == '(' || formula[i + 1] == '<' ? AccessorType.Constructor : AccessorType.Property;
+                        var methodType = AccessorType.Property;
                         
-                        if (formula[i + 1] == '.')
+                        switch (formula[i + 1])
                         {
-                            propertyName = ExpressionUtility.ExtractVariable(formula, i + 2);
-                            i += propertyName.Length + 1;
+                            case '(':
+                            case '<':
+                                methodType = AccessorType.Constructor;
+                                break;
+                            case '.':
+                                propertyName = ExpressionUtility.ExtractVariable(formula, i + 2);
+                                i += propertyName.Length + 1;
                             
-                            methodType = i != formula.Length - 1 && (formula[i + 1] == '(' || formula[i + 1] == '<')
-                                ? AccessorType.Method
-                                : AccessorType.Property;
+                                methodType = i != formula.Length - 1 && (formula[i + 1] == '(' || formula[i + 1] == '<')
+                                    ? AccessorType.Method
+                                    : AccessorType.Property;
+                                break;
+                            case '[':
+                                methodType = AccessorType.ArrayItem;
+                                break;
                         }
 
                         var leftProperties = "";
@@ -333,10 +342,17 @@ namespace VisualFunctions
 
                             if (parameters.Count > 1) i += parameters.Count - 1; // For the commas
                         }
+                        else if (methodType is AccessorType.ArrayItem)
+                        {
+                            parameters = ExpressionUtility.ExtractMethodParameters(formula, i, '[', ']');
+                            i += parameters.Sum(parameter => parameter.Length) + 2;
+
+                            if (parameters.Count > 1) i += parameters.Count - 1; // For the commas
+                        }
 
                         var loops = 0;
 
-                        while (i != formula.Length - 1 && (formula[i + 1] == '.' || formula[i + 1] == '('))
+                        while (i != formula.Length - 1 && (formula[i + 1] == '.' || formula[i + 1] == '(' || formula[i + 1] == '['))
                         {
                             if (formula[i + 1] == '.')
                             {
@@ -360,6 +376,13 @@ namespace VisualFunctions
                                 i += methodParameters.Length + 2;
 
                                 leftProperties += "(" + methodParameters + ")";
+                            }
+                            else if (formula[i + 1] == '[')
+                            {
+                                var arrayItem = ExpressionUtility.ExtractInsideSurrounder(formula, i + 1, '[', ']');
+                                i += arrayItem.Length + 2;
+
+                                leftProperties += "[" + arrayItem + "]";
                             }
 
                             loops++;
@@ -414,7 +437,10 @@ namespace VisualFunctions
                                 expressions.Add(new AccessorCaller(value, propertyName, leftProperties));
                                 break;
                             case AccessorType.CustomFunction:
-                                expressions.Add(new AccessorCaller(value, parameters, leftProperties));
+                                expressions.Add(new AccessorCaller(value, parameters, leftProperties, AccessorType.CustomFunction));
+                                break;
+                            case AccessorType.ArrayItem:
+                                expressions.Add(new AccessorCaller(value, parameters, leftProperties, AccessorType.ArrayItem));
                                 break;
                         }
                     }
@@ -611,7 +637,7 @@ namespace VisualFunctions
                             case IValue leftValue:
                                 leftValue.Value = convertedValue;
                                 break;
-                            case AccessorCaller { AccessorType: AccessorType.Property } methodCaller:
+                            case AccessorCaller { AccessorType: AccessorType.Property or AccessorType.ArrayItem } methodCaller:
                                 methodCaller.AssignValue(convertedValue);
                                 break;
                         }
@@ -797,7 +823,7 @@ namespace VisualFunctions
                         caller.Result = new TempIValue(constructor.Invoke(parameters.ToArray()));
                         break;
                     }
-                    default:
+                    case AccessorType.Method:
                     {
                         var parameters = caller.Parameters
                             .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
@@ -843,6 +869,18 @@ namespace VisualFunctions
                         {
                             caller.Result = new TempIValue(method.Invoke(callerValue, parameters.ToArray()));
                         }
+
+                        break;
+                    }
+                    case AccessorType.ArrayItem:
+                    {
+                        var parameters = caller.Parameters
+                            .Select(parameter => Process(uid, parameter, variables).FirstOrDefault())
+                            .Select(obj => ExpressionUtility.ExtractValue(obj, uid, variables))
+                            .ToList();
+
+                        caller.ArrayIndexes = parameters;
+                        caller.Result = new TempIValue(callerValue.GetType().GetProperty("Item").GetValue(callerValue, parameters.ToArray()));
 
                         break;
                     }

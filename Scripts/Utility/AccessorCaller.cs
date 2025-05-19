@@ -8,7 +8,8 @@ namespace VisualFunctions
         Property,
         Method,
         Constructor,
-        CustomFunction
+        CustomFunction,
+        ArrayItem,
     }
 
     public class AccessorCaller
@@ -19,6 +20,9 @@ namespace VisualFunctions
         public readonly string LeftMethod;
         public readonly List<string> Parameters;
         public readonly string Property;
+        
+        // Used for array item accessors to access the array indexes
+        public List<object> ArrayIndexes { get; set; } = new ();
 
         public AccessorCaller(IValue instance, string property, string leftMethod)
         {
@@ -49,11 +53,11 @@ namespace VisualFunctions
             GenericTypes = genericTypes ?? new List<Type>();
         }
         
-        public AccessorCaller(IValue instance, List<string> parameters, string leftMethod)
+        public AccessorCaller(IValue instance, List<string> parameters, string leftMethod, AccessorType accessorType)
         {
             Instance = instance;
             LeftMethod = leftMethod;
-            AccessorType = AccessorType.CustomFunction;
+            AccessorType = accessorType;
             Parameters = parameters;
         }
 
@@ -61,6 +65,14 @@ namespace VisualFunctions
 
         public void AssignValue(object value)
         {
+            if (AccessorType is AccessorType.ArrayItem)
+            {
+                var callValue = Instance.Value is IRefValue refValue ? refValue.RefValue : value;
+                var callType = Instance.Value is IRefType refType ? refType.Type : Instance.Type;
+                
+                callType.GetProperty("Item")?.SetValue(callValue, value, ArrayIndexes.ToArray());
+            }
+            
             if (AccessorType is not AccessorType.Property) return;
 
             var instanceType = Instance.Type;
@@ -84,7 +96,7 @@ namespace VisualFunctions
                 {
                     propertyInfo.SetValue(Instance.Value switch
                     {
-                        AccessorCaller caller => caller.Result.Value,
+                        AccessorCaller caller => Result.Value,
                         IRefValue refValue => refValue.RefValue,
                         _ => Instance.Value
                     }, value);
@@ -107,7 +119,7 @@ namespace VisualFunctions
                 {
                     fieldInfo.SetValue(Instance.Value switch
                     {
-                        AccessorCaller caller => caller.Result.Value,
+                        AccessorCaller caller => Result.Value,
                         IRefValue refValue => refValue.RefValue,
                         _ => Instance.Value
                     }, value);

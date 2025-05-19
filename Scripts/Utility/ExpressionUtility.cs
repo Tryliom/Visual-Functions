@@ -18,7 +18,7 @@ namespace VisualFunctions
 
             foreach (var key in Evaluator.Operations.Keys) operators += key[0];
 
-            operators += ",.;\n";
+            operators += ",.;[]<>\n";
 
             Operators = operators.ToCharArray();
         }
