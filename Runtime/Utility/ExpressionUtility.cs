@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VisualFunctions
 {
@@ -349,6 +352,7 @@ namespace VisualFunctions
             return name;
         }
 
+#if UNITY_EDITOR        
         /**
          * Creates a menu to select an asset path for a specific type.
          * The callback is called when the user selects an asset.
@@ -408,5 +412,6 @@ namespace VisualFunctions
             
             genericMenu.ShowAsContext();
         }
+#endif
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace VisualFunctions
 {
@@ -102,10 +101,9 @@ namespace VisualFunctions
         /**
          * If you override this method, you need to surround it with a #if UNITY_EDITOR and #endif
          */
-        public virtual void GenerateFields()
-        {
-        }
-
+        public virtual void GenerateFields() {}
+#endif
+        
         public Function Clone()
         {
             var clone = (Function)MemberwiseClone();
@@ -115,10 +113,10 @@ namespace VisualFunctions
             clone.Uid = Guid.NewGuid().ToString();
             return clone;
         }
-#endif
 
         protected abstract bool Process(List<IVariable> variables);
 
+#if UNITY_EDITOR
         public void EditField(string previousName, string newName)
         {
             if (string.IsNullOrEmpty(newName)) return;
@@ -128,6 +126,7 @@ namespace VisualFunctions
                 input.OnEditField(previousName, newName);
             }
         }
+#endif
 
         /**
          * Allow to add more inputs to the function

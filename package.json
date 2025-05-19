@@ -1,6 +1,6 @@
 {
   "name": "com.tryliom.visual-functions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Visual Functions",
   "description": "A tool to code small code logic or prototyping in Unity from the editor designed for coders",
   "unity": "2023.2",

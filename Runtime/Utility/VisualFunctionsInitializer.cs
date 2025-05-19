@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine;
 
 namespace VisualFunctions
@@ -25,3 +26,4 @@ namespace VisualFunctions
         }
     }
 }
+#endif

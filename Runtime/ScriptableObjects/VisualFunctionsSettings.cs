@@ -38,10 +38,12 @@ namespace VisualFunctions
     {
         public Settings Settings = new();
         
+#if UNITY_EDITOR
         private void OnValidate()
         {
             VisualFunctionsInitializer.LoadSettings();
         }
+#endif
     }
     
 #if UNITY_EDITOR

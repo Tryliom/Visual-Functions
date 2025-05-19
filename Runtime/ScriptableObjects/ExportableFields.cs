@@ -17,12 +17,14 @@ public class ExportedFunctions
         FunctionsPropertyPath = functionsPropertyPath;
     }
     
+#if UNITY_EDITOR
     public Functions GetFunctions()
     {
         var property = new SerializedObject(Asset).FindProperty(FunctionsPropertyPath);
         
         return PropertyDrawerUtility.RetrieveTargetObject(property) as Functions;
     }
+#endif
 }
 
 [CreateAssetMenu(fileName = "ExportableFields", menuName = "Visual Functions/Exportable Fields")]

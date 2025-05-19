@@ -25,11 +25,12 @@ namespace VisualFunctions
         [SerializeReference] public List<Function> FunctionsList = new();
         public List<Field> GlobalVariables = new();
         
+        public bool AllowGlobalVariables = true;
+        public bool AllowImport = true;
+        
 #if UNITY_EDITOR
         public bool FoldoutOpen;
         public bool GlobalValuesFoldoutOpen = true;
-        public bool AllowGlobalVariables = true;
-        public bool AllowImport = true;
         
         // Only used in the editor to use temporary global variables on a func with disabled global variables
         public List<Field> TemporaryGlobalVariables = new();
@@ -39,7 +40,7 @@ namespace VisualFunctions
         public bool ImportedFieldsFoldoutOpen = true;
         
         private List<IVariable> _allVariables = new();
-
+        
         /**
          * Disable the use of global variables in the functions.
          */
@@ -106,6 +107,7 @@ namespace VisualFunctions
             }
         }
         
+#if UNITY_EDITOR
         public void EditField(string previousName, string newName)
         {
             if (string.IsNullOrEmpty(newName)) return;
@@ -120,7 +122,7 @@ namespace VisualFunctions
                 function.EditField(previousName, newName);
             }
         }
-        
+
         public void ValidateGlobalVariables()
         {
             foreach (var variable in GlobalVariables)
@@ -133,6 +135,7 @@ namespace VisualFunctions
                 }
             }
         }
+#endif
         
         public Functions Clone()
         {
@@ -141,8 +144,11 @@ namespace VisualFunctions
                 FunctionsList = FunctionsList.ConvertAll(function => function.Clone()),
                 GlobalVariables = GlobalVariables.ConvertAll(variable => variable.Clone()),
                 AllowGlobalVariables = AllowGlobalVariables,
+                AllowImport = AllowImport,
+#if UNITY_EDITOR
                 FoldoutOpen = FoldoutOpen,
                 GlobalValuesFoldoutOpen = GlobalValuesFoldoutOpen
+#endif
             };
         }
     }

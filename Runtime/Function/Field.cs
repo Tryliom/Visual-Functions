@@ -18,12 +18,12 @@ namespace VisualFunctions
         public bool AllowRename;
         public bool InEdition;
         public string EditValue;
-
-#if UNITY_EDITOR
-        public bool AcceptAnyMethod;
         
         public string VariableName => FieldName;
         public IValue VariableValue => Value;
+        
+#if UNITY_EDITOR
+        public bool AcceptAnyMethod;
 
         /**
          * Use this constructor if you want to support a specific type
@@ -67,16 +67,6 @@ namespace VisualFunctions
             FieldName = name;
 
             foreach (var supportedType in ReferenceUtility.GetAllIValueTypes()) SupportedTypes.Add(supportedType);
-        }
-
-        public Field Clone()
-        {
-            if (MemberwiseClone() is not Field field) return null;
-            
-            field.Value = field.Value.Clone();
-            field.SupportedTypes = new List<SerializableSystemType>(SupportedTypes);
-            
-            return field;
         }
 
         /**
@@ -164,5 +154,17 @@ namespace VisualFunctions
             InEdition = false;
         }
 #endif
+        
+        public Field Clone()
+        {
+            if (MemberwiseClone() is not Field field) return null;
+            
+            field.Value = field.Value.Clone();
+#if UNITY_EDITOR
+            field.SupportedTypes = new List<SerializableSystemType>(SupportedTypes);
+#endif
+            
+            return field;
+        }
     }
 }
