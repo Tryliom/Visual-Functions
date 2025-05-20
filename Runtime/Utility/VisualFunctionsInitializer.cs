@@ -14,15 +14,15 @@ namespace VisualFunctions
 
         public static void LoadSettings()
         {
-            var settings = Resources.Load<VisualFunctionsSettings>("");
+            var settings = Resources.LoadAll<VisualFunctionsSettings>("");
             
-            if (!settings)
+            if (settings.Length == 0)
             {
                 Debug.LogWarning("VisualFunctionsSettings asset not found. Using default values.");
                 return;
             }
 
-            GlobalSettings.Settings = settings.Settings;
+            GlobalSettings.Settings = settings[0].Settings;
         }
     }
 }
