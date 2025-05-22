@@ -47,6 +47,24 @@ namespace VisualFunctions
     }
     
 #if UNITY_EDITOR
+    [CustomEditor(typeof(VisualFunctionsSettings))]
+    public class VisualFunctionsSettingsEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            
+            var buttonSize = new Vector2(140, 20);
+
+            GUILayout.Space(10);
+            
+            if (GUILayout.Button("Reload Settings", GUILayout.Width(buttonSize.x), GUILayout.Height(buttonSize.y)))
+            {
+                VisualFunctionsInitializer.LoadSettings();
+            }
+        }
+    }
+    
     [CustomPropertyDrawer(typeof(AssetPath))]
     public class AssetPathDrawer : PropertyDrawer
     {
