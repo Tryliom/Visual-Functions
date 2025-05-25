@@ -6,14 +6,12 @@ Here we use functions change the text of a button when clicked by the number of 
 Start by adding to your game object or the button the component `FunctionOnAction`, then add the `Evaluate` function to it from the button `Add function`.
 
 Then, add global values named:
-- `buttonText`, set his type to `GameObject`, then move the text of the button to it
-- `button`, set his type to `CustomValue` and set the value to `buttonText.GetComponent<TextMeshProUGUI>()`, set recalculate to false
-  - This will get the text component of the button on the first call
-- `clicks`, set his type to `int` and set the value to 0
+- `_button`, set his type to `Component of Game Object`, then move the button to it, click on button `...` and select the type `TextMeshProUGUI` in children
+- `_clicks`, set his type to `int` and set the value to 0
 
 ![ButtonClickGlobalValues.png](../images/ButtonClickGlobalValues.png)
 
-Then select the `Evaluator` function and set the value to `clicks += 1; button.text = "Clicked " + clicks + " times"`.
+Then select the `Evaluator` function and set the value to `_clicks += 1; _button.text = "Clicked " + clicks + " times"`.
 
 ![ButtonClickEvaluator.png](../images/ButtonClickEvaluator.png)
 

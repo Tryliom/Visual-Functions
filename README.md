@@ -11,9 +11,11 @@ A system to move the player based on inputs WASD.
 
 Here the inputs are stored in a variable called `MoveValue`,
 that is a reference to a Vector3 variable, that can be used everywhere.
+
 ![SimpleInputManager.png](documentation/images/SimpleInputManager.png)
 
 And here the player uses the `MoveValue` to move the player very simply.
+
 ![SimplePlayerMove.png](documentation/images/SimplePlayerMove.png)
 
 More examples can be found [here](./documentation/MoreExamples.md).
@@ -29,7 +31,7 @@ More examples can be found [here](./documentation/MoreExamples.md).
 - Can add more types (code)
 
 ## Cons
-The main cons are that it's way slower than writing code (20-100x slower) and that it can be hard to debug.
+The main cons are that it's way slower than writing code (150-300x slower) and that it can be hard to debug.
 This can also be hard to use for non-developers to run logic beyond the basic operations (+, -, *, /, %, ==, !=, >, <, >=, <=).
 
 ## Features
@@ -53,7 +55,6 @@ Loop and For functions can also use the evaluate function to run a code logic.
 #### Missing and planned features
 - Rename variable asset name from the editor
 - Better error handling
-- Some issues when using Odin Inspector
 
 #### Known Issues
 - Editing a field will not save the asset, so you need to save it manually (control + S)
@@ -62,10 +63,10 @@ Loop and For functions can also use the evaluate function to run a code logic.
 ## Install
 In Unity, go to `Window` menu -> `Package Manager` -> `+` -> `install package from git url` and put this url:
 ```
-https://github.com/Tryliom/TryliomFunctions.git
+https://github.com/Tryliom/Visual-Functions.git
 ```
 
-In Unity, you need to set the API compatibility level to `.NET Framework` in `Edit` -> `Project Settings` -> `Player` -> `Other Settings` -> `Configuration` -> `Api Compatibility Level`.
+In Unity, you need to set the API compatibility level to `.NET Standard` in `Edit` -> `Project Settings` -> `Player` -> `Other Settings` -> `Configuration` -> `Api Compatibility Level`.
 
 ## Notes
 Folder needed:

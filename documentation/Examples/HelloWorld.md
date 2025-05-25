@@ -1,11 +1,11 @@
 ﻿[Back](../MoreExamples.md)
 
 # Hello world
-Here we use functions to log "Hello world" in the console when the component is started.
+Here we use functions to log "Hello World" in the console when the component is started.
 
-Start by adding to your game object the component `FunctionOnStart`, then add the `Log` function to it from the button `Add function`.
+Start by adding to your game object the component `Function On Start`, then add the `Log` function to it from the button `Add function`.
 
-Then select the `Log` function and set the value to "Hello world".
+Then select the `Log` function and set the value to "Hello World".
 
 ![HelloWorld.png](../images/HelloWorld.png)
 
