@@ -24,6 +24,7 @@ namespace VisualFunctions
             var totalCounterCode = 0;
 
             var totalTimeFunction = 0f;
+            var totalMemoryFunction = 0f;
             var totalCounterFunction = 0;
 
             foreach (var test in PerformanceTests)
@@ -35,12 +36,14 @@ namespace VisualFunctions
                 totalTimeCode += result.CodeTime;
                 totalCounterCode++;
                 totalTimeFunction += result.FunctionTime;
+                totalMemoryFunction += result.FunctionMemory;
                 totalCounterFunction++;
             }
 
             if (totalCounterFunction > 0 && totalCounterCode > 0)
             {
-                Debug.Log($"Average Function / Code: {totalTimeFunction / totalCounterFunction / (totalTimeCode / totalCounterCode):F2}x slower");
+                Debug.Log($"Average Function / Code: {totalTimeFunction / totalCounterFunction / (totalTimeCode / totalCounterCode):F2}x slower and " +
+                          $"{totalMemoryFunction} MB used");
             }
         }
 
@@ -59,16 +62,20 @@ namespace VisualFunctions
 
             var resultCode = counterCode.GetTime();
             
+            performanceTest.OnStart.Invoke();
+            
             var counterFunction = new Counter(performanceTest.FunctionsToTest.Invoke);
 
             for (var i = 0; i < _testCount; i++) counterFunction.Test();
 
             var resultFunction = counterFunction.GetTime();
+            var resultFunctionMemory = counterFunction.GetAllocatedMemoryMb();
 
             return new TestResult
             {
                 CodeTime = resultCode,
-                FunctionTime = resultFunction
+                FunctionTime = resultFunction,
+                FunctionMemory = resultFunctionMemory
             };
         }
         
@@ -89,18 +96,21 @@ namespace VisualFunctions
 
         private static void ShowResults(TestResult result, Type testType)
         {
-            Debug.Log($"{testType.Name} - Code {result.CodeTime} ticks - Function {result.FunctionTime} ticks ({result.FunctionTime / result.CodeTime:F2}x slower)");
+            Debug.Log($"{testType.Name} - Code {result.CodeTime} ticks - Function {result.FunctionTime} ticks ({result.FunctionTime / result.CodeTime:F2}x slower) and function used {result.FunctionMemory:F2} MB");
         }
 
         private class Counter
         {
             private readonly Stopwatch _stopwatch;
             private readonly Action _testedAction;
+            private readonly long _memoryBefore;
+            private long _memoryAfter;
 
             public Counter(Action testedAction)
             {
                 _stopwatch = Stopwatch.StartNew();
                 _testedAction = testedAction;
+                _memoryBefore = GC.GetTotalMemory(false);
             }
 
             public void Test()
@@ -111,8 +121,13 @@ namespace VisualFunctions
             public float GetTime()
             {
                 _stopwatch.Stop();
-
+                _memoryAfter = GC.GetTotalMemory(false);
                 return _stopwatch.ElapsedTicks;
+            }
+            
+            public float GetAllocatedMemoryMb()
+            {
+                return (_memoryAfter - _memoryBefore) / (1024f * 1024f);
             }
         }
 
@@ -120,6 +135,7 @@ namespace VisualFunctions
         {
             public float CodeTime;
             public float FunctionTime;
+            public float FunctionMemory;
         }
     }
 
