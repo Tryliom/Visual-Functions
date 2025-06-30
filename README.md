@@ -22,28 +22,30 @@ More examples can be found [here](./documentation/MoreExamples.md).
 
 ## Pros
 - Easy to use
-- No need to write code
+- Code-like syntax
 - No need to compile
-- Powerful logic is very scalable
-- Editable from the editor and when running
-- Builtin components
+- Powerful, scalable logic
+- Editable from the editor and during runtime
+- Built-in components
 - Can be extended with custom functions (code)
-- Can add more types (code)
 
 ## Cons
-The main cons are that it's way slower than writing code (150-300x slower) and that it can be hard to debug.
+The main cons are that it's way slower than writing code (100x slower than code, 10-20x slower than Unity Visual Scripting) and that it can be hard to debug.
 This can also be hard to use for non-developers to run logic beyond the basic operations (+, -, *, /, %, ==, !=, >, <, >=, <=).
 
 ## Features
 Contains basic functions used to run code logic:
+- Evaluate: Interpret a string as a code and run it
+- Timer: Run a function after a delay
+- Counter: Run a function after a number of times
 - Call Game Event: Trigger a game event
 - For: Run a function for a number of times
 - Loop: Run a function while a condition is met
 - If: Run a function if a condition is met, else run another function
-- Log: Log a list of inputs in the console
+- Log: Log a message to the console, you can use variables in the message
 - Reset: Reset a variable to its default value
-- Evaluate: Interpret a string as a code and run it
-- Timer: Run a function after a delay
+
+It doesn't contain a lot of built-in functions, but with the evaluate function, you can run any code logic you want.
 
 ### Evaluate
 Currently, the evaluate function supports all mathematical, logical and object methods operations.
