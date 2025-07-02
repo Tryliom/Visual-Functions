@@ -1,5 +1,5 @@
 # Visual Functions
-A tool to code small code logic or prototyping in Unity from the editor.
+A runtime script interpreter to code small code logic or prototyping in Unity from the editor.
 Designed to be more used by developers since most of the functions are using a code syntax to run the logic.
 
 Use these tools to make your life easier:

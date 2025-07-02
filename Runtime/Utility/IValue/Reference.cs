@@ -203,7 +203,7 @@ namespace VisualFunctions
                     height += EditorGUI.GetPropertyHeight(localValue, true);
                 }
             }
-            else if (variable.objectReferenceValue != null && displayedInInspector.boolValue)
+            else if (variable.objectReferenceValue && displayedInInspector.boolValue)
             {
                 height += EditorGUIUtility.singleLineHeight;
             }
