@@ -12,15 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad2fba8644b4721bfe59e64c6a8b287, type: 3}
   m_Name: TestsRunner
   m_EditorClassIdentifier: 
-  _testCount: 100000
+  _testCount: 1000000
   PerformanceTests:
   - {fileID: 11400000, guid: 1a8d3866436ff1a438346a5fb0c646f3, type: 2}
   - {fileID: 11400000, guid: db3ae0cdbdbae82498659ba4f37b1df0, type: 2}
   - {fileID: 11400000, guid: 01b421d69eb851248a7440a66c063d85, type: 2}
+  - {fileID: 11400000, guid: 0ca0a105c5eb6fd458185776a8b6ea2d, type: 2}
   - {fileID: 11400000, guid: f35cae71790869743b2aee308bd295e7, type: 2}
   - {fileID: 11400000, guid: f7b8c73b93635744a87e2e1cfb1b3186, type: 2}
   UnitTests:
   - {fileID: 11400000, guid: b75d2903d106b9b49b8339b9cd622b14, type: 2}
+  - {fileID: 11400000, guid: cf81c9fa8c08b374caa841be6b118822, type: 2}
   - {fileID: 11400000, guid: d8ff39fbe4fa66e468cd4926680413eb, type: 2}
   - {fileID: 11400000, guid: 266b625ee05cc8c44a540e5fa4a9c314, type: 2}
+  - {fileID: 11400000, guid: 1fb8a9e302561b44abae60e570ecbdbb, type: 2}
+  - {fileID: 11400000, guid: 89444a82e5c31ab44b0feb0d00ab29d0, type: 2}
   - {fileID: 11400000, guid: 3f37139e979c0e94a8446e676982f38d, type: 2}
+  - {fileID: 11400000, guid: e8aec4e2ed79e154181ce50c68d16b91, type: 2}

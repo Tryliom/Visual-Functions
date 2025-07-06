@@ -75,6 +75,7 @@ namespace VisualFunctions
             {
                 CodeTime = resultCode,
                 FunctionTime = resultFunction,
+                FunctionTimeMs = counterFunction.GetTimeMs(),
                 FunctionMemory = resultFunctionMemory
             };
         }
@@ -96,7 +97,7 @@ namespace VisualFunctions
 
         private static void ShowResults(TestResult result, Type testType)
         {
-            Debug.Log($"{testType.Name} - Code {result.CodeTime} ticks - Function {result.FunctionTime} ticks ({result.FunctionTime / result.CodeTime:F2}x slower) and function used {result.FunctionMemory:F2} MB");
+            Debug.Log($"{testType.Name} - Function takes {result.FunctionTimeMs}ms and used {result.FunctionMemory:F2}mb ({result.FunctionTime / result.CodeTime:F2}x slower)");
         }
 
         private class Counter
@@ -125,6 +126,11 @@ namespace VisualFunctions
                 return _stopwatch.ElapsedTicks;
             }
             
+            public float GetTimeMs()
+            {
+                return _stopwatch.ElapsedMilliseconds;
+            }
+            
             public float GetAllocatedMemoryMb()
             {
                 return (_memoryAfter - _memoryBefore) / (1024f * 1024f);
@@ -135,6 +141,7 @@ namespace VisualFunctions
         {
             public float CodeTime;
             public float FunctionTime;
+            public float FunctionTimeMs;
             public float FunctionMemory;
         }
     }

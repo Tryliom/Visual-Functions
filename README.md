@@ -68,7 +68,7 @@ In Unity, go to `Window` menu -> `Package Manager` -> `+` -> `install package fr
 https://github.com/Tryliom/Visual-Functions.git
 ```
 
-In Unity, you need to set the API compatibility level to `.NET Standard` in `Edit` -> `Project Settings` -> `Player` -> `Other Settings` -> `Configuration` -> `Api Compatibility Level`.
+In Unity, you need to set the API compatibility level to `.NET Framework` in `Edit` -> `Project Settings` -> `Player` -> `Other Settings` -> `Configuration` -> `Api Compatibility Level`.
 
 ## Notes
 Folder needed:
