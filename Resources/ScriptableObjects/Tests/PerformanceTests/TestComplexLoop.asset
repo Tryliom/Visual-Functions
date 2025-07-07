@@ -152,9 +152,13 @@ MonoBehaviour:
       InEdition: 0
       EditValue: 
       AcceptAnyMethod: 0
+    AllowGlobalVariables: 1
+    AllowImport: 1
     FoldoutOpen: 0
     GlobalValuesFoldoutOpen: 1
-    AllowGlobalVariables: 1
+    TemporaryGlobalVariables: []
+    ImportedFields: []
+    ImportedFieldsFoldoutOpen: 1
   FunctionsToTest:
     FunctionsList:
     - rid: 7793651929897238619
@@ -214,6 +218,10 @@ MonoBehaviour:
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: Vector3Reference
         m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomFunction
+        m_AssemblyQualifiedName: VisualFunctions.CustomFunction, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
@@ -284,6 +292,10 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomFunction
+        m_AssemblyQualifiedName: VisualFunctions.CustomFunction, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
         m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -352,6 +364,10 @@ MonoBehaviour:
         m_AssemblyQualifiedName: VisualFunctions.Vector3Reference, VisualFunctions,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      - m_Name: CustomFunction
+        m_AssemblyQualifiedName: VisualFunctions.CustomFunction, VisualFunctions,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        m_AssemblyName: VisualFunctions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       - m_Name: CustomValue
         m_AssemblyQualifiedName: VisualFunctions.CustomValue, VisualFunctions, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -364,9 +380,13 @@ MonoBehaviour:
       InEdition: 0
       EditValue: MaxNumber
       AcceptAnyMethod: 0
+    AllowGlobalVariables: 1
+    AllowImport: 1
     FoldoutOpen: 1
     GlobalValuesFoldoutOpen: 1
-    AllowGlobalVariables: 1
+    TemporaryGlobalVariables: []
+    ImportedFields: []
+    ImportedFieldsFoldoutOpen: 0
   MaxNumberCondition:
     UseLocal: 0
     LocalValue: 50
@@ -385,6 +405,22 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 3394867663219720668
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: a = 0; b = 5
+    - rid: 3394867663219720669
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: A < MaxNumber
+    - rid: 3394867663219720670
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: A -= MaxNumber
+    - rid: 3394867663219720671
+      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
+      data:
+        FormulaValue: A += 3 * (A / B) + B
     - rid: 4824914933113421891
       type: {class: Evaluate, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -393,7 +429,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793651929897238645
+            rid: 3394867663219720670
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -421,7 +457,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793651929897238643
+            rid: 3394867663219720668
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -449,7 +485,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Condition
           Value:
-            rid: 7793651929897238644
+            rid: 3394867663219720669
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -474,9 +510,13 @@ MonoBehaviour:
           FunctionsList:
           - rid: 7793651929897238621
           GlobalVariables: []
+          AllowGlobalVariables: 0
+          AllowImport: 0
           FoldoutOpen: 1
           GlobalValuesFoldoutOpen: 1
-          AllowGlobalVariables: 0
+          TemporaryGlobalVariables: []
+          ImportedFields: []
+          ImportedFieldsFoldoutOpen: 1
     - rid: 7793651929897238621
       type: {class: Evaluate, ns: VisualFunctions, asm: VisualFunctions}
       data:
@@ -485,7 +525,7 @@ MonoBehaviour:
         Inputs:
         - FieldName: Formula
           Value:
-            rid: 7793651929897238646
+            rid: 3394867663219720671
           SupportedTypes: []
           AllowRename: 0
           InEdition: 0
@@ -526,22 +566,6 @@ MonoBehaviour:
         LocalValue: 50
         Variable: {fileID: 11400000, guid: a8b366a0fd9c4674ea87a9b13cf90a0a, type: 2}
         DisplayedInInspector: 0
-    - rid: 7793651929897238643
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: a = 0; b = 5
-    - rid: 7793651929897238644
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: A < MaxNumber
-    - rid: 7793651929897238645
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: A -= MaxNumber
-    - rid: 7793651929897238646
-      type: {class: Formula, ns: VisualFunctions, asm: VisualFunctions}
-      data:
-        FormulaValue: A += 3 * (A / B) + B
     - rid: 7793651929897238647
       type: {class: FloatReference, ns: VisualFunctions, asm: VisualFunctions}
       data:
