@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
@@ -71,13 +72,7 @@ namespace VisualFunctions
             var resultFunction = counterFunction.GetTime();
             var resultFunctionMemory = counterFunction.GetAllocatedMemoryMb();
 
-            return new TestResult
-            {
-                CodeTime = resultCode,
-                FunctionTime = resultFunction,
-                FunctionTimeMs = counterFunction.GetTimeMs(),
-                FunctionMemory = resultFunctionMemory
-            };
+            return new TestResult(resultCode, resultFunction, resultFunctionMemory);
         }
         
         public void RunUnitTests()
@@ -97,21 +92,25 @@ namespace VisualFunctions
 
         private static void ShowResults(TestResult result, Type testType)
         {
-            Debug.Log($"{testType.Name} - Function takes {result.FunctionTimeMs}ms and used {result.FunctionMemory:F2}mb ({result.FunctionTime / result.CodeTime:F2}x slower)");
+            Debug.Log($"{testType.Name} - Function takes {result.FunctionTime} ms and used {result.FunctionMemory:F2}mb ({result.FunctionTime / result.CodeTime:F2}x slower) | Code {result.CodeTime} ms");
         }
 
         private class Counter
         {
             private readonly Stopwatch _stopwatch;
             private readonly Action _testedAction;
-            private readonly long _memoryBefore;
-            private long _memoryAfter;
+            private Recorder _rec;
 
             public Counter(Action testedAction)
             {
                 _stopwatch = Stopwatch.StartNew();
                 _testedAction = testedAction;
-                _memoryBefore = GC.GetTotalMemory(false);
+                _rec = Recorder.Get("GC.Alloc");
+                _rec.enabled = false;
+#if !UNITY_WEBGL
+                _rec.FilterToCurrentThread();
+#endif
+                _rec.enabled = true;
             }
 
             public void Test()
@@ -122,27 +121,41 @@ namespace VisualFunctions
             public float GetTime()
             {
                 _stopwatch.Stop();
-                _memoryAfter = GC.GetTotalMemory(false);
                 return _stopwatch.ElapsedTicks;
-            }
-            
-            public float GetTimeMs()
-            {
-                return _stopwatch.ElapsedMilliseconds;
             }
             
             public float GetAllocatedMemoryMb()
             {
-                return (_memoryAfter - _memoryBefore) / (1024f * 1024f);
+                if (_rec == null) return 0;
+
+                _rec.enabled = false;
+#if !UNITY_WEBGL
+                _rec.CollectFromAllThreads();
+#endif
+
+                var res = _rec.sampleBlockCount;
+                
+                _rec = null;
+                
+                return res / (1024f * 1024f);
             }
         }
 
         private class TestResult
         {
-            public float CodeTime;
-            public float FunctionTime;
-            public float FunctionTimeMs;
-            public float FunctionMemory;
+            public readonly float CodeTime;
+            public readonly float FunctionTime;
+            public readonly float FunctionMemory;
+            
+            /**
+             * Takes time in ticks, converts it to milliseconds with a maximum of precision.
+             */
+            public TestResult(float codeTime = 0f, float functionTime = 0f, float functionMemory = 0f)
+            {
+                CodeTime = codeTime / 10000f;
+                FunctionTime = functionTime / 10000f;
+                FunctionMemory = functionMemory;
+            }
         }
     }
 

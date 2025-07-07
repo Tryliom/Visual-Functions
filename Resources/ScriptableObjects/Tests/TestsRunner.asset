@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad2fba8644b4721bfe59e64c6a8b287, type: 3}
   m_Name: TestsRunner
   m_EditorClassIdentifier: 
-  _testCount: 1000000
+  _testCount: 100000
   PerformanceTests:
   - {fileID: 11400000, guid: 1a8d3866436ff1a438346a5fb0c646f3, type: 2}
   - {fileID: 11400000, guid: db3ae0cdbdbae82498659ba4f37b1df0, type: 2}
