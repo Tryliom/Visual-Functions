@@ -131,6 +131,7 @@ namespace VisualFunctions
                 switch (f)
                 {
                     case "":
+                    case "\t":
                     case "\n":
                         continue;
                     default:
@@ -174,6 +175,7 @@ namespace VisualFunctions
 
                 if (currentChar == ' ') continue; // Skip spaces
                 if (currentChar == '\n') continue; // Skip new lines
+                if (currentChar == '\t') continue; // Skip tabs
                 
                 var ignoreEncapsulation = !encapsulateNext;
 
