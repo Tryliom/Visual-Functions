@@ -21,17 +21,33 @@ And here the player uses the `MoveValue` to move the player very simply.
 More examples can be found [here](./documentation/MoreExamples.md).
 
 ## Pros
-- Easy to use
+- Easy to use for a programmer
 - Code-like syntax
 - No need to compile
-- Powerful, scalable logic
+- Powerful, flexible logic
 - Editable from the editor and during runtime
 - Built-in components
 - Can be extended with custom functions (code)
 
 ## Cons
-The main cons are that it's way slower than writing code (100x slower than code, 10-20x slower than Unity Visual Scripting) and that it can be hard to debug.
-This can also be hard to use for non-developers to run logic beyond the basic operations (+, -, *, /, %, ==, !=, >, <, >=, <=).
+This is slow, event Unity Visual Scripting that is known to be the slowest among the visual scripting tools, is faster than this in some cases.
+
+This table shows the time in milliseconds it takes to run some tests and the memory used compared to Unity Visual Scripting and code.
+
+| Tests           | Unity Visual Scripting  | Visual Functions            | Code                |
+|-----------------|-------------------------|-----------------------------|---------------------|
+| Float Increment | 9'301 ms - 0.95 mb      | 5'394 ms - 22.9 mb          | 14 ms - 0 mb        |
+| Random Vec2     | 36’489 ms - 11.44 mb    | 52’002 ms - 151.15 mb       | 36 ms - 0 mb        |
+| List Loop       | 10’849 ms - 0.95 mb     | 21’762 ms - 51.49 mb        | 10 ms - 9.5 E-07 mb |
+| List Multiply   | 634’047 ms - 240.43 mb  | 2’021’720 ms - 5’343.02 mb  | 629 ms - 0 mb       |
+
+The different tests were made with the same logic, but using different tools, they consist of repeating the same logic 1'000'000 times, and measuring the time it takes to run them:
+- Increment a float variable by 1
+- Generate a random Vector2 variable
+- Add an int to a list
+- Loop through a list of 50 elements, take elements by pairs and multiply them, then insert the result in a new list
+
+The project where these tests were made can be found [here](https://github.com/Tryliom/Comparison-UnityVS-Csharp-Visual-Functions), they were made the 08/07/2025.
 
 ## Features
 Contains basic functions used to run code logic:
